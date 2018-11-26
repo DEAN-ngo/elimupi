@@ -48,9 +48,9 @@ The default password for the wifi 'elimu' is : 1234567890
 The end users can access the available resources after they are connected to the Wifi network.
 
 The following links are provided to access the resources:
-- Khan Academy - khan.local
-- Kiwix - wiki.local
-- files - files.local
+- Khan Academy - www.khan.local
+- Kiwix - www.wiki.local
+- files - www.files.local
 
 After you finished the installation you need to visit khan.local and create an Admin account. 
 
