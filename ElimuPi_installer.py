@@ -137,6 +137,9 @@ def install_kalite():
     return True
 
 def install_languague():
+    print "========================================="
+    print "Setup Language for Khan Academy"
+    print "========================================="
     sudo("su pi -c '/usr/bin/kalite manage retrievecontentpack local en /var/run/usbmount/LPOFFEXT/khan/en.zip'")
 
 def install_kiwix():
