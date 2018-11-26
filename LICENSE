@@ -1,0 +1,69 @@
+License info for packages used for ElimuPi project
+--------------------------------------------------
+ 
+Github's terms :
+https://help.github.com/articles/github-terms-of-service/
+Not a problem, but included for completeness as we use the service
+
+Python : GPL (currently)
+https://docs.python.org/2/license.html
+
+Raspberry Pi : Closed
+But if you have bought the hardware you can do what you want with it, just can't start making your own raspberry pi's
+https://raspberrypi.stackexchange.com/questions/1367/how-free-is-raspberry-pi
+
+Debian : Lots of different open licenses, depending on packages
+https://www.debian.org/legal/licenses/
+
+Kahn Academy (lite): MIT
+"The KA Lite sourcecode itself is open-source MIT licensed, and the other included software and content is licensed
+as described in the LICENSE file.  Please note that KA Lite is not officially affiliated with, nor maintained by, Khan
+Academy, but rather makes use of Khan Academy’s open API and Creative Commons content, which may only be
+used for non-commercial purpose"
+https://media.readthedocs.org/pdf/ka-lite/latest/ka-lite.pdf
+
+Kiwix wiki Offline: License 	GPLv3
+https://en.wikipedia.org/wiki/Kiwix
+
+Citadel : GPL
+http://www.citadel.org/doku.php/documentation:credits_and_license
+
+Wordpress : GPL
+https://wordpress.org/about/license/
+
+PHP : PHP License v3.01
+http://php.net/license/index.php
+http://www.php.net/license/3_01.txt
+
+
+MySQL (Community edition) : GPL
+https://www.mysql.com/products/community/
+(which version of the GPL is not clear)
+Found it, v2.
+http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
+
+Sqlite : Public domain
+This is the most open of all the licenses.  More details:
+https://sqlite.org/copyright.html
+
+Apache: Apache License, v2
+https://www.apache.org/licenses/
+
+This holds for all projects held by the apache foundation.
+
+libxml2 : MIT
+https://opensource.org/licenses/mit-license.html
+
+Stem (php extension): BSD
+https://pecl.php.net/package/stem
+
+hostapd : BSD
+https://w1.fi/cgit/hostap/plain/hostapd/README
+https://w1.fi/hostapd/
+
+udhcpd : GPL v2
+https://udhcp.busybox.net/
+https://udhcp.busybox.net/COPYING
+
+dnsmasq : GPL v2
+http://www.thekelleys.org.uk/dnsmasq/doc.html
