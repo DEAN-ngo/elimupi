@@ -34,6 +34,7 @@ Installation
 5. Expand your microSD card partition sudo raspi-config sudo reboot 
 
 6. Paste in the following command after reboot. 
+
 wget https://raw.githubusercontent.com/elimupi/elimupi2.0/master/ElimuPi_installer.py && chmod 700 ElimuPi_installer.py && python ElimuPi_installer.py
 
 *Please note that this will change the 'pi' user's password to: elimupi 
