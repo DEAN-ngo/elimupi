@@ -350,7 +350,12 @@ def PHASE0():
         print "Autostart enabled"
     else:
         print "Autostart already enabled"
-
+    
+    #================================    
+    #Setup and configure USB Automount
+    #================================
+    install_usbmount()
+    
     #================================
     # Write install status to file
     #================================
@@ -396,9 +401,6 @@ def PHASE1():
     if not is_vagrant():
         sudo("yes | sudo rpi-update") or die("Unable to upgrade Raspberry Pi firmware")
         
-
-    install_usbmount()
-
     #================================
     # Setup wifi hotspot
     #================================
