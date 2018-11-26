@@ -62,6 +62,7 @@ def install_usbmount():
     sudo("sed -i '/MountFlags=slave/c\MountFlags=shared' /lib/systemd/system/systemd-udevd.service") or die ("Unable to update udevd configuration (systemd-udevd.service)")
     sudo("rm * /etc/usbmount/mount.d; rm * /etc/usbmount/umount.d")
     #### Automount location /var/run/usbmount/<label>
+    sudo("chmod +x ./build_elimupi/files/01_create_label_symlink ../build_elimupi/files/01_remove_model_symlink")
     cp("./files/usbmount.conf", "/etc/usbmount/")
     cp("./files/01_create_label_symlink", "/etc/usbmount/mount.d/")
     cp("./files/01_remove_model_symlink", "/etc/usbmount/umount.d")
