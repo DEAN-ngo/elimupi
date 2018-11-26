@@ -52,6 +52,11 @@ The following links are provided to access the resources:
 - Kiwix - wiki.local
 - files - files.local
 
+After you finished the installation you need to visit khan.local and create an Admin account. 
+
+Then you need to login with the Admin account and go to Manage --> "Please follow the directions to register your device, so that it can synchronize with the central server."
+
+
 *NOTE1: This install is tested to work with 2018-11-13-raspbian-stretch-lite 
 
 *NOTE2: for WIFI to work on the RaspberryPi 2 unit, you must have the WIFI USB dongle inserted during installation so that the install script can configure it properly. RaspberryPi 3 models have on board WiFi and don't need a WIFI USB dongle. 
