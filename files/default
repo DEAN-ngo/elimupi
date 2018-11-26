@@ -26,13 +26,23 @@ server {
     }
 }
 
- server {
+server {
       listen        80;
-      server_name   10.11.0.1 files.local;
+      server_name   www.files.local files.local;
 
       location /{
         autoindex on;
         root /var/run/usbmount/LPOFFEXT/files;
+      }
+    }
+
+server {
+      listen        80;
+      server_name   fdroid.local;
+
+      location /{
+        autoindex on;
+        root /var/run/usbmount/LPOFFEXT/fdroid;
       }
     }
 
