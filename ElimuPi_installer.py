@@ -350,19 +350,19 @@ def PHASE0():
         print "Autostart enabled"
     else:
         print "Autostart already enabled"
-    
-    #================================    
-    #Setup and configure USB Automount
-    #================================
-    install_usbmount()
-    
+      
     #================================
     # Write install status to file
     #================================
     file = open(base_build + '_install', 'w')
     file.write('1')                                                     # Write phase to file
     file.close()
-    
+  
+    #================================    
+    #Setup and configure USB Automount
+    #================================
+    install_usbmount()
+  
     #================================
     # Set password
     #================================
