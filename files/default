@@ -32,7 +32,7 @@ server {
 
       location /{
         autoindex on;
-        root /var/run/usbmount/LPOFFEXT/files;
+        root /var/run/usbmount/Content/files;
       }
     }
 
@@ -42,7 +42,7 @@ server {
 
       location /{
         autoindex on;
-        root /var/run/usbmount/LPOFFEXT/fdroid;
+        root /var/run/usbmount/Content/fdroid;
       }
     }
 
