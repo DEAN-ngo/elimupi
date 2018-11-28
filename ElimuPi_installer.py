@@ -418,7 +418,7 @@ def PHASE1():
     #================================
     install_kiwix()
     install_dnsmasq()
-    install_languague()
+    #install_languague()
 
     #================================
     # Update hostname (LAST!)
