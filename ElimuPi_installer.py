@@ -124,14 +124,14 @@ def install_kalite():
     print "========================================="
     print "Installing Khan Accedemy components"
     print "========================================="
-    sudo("apt-get install dirmngr -y")
+    sudo("apt-get install dirmngr -y") or die("Unable to install dirmmgr")
     sudo("sudo su -c 'echo deb http://ppa.launchpad.net/learningequality/ka-lite/ubuntu xenial main > /etc/apt/sources.list.d/ka-lite.list'")
-    sudo("apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 74F88ADB3194DD81")
-    sudo("apt-get update")
-    sudo("apt-get install ka-lite-raspberry-pi -y")
+    sudo("apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 74F88ADB3194DD81") or die("Unable to add key")
+    sudo("apt-get update") or die("Unable to update the repository")
+    sudo("apt-get install ka-lite-raspberry-pi -y") or die("Unable to install Ka-lite-raspberry-pi")
     #sudo("kalite manage setup --username=" + base_passwd + " --password=" + base_passwd + " --hostname=" + base_hostname + " --description=" + base_hostname) ### PBo 20180315 Removed unwanted confirmation
     cp("./files/settings.py", "/home/pi/.kalite/")
-    sudo("systemctl start ka-lite")
+    sudo("systemctl start ka-lite") or die("Unable to start ka-lite")
     sudo("systemctl enable ka-lite")
 #sudo("sh -c '/usr/local/bin/kalite --version > /etc/kalite-version'") or die("Unable to record kalite version")
     return True
@@ -167,13 +167,13 @@ def install_dnsmasq():
     print "Installing DNS components"
     print "========================================="  
     sudo("apt-get install dnsmasq -y") or die("Unable to install dnsmasq.")
-    cp("./files/hosts", "/etc/hosts")
-    sudo("rm /etc/dnsmasq.conf")
+    cp("./files/hosts", "/etc/hosts") or die("Unable to copy file hosts (/etc/hosts)")
+    sudo("rm /etc/dnsmasq.conf") or die("Unable to delete dnsmasq.conf (dnsmasq)")
     print "========================================="
     print "Setup NGINX domains"
     print "========================================="  
-    cp("./files/default", "/etc/nginx/sites-available/")
-    sudo("systemctl restart nginx")
+    cp("./files/default", "/etc/nginx/sites-available/") or die("Unable to copy file default (nginx)")
+    sudo("systemctl restart nginx") or die("Unable to restart nginx")
 
 #===SUDO===#
 def sudo(s):
@@ -361,7 +361,7 @@ def PHASE0():
     #================================    
     #Setup and configure USB Automount
     #================================
-    install_usbmount()
+    install_usbmount() or die("Unable to install automount")
   
     #================================
     # Set password
@@ -416,9 +416,9 @@ def PHASE1():
     #================================
     # install the kiwix server (but not content)
     #================================
-    install_kiwix()
-    install_dnsmasq()
-    #install_languague()
+    install_kiwix() or die("Unable to install Kiwix")
+    install_dnsmasq() or die("Unable to install DNSmasq")
+    install_languague() or die("Unable to install languagepack")
 
     #================================
     # Update hostname (LAST!)
