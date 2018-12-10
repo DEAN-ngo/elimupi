@@ -3,7 +3,7 @@ server {
     listen [::]:80;
     server_name khan.local www.khan.local;
     location / {
-        proxy_pass http://10.11.0.1:7007;
+        proxy_pass http://127.0.0.1:7007;
         proxy_http_version 1.1;
         proxy_set_header Upgrade $http_upgrade;
         proxy_set_header Connection 'upgrade';
@@ -17,7 +17,7 @@ server {
     listen [::]:80;
     server_name wiki.local www.wiki.local;
     location / {
-        proxy_pass http://10.11.0.1:81;
+        proxy_pass http://127.0.0.1:81;
         proxy_http_version 1.1;
         proxy_set_header Upgrade $http_upgrade;
         proxy_set_header Connection 'upgrade';
