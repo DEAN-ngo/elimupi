@@ -168,7 +168,7 @@ def install_dnsmasq():
     print "========================================="  
     sudo("apt-get install dnsmasq -y") or die("Unable to install dnsmasq.")
     cp("./files/hosts", "/etc/hosts") or die("Unable to copy file hosts (/etc/hosts)")
-    sudo("rm /etc/dnsmasq.conf")
+    #sudo("rm /etc/dnsmasq.conf")
     print "========================================="
     print "Setup NGINX domains"
     print "========================================="  
@@ -417,7 +417,15 @@ def PHASE1():
     # install the kiwix server (but not content)
     #================================
     install_kiwix()
+    
+    #================================
+    # install dnsmasq
+    #================================
     install_dnsmasq()
+    
+    #================================
+    # install the language for Khan
+    #================================
     install_languague()
 
     #================================
@@ -426,6 +434,7 @@ def PHASE1():
     if not is_vagrant():
         cp("files/hosts", "/etc/hosts") or die("Unable to copy hosts file.")
         cp("files/hostname", "/etc/hostname") or die("Unable to copy hostname file.")
+        sudo("chmod 644 ElimuPi_installer.py") or die("Unable to change file permissions.")
     
     #================================
     # record the version of the installer we're using - this must be manually
