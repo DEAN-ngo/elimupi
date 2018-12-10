@@ -361,7 +361,7 @@ def PHASE0():
     #================================    
     #Setup and configure USB Automount
     #================================
-    install_usbmount() or die("Unable to install automount")
+    install_usbmount()
   
     #================================
     # Set password
