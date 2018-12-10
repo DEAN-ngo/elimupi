@@ -98,12 +98,12 @@ def install_wifi():
     sudo("sed -i '/interface=wlan0/c\interface={}' /etc/hostapd/hostapd.conf".format(base_wifi)) 
 
     #change iptables
-    sudo("sh -c 'echo 1 > /proc/sys/net/ipv4/ip_forward'") or die("Unable to set ipv4 forwarding")
-    cp("./files/sysctl.conf", "/etc/sysctl.conf") or die("Unable to copy sysctl configuration (sysctl.conf)")
-    sudo("iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE") or die("Unable to set iptables MASQUERADE on eth0.")
-    sudo("iptables -A FORWARD -i eth0 -o {} -m state --state RELATED,ESTABLISHED -j ACCEPT".format(base_wifi)) or die("Unable to forward wlan0 to eth0.")
-    sudo("iptables -A FORWARD -i {} -o eth0 -j ACCEPT".format(base_wifi)) or die("Unable to forward wlan0 to eth0.")
-    sudo("sh -c 'iptables-save > /etc/iptables.ipv4.nat'") or die("Unable to save iptables configuration.")
+    #sudo("sh -c 'echo 1 > /proc/sys/net/ipv4/ip_forward'") or die("Unable to set ipv4 forwarding")
+    #cp("./files/sysctl.conf", "/etc/sysctl.conf") or die("Unable to copy sysctl configuration (sysctl.conf)")
+    #sudo("iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE") or die("Unable to set iptables MASQUERADE on eth0.")
+    #sudo("iptables -A FORWARD -i eth0 -o {} -m state --state RELATED,ESTABLISHED -j ACCEPT".format(base_wifi)) or die("Unable to forward wlan0 to eth0.")
+    #sudo("iptables -A FORWARD -i {} -o eth0 -j ACCEPT".format(base_wifi)) or die("Unable to forward wlan0 to eth0.")
+    #sudo("sh -c 'iptables-save > /etc/iptables.ipv4.nat'") or die("Unable to save iptables configuration.")
     sudo("ifconfig {}".format(base_wifi, base_ip)) or die("Unable to set wlan0 IP address (" + base_ip + ")")
 
     #start & enable hostapd, udhcpd
@@ -168,7 +168,7 @@ def install_dnsmasq():
     print "========================================="  
     sudo("apt-get install dnsmasq -y") or die("Unable to install dnsmasq.")
     cp("./files/hosts", "/etc/hosts") or die("Unable to copy file hosts (/etc/hosts)")
-    sudo("rm /etc/dnsmasq.conf") or die("Unable to delete dnsmasq.conf (dnsmasq)")
+    sudo("rm /etc/dnsmasq.conf")
     print "========================================="
     print "Setup NGINX domains"
     print "========================================="  
