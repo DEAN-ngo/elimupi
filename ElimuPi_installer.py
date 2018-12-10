@@ -416,9 +416,9 @@ def PHASE1():
     #================================
     # install the kiwix server (but not content)
     #================================
-    install_kiwix() or die("Unable to install Kiwix")
-    install_dnsmasq() or die("Unable to install DNSmasq")
-    install_languague() or die("Unable to install languagepack")
+    install_kiwix()
+    install_dnsmasq()
+    install_languague()
 
     #================================
     # Update hostname (LAST!)
