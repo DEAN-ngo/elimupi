@@ -147,9 +147,11 @@ def install_kiwix():
     print "Installing KIWIX components"
     print "========================================="
     sudo("mkdir -p /var/kiwix/bin") or die("Unable to make create kiwix directories")
-    kiwix_version = "0.9"
-    sudo("sh -c 'wget -O - http://downloads.sourceforge.net/project/kiwix/{}/kiwix-server-{}-linux-armv5tejl.tar.bz2 | tar xj -C /var/kiwix/bin'".format(kiwix_version, kiwix_version)) or die("Unable to download kiwix-server")
+    #kiwix_version = "0.9"
+    #sudo("sh -c 'wget -O - http://downloads.sourceforge.net/project/kiwix/{}/kiwix-server-{}-linux-armv5tejl.tar.bz2 | tar xj -C /var/kiwix/bin'".format(kiwix_version, kiwix_version)) or die("Unable to download kiwix-server")
 
+    sudo("curl -s https://ftp.nluug.nl/pub/kiwix/nightly/2018-12-31/kiwix-tools_linux-armhf-2018-12-31.tar.gz | tar xz -C /home/pi/")
+    cp("kiwix-tools_linux-armhf-2018-12-31/* /var/kiwix/bin/")
     cp("./files/kiwix-start.pl", "/var/kiwix/bin/kiwix-start.pl") or die("Unable to copy dean-kiwix-start wrapper")
     sudo("chmod +x /var/kiwix/bin/kiwix-start.pl") or die("Unable to set permissions on dean-kiwix-start wrapper")
     cp("./files/kiwix-service", "/etc/init.d/kiwix") or die("Unable to install kiwix service")
@@ -159,7 +161,7 @@ def install_kiwix():
     sudo("systemctl start kiwix") or die("Unable to start the kiwix service")
     sudo("systemctl enable kiwix") or die("Unable to enable the kiwix service")
     ## PBo 20180312-07 sudo("service kiwix start") or die("Unable to start the kiwix service.")
-    sudo("sh -c 'echo {} >/etc/kiwix-version'".format(kiwix_version)) or die("Unable to record kiwix version.")
+    #sudo("sh -c 'echo {} >/etc/kiwix-version'".format(kiwix_version)) or die("Unable to record kiwix version.")
     return True
 
 def install_dnsmasq():
