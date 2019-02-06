@@ -148,7 +148,7 @@ def install_kiwix():
     print "========================================="
     sudo("mkdir -p /var/kiwix/bin") or die("Unable to make create kiwix directories")
     #kiwix_version = "0.9"
-    #sudo("sh -c 'wget -O - http://downloads.sourceforge.net/project/kiwix/{}/kiwix-server-{}-linux-armv5tejl.tar.bz2 | tar xj -C /var/kiwix/bin'".format(kiwix_version, kiwix_version)) or die("Unable to download kiwix-server")
+    #sudo("sh -c 'wget -O - https://sourceforge.net/projects/kiwix/files/0.9/kiwix-server-0.9-linux-armv5tejl.tar.bz2 | tar xj -C /var/kiwix/bin'".format(kiwix_version, kiwix_version)) or die("Unable to download kiwix-server")
 
     sudo("curl -s https://ftp.nluug.nl/pub/kiwix/nightly/2019-02-05/kiwix-tools_linux-armhf-2019-02-05.tar.gz | tar xz -C /home/pi/")
     cp("./kiwix-tools_linux-armhf-2019-02-05/kiwix-manage", "/var/kiwix/bin/")
