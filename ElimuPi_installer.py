@@ -168,6 +168,7 @@ sudo("update-rc.d kiwix defaults") or die("Unable to register the kiwix service.
 sudo("systemctl daemon-reload") or die("systemctl daemon reload failed")
 sudo("systemctl start kiwix") or die("Unable to start the kiwix service")
 sudo("systemctl enable kiwix") or die("Unable to enable the kiwix service")
+sudo("sh -c 'echo {} >/etc/kiwix-version'".format(kiwix_version)) or die("Unable to record kiwix version.")
 return True
       
     #sudo("curl -s https://ftp.nluug.nl/pub/kiwix/nightly/2019-02-05/kiwix-tools_linux-armhf-2019-02-05.tar.gz | tar xz -C /home/pi/")
