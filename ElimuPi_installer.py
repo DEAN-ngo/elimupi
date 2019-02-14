@@ -186,7 +186,6 @@ def install_kiwix():
     #sudo("systemctl enable kiwix") or die("Unable to enable the kiwix service")
     ## PBo 20180312-07 sudo("service kiwix start") or die("Unable to start the kiwix service.")
     #sudo("sh -c 'echo {} >/etc/kiwix-version'".format(kiwix_version)) or die("Unable to record kiwix version.")
-    #return True
 
 def install_dnsmasq():
     print "========================================="
