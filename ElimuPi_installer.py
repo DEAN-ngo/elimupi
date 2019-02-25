@@ -170,11 +170,11 @@ def install_kiwix():
     #sudo("sh -c 'echo {} >/etc/kiwix-version'".format(kiwix_version)) or die("Unable to record kiwix version.")
     return True
       
-    sudo("curl -s https://ftp.nluug.nl/pub/kiwix/nightly/2019-02-25/kiwix-tools_linux-armhf-2019-02-05.tar.gz | tar xz -C /home/pi/")
-    cp("./kiwix-tools_linux-armhf-2019-02-05/kiwix-manage", "/var/kiwix/bin/")
-    cp("./kiwix-tools_linux-armhf-2019-02-05/kiwix-read", "/var/kiwix/bin/")
-    cp("./kiwix-tools_linux-armhf-2019-02-05/kiwix-search", "/var/kiwix/bin/")
-    cp("./kiwix-tools_linux-armhf-2019-02-05/kiwix-serve", "/var/kiwix/bin/")
+    sudo("curl -s https://ftp.nluug.nl/pub/kiwix/nightly/2019-02-25/kiwix-tools_linux-armhf-2019-02-25.tar.gz | tar xz -C /home/pi/")
+    cp("./kiwix-tools_linux-armhf-2019-02-25/kiwix-manage", "/var/kiwix/bin/")
+    cp("./kiwix-tools_linux-armhf-2019-02-25/kiwix-read", "/var/kiwix/bin/")
+    cp("./kiwix-tools_linux-armhf-2019-02-25/kiwix-search", "/var/kiwix/bin/")
+    cp("./kiwix-tools_linux-armhf-2019-02-25/kiwix-serve", "/var/kiwix/bin/")
     cp("./files/kiwix-start.pl", "/var/kiwix/bin/kiwix-start.pl") or die("Unable to copy dean-kiwix-start wrapper")
     sudo("chmod +x /var/kiwix/bin/kiwix-start.pl") or die("Unable to set permissions on dean-kiwix-start wrapper")
     cp("./files/kiwix-service", "/etc/init.d/kiwix") or die("Unable to install kiwix service")
