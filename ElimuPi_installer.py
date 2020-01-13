@@ -107,6 +107,7 @@ def install_wifi():
     sudo("ifconfig {}".format(base_wifi, base_ip)) or die("Unable to set wlan0 IP address (" + base_ip + ")")
 
     #start & enable hostapd, udhcpd
+    sudo("systemctl unmask hostapd") or die("Unable to unmask hostapd service.")
     sudo("service hostapd start") or die("Unable to start hostapd service.")
     sudo("service udhcpd start") or die("Unable to start udhcpd service.")
     sudo("update-rc.d hostapd enable") or die("Unable to enable hostapd on boot.")
@@ -170,7 +171,7 @@ def install_kiwix():
     #sudo("sh -c 'echo {} >/etc/kiwix-version'".format(kiwix_version)) or die("Unable to record kiwix version.")
     #return True
       
-    sudo("curl -s https://ftp.nluug.nl/pub/kiwix/nightly/2019-02-25/kiwix-tools_linux-armhf-2019-02-25.tar.gz | tar xz -C /home/pi/")
+    sudo("curl -s https://ftp.nluug.nl/pub/kiwix/nightly/2020-01-04/kiwix-tools_linux-armhf-2020-01-04.tar.gz | tar xz -C /home/pi/")
     cp("./kiwix-tools_linux-armhf-2019-02-25/kiwix-manage", "/var/kiwix/bin/")
     cp("./kiwix-tools_linux-armhf-2019-02-25/kiwix-read", "/var/kiwix/bin/")
     cp("./kiwix-tools_linux-armhf-2019-02-25/kiwix-search", "/var/kiwix/bin/")
