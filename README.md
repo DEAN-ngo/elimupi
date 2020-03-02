@@ -8,8 +8,7 @@ Please visit http://www.dean.ngo/ict4e/digital-classroom-box-elimupi/ for more i
 
 Introduction 
 
-THIS IS WORK IN PROGRESS: DO NOT USE!!!! -- All code will be ported to Python -- 
-
+THIS IS WORK IN PROGRESS: Use with care!!!! 
 Functions 
 
 This version of the ElimuPi build supports: 
