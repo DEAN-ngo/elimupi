@@ -1,8 +1,6 @@
 # elimupi2.0
 
- This is a fork of the Rachel image builder adapted for DEAN. 
-
-Purpose is to provide a classroom environment for educational project in Tanzania and Kenia. Its purpose it to provide full Android tablet support without any direct internet connectivity. 
+Purpose is project is to provide a DEAN digital classroom environment for educational project in Tanzania and Kenia. This to provide full Android tablet support without any direct internet connectivity. 
 
 Please visit http://www.dean.ngo/ict4e/digital-classroom-box-elimupi/ for more information 
 
