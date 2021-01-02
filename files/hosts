@@ -1,8 +1,5 @@
+# Only for local access
 127.0.0.1 elimupi
-10.11.0.1 wiki.local
-10.11.0.1 files.local
-10.11.0.1 khan.local
-10.11.0.1 fdroid.local
-10.11.0.1 www.wiki.local
-10.11.0.1 www.files.local
-10.11.0.1 www.khan.local
+
+# Remote access/shared 
+10.11.0.1 wiki.local files.local khan.local fdroid.local www.wiki.local www.files.local www.khan.local

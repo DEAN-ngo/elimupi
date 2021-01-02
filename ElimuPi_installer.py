@@ -14,6 +14,7 @@
 #    2018-Apr-25 | PVe    | Minor change, make STEM compilation optional
 #    2018-May-16 | PVe    | Included STEM compilation steps to build
 #    2018-Nov-26 | PVe    | Update installation process
+#    2020-Dec-21 | PVe    | Added support for latest Raspberry OS and Moodle
 #=========================================================================================================
 
 import sys
@@ -24,7 +25,11 @@ import shutil
 import urllib
 import argparse
 import platform
+import curses           #curses is the interface for capturing key presses on the menu, os launches the files
+import xml.etree.ElementTree as ET
 
+from time import sleep
+from builtins import true
 
 #================================
 # Settings for build
@@ -36,7 +41,7 @@ base_ip_range       = "10.11.0"                                     # IP range (
 base_ip             = "10.11.0.1"                                   # Default IP address for the WiFi interface
 base_subnet         = "255.255.255.0"                               # Base subnet
 base_build          = "ELIMUPI-20180518-1"                          # Date of build
-base_git            = "https://github.com/elimupi/elimupi2.0.git"    # Git location
+base_git            = "https://github.com/elimupi/elimupi2.0.git"   # Git location
 base_wifi           = "wlan0"
 installed_modules   = [];                                           # Installed modules
 
@@ -52,27 +57,37 @@ argparser.add_argument("--no-wifi",
                         dest="install_wifi",
                         action="store_false",
                         help="Do not configure local wifi hotspot.")
+argparser.add_argument("--citadel",
+                        dest="install_citadel",
+                        action="store_false",
+                        help="Install Citadel mail, chat and colaboration suite")
 args = argparser.parse_args()
 
+#================================
+# Install USB mounter 
+#================================
 def install_usbmount():
-    print "========================================="
-    print "Install and configure automount"
-    print "========================================="
+    print('=========================================')
+    print('Install and configure automount')
+    print('=========================================')
     sudo("apt-get install usbmount ntfs-3g -y") or die("Unable to download usbmount")
     sudo("sed -i '/MountFlags=slave/c\MountFlags=shared' /lib/systemd/system/systemd-udevd.service") or die ("Unable to update udevd configuration (systemd-udevd.service)")
     #sudo("rm * /etc/usbmount/mount.d; rm * /etc/usbmount/umount.d")
     #### Automount location /var/run/usbmount/<label>
     sudo("chmod +x ./build_elimupi/files/01_create_label_symlink ./build_elimupi/files/01_remove_model_symlink")
-    cp("./files/usbmount.conf", "/etc/usbmount/")
-    cp("./files/01_create_label_symlink", "/etc/usbmount/mount.d/")
-    cp("./files/01_remove_model_symlink", "/etc/usbmount/umount.d")
-    cp("./files/usbmount@.service", "/etc/systemd/system/")
-    cp("./files/usbmount.rules", "/etc/udev/rules.d")
+    cp("./files/usbmount/usbmount.conf", "/etc/usbmount/")
+    cp("./files/usbmount/01_create_label_symlink", "/etc/usbmount/mount.d/")
+    cp("./files/usbmount/01_remove_model_symlink", "/etc/usbmount/umount.d")
+    cp("./files/usbmount/usbmount@.service", "/etc/systemd/system/")
+    cp("./files/usbmount/usbmount.rules", "/etc/udev/rules.d")
 
+#================================
+# Setup WiFi
+#================================
 def install_wifi():
-    print "========================================="
-    print "Configuring Wifi components"
-    print "========================================="
+    print( "=========================================")
+    print( "Configuring Wifi components")
+    print( "=========================================")
 
     sudo("ifconfig {} {}".format(base_wifi, base_ip)) or die("Unable to set {} IP address {}".format(base_wifi, base_ip))
 
@@ -120,64 +135,87 @@ def install_wifi():
     # sudo("ifdown eth0 && ifdown wlan0 && ifup eth0 && ifup wlan0") or die("Unable to restart network interfaces.")
     return True
 
+#================================
+# Install Moodle components
+#================================
+def install_moodle():
+    print("=========================================")
+    print("Installing Moodle components")
+    print("=========================================")
+    return True
+
+#================================
+# Install web interface
+#================================
+def install_web_interface():
+    print( "=========================================")
+    print( "Installing DEAN Web Interface components")
+    print( "=========================================")
+    # TODO: !!Put content on public GIT or use username and password!!!!!
+    # sudo ('git clone https://github.com/DEANpeterV/ElimuPi-Web-Interface.git') 
+    # ' https://github.com/DEANpeterV/ElimuPi-Web-Interface/archive/main.zip
+    return True
+
+#================================
+# Install Khan Academy components 
+#================================
 def install_kalite():
-    print "========================================="
-    print "Installing Khan Accedemy components"
-    print "========================================="
+    print("=========================================")
+    print("Installing Khan Accedemy components")
+    print("=========================================")
     sudo("apt-get install dirmngr -y") or die("Unable to install dirmmgr")
     sudo("sudo su -c 'echo deb http://ppa.launchpad.net/learningequality/ka-lite/ubuntu xenial main > /etc/apt/sources.list.d/ka-lite.list'")
     sudo("apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 74F88ADB3194DD81") or die("Unable to add key")
     sudo("apt-get update") or die("Unable to update the repository")
     sudo("apt-get install ka-lite-raspberry-pi -y") or die("Unable to install Ka-lite-raspberry-pi")
     #sudo("kalite manage setup --username=" + base_passwd + " --password=" + base_passwd + " --hostname=" + base_hostname + " --description=" + base_hostname) ### PBo 20180315 Removed unwanted confirmation
-    cp("./files/settings.py", "/home/pi/.kalite/")
+    cp("./files/kalite/settings.py", "/home/pi/.kalite/")
     sudo("systemctl start ka-lite") or die("Unable to start ka-lite")
     sudo("systemctl enable ka-lite")
-#sudo("sh -c '/usr/local/bin/kalite --version > /etc/kalite-version'") or die("Unable to record kalite version")
+    #sudo("sh -c '/usr/local/bin/kalite --version > /etc/kalite-version'") or die("Unable to record kalite version")
     return True
 
-def install_languague():
-    print "========================================="
-    print "Setup Language for Khan Academy"
-    print "========================================="
+def install_ka_languague():
+    print("=========================================")
+    print("Setup Language for Khan Academy")
+    print("=========================================")
     sudo("su pi -c '/usr/bin/kalite manage retrievecontentpack local en /var/run/usbmount/Content/khan/en.zip'")
 
 def install_kiwix():
-    print "========================================="
-    print "Installing KIWIX components"
-    print "========================================="
+    print("=========================================")
+    print("Installing KIWIX components")
+    print("=========================================")
+    # Get release rss data from mirror
+    file = urllib2.urlopen('https://ftp.nluug.nl/pub/kiwix/release/kiwix-tools/feed.xml')
+    data = file.read()
+    file.close()
+    # Parse XML
+    root = ET.fromstring(data)
+    
+    # get latest version for linux-armhf of kiwix-tools (first in XML)
+    latest_release = 'none'
+    for links in root.findall('channel/item/link'):
+            if( links.text.find('kiwix-tools_linux-armhf') > -1):
+                    latest_release = links.text
+                    break
+    latest_release_name = latest_release[47:-7]           
+    print("latest_release:" + latest_release_name )
+    
     sudo("mkdir -p /var/kiwix/bin") or die("Unable to make create kiwix directories")
-    #kiwix_version = "0.9"
-    #sudo("sh -c 'wget -O - https://sourceforge.net/projects/kiwix/files/0.9/kiwix-server-0.9-linux-armv5tejl.tar.bz2 | tar xj -C /var/kiwix/bin'".format(kiwix_version, kiwix_version)) or die("Unable to download kiwix-server")
-
-    #sudo("wget https://raw.githubusercontent.com/elimupi/elimupi2.0/master/files/kiwix-start.pl")
-    #sudo("wget https://ftp.nluug.nl/pub/kiwix/release/kiwix-tools/kiwix-tools_linux-armhf-0.9.0.tar.gz")
-    #sudo("wget https://raw.githubusercontent.com/elimupi/elimupi2.0/master/files/kiwix-service")
-    #sudo("tar xvzf kiwix-tools_linux-armhf-0.9.0.tar.gz")
-    #sudo("mkdir -p /var/kiwix/bin")
-    #cp("/home/pi/kiwix-tools_linux-armhf-0.9.0/kiwix-manage", "/var/kiwix/bin/") 
-    #cp("/home/pi/kiwix-tools_linux-armhf-0.9.0/kiwix-read", "/var/kiwix/bin/") 
-    #cp("/home/pi/kiwix-tools_linux-armhf-0.9.0/kiwix-serve", "/var/kiwix/bin/") 
-    #cp("/home/pi/kiwix-tools_linux-armhf-0.9.0/kiwix-search", "/var/kiwix/bin/") 
-    #cp("/home/pi/kiwix-start.pl", "/var/kiwix/bin/kiwix-start.pl") 
-    #cp("/home/pi/kiwix-service", "/etc/init.d/kiwix") 
-    #sudo("chmod +x /var/kiwix/bin/kiwix-start.pl") 
-    #sudo("chmod +x /etc/init.d/kiwix") 
-    #sudo("update-rc.d kiwix defaults") or die("Unable to register the kiwix service.")
-    #sudo("systemctl daemon-reload") or die("systemctl daemon reload failed")
-    #sudo("systemctl start kiwix") or die("Unable to start the kiwix service")
-    #sudo("systemctl enable kiwix") or die("Unable to enable the kiwix service")
-    #sudo("sh -c 'echo {} >/etc/kiwix-version'".format(kiwix_version)) or die("Unable to record kiwix version.")
-    #return True
-      
-    sudo("curl -s https://ftp.nluug.nl/pub/kiwix/nightly/2019-02-25/kiwix-tools_linux-armhf-2019-02-25.tar.gz | tar xz -C /home/pi/")
-    cp("./kiwix-tools_linux-armhf-2019-02-25/kiwix-manage", "/var/kiwix/bin/")
-    cp("./kiwix-tools_linux-armhf-2019-02-25/kiwix-read", "/var/kiwix/bin/")
-    cp("./kiwix-tools_linux-armhf-2019-02-25/kiwix-search", "/var/kiwix/bin/")
-    cp("./kiwix-tools_linux-armhf-2019-02-25/kiwix-serve", "/var/kiwix/bin/")
-    cp("./files/kiwix-start.pl", "/var/kiwix/bin/kiwix-start.pl") or die("Unable to copy dean-kiwix-start wrapper")
+    
+    # get release for Linux-armhf from mirror
+    sudo("curl -s " + latest_release + " | tar xz -C /home/pi/")
+    
+    # Copy files we need from the toolset
+    cp("./" + latest_release_name + "/kiwix-manage", "/var/kiwix/bin/")
+    cp("./" + latest_release_name + "/kiwix-read", "/var/kiwix/bin/")
+    cp("./" + latest_release_name + "/kiwix-search", "/var/kiwix/bin/")
+    cp("./" + latest_release_name + "/kiwix-serve", "/var/kiwix/bin/")
+    
+    # Copy config files
+    cp("./files/kiwix/kiwix-start.pl", "/var/kiwix/bin/kiwix-start.pl") or die("Unable to copy dean-kiwix-start wrapper")
     sudo("chmod +x /var/kiwix/bin/kiwix-start.pl") or die("Unable to set permissions on dean-kiwix-start wrapper")
-    cp("./files/kiwix-service", "/etc/init.d/kiwix") or die("Unable to install kiwix service")
+    cp("./files/kiwix/kiwix-service", "/etc/init.d/kiwix") or die("Unable to install kiwix service")
     sudo("chmod +x /etc/init.d/kiwix") or die("Unable to set permissions on kiwix service.")
     sudo("update-rc.d kiwix defaults") or die("Unable to register the kiwix service.")
     sudo("systemctl daemon-reload") or die("systemctl daemon reload failed")
@@ -187,29 +225,52 @@ def install_kiwix():
     #sudo("sh -c 'echo {} >/etc/kiwix-version'".format(kiwix_version)) or die("Unable to record kiwix version.")
     return True
 
+#===dnsmasq===#
 def install_dnsmasq():
-    print "========================================="
-    print "Installing DNS components"
-    print "========================================="  
+    print("=========================================")
+    print("Installing DNS components")
+    print("=========================================")  
     sudo("apt-get install dnsmasq -y") or die("Unable to install dnsmasq.")
     cp("./files/hosts", "/etc/hosts") or die("Unable to copy file hosts (/etc/hosts)")
     #sudo("rm /etc/dnsmasq.conf")
-    print "========================================="
-    print "Setup NGINX domains"
-    print "========================================="  
-    cp("./files/default", "/etc/nginx/sites-available/") or die("Unable to copy file default (nginx)")
+    
+    print("=========================================")
+    print("Setup NGINX domains")
+    print("=========================================") 
+    cp("./files/nginx/admin.local", "/etc/nginx/sites-available/") or die("Unable to copy file admin.local (nginx)")
+    cp("./files/nginx/fdroid.local", "/etc/nginx/sites-available/") or die("Unable to copy file fdroid.local (nginx)")
+    cp("./files/nginx/files.local", "/etc/nginx/sites-available/") or die("Unable to copy file files.local (nginx)")
+    cp("./files/nginx/kahn.local", "/etc/nginx/sites-available/") or die("Unable to copy file kahn.local (nginx)")
+    cp("./files/nginx/wiki.local", "/etc/nginx/sites-available/") or die("Unable to copy file wiki.local (nginx)")
     sudo("systemctl restart nginx") or die("Unable to restart nginx")
+
+#================================
+# Setup Citadel mail suite
+# https://dzone.com/articles/how-to-install-citadel-mail-server-on-ubuntu-1604-1
+# Note ths installer gives a GUI to configure
+#================================
+def install_citadel():
+    print("=========================================")
+    print("Installing Citadel components")
+    print("=========================================")
+    sudo("apt-get install citadel-suite -y") or die("Unable to install Citadel")
+    sudo("/usr/lib/citadel-server/setup") or die("Unable to setup Citadel")
+    return true
 
 #===SUDO===#
 def sudo(s):
    return cmd("sudo DEBIAN_FRONTEND=noninteractive %s" % s)
 
-#===DIE===#
+#================================
+# die command
+#================================
 def die(d):
-    print "Error: " + str(d)
+    print("Error: " + str(d))
     sys.exit(1)
 
-#===CMD===#
+#================================
+# CMD command
+#================================
 def cmd(c):
     result = subprocess.Popen(c, shell=True, stdin=subprocess.PIPE, stderr=subprocess.PIPE, close_fds=True)
     try:
@@ -218,6 +279,9 @@ def cmd(c):
         pass
     return (result.returncode == 0)
 
+#================================
+# exists command
+#================================
 def exists(p):
     return os.path.isfile(p) or os.path.isdir(p)
 
@@ -230,6 +294,9 @@ def cp(s, d):
     else:
         return sudo("cp %s/%s %s" % (basedir() + "/build_elimupi", s, d))
 
+#================================
+# Basedir command
+#================================
 def basedir():
     bindir = os.path.dirname(os.path.realpath(sys.argv[0]))     # Should be initial folder where install is started 
     if not bindir:
@@ -306,8 +373,13 @@ def getpiversion():
     elif myrevision == "900093":                  model = "Pi Zero v1.3"
     elif myrevision == "9000C1":                  model = "Pi Zero W"
     elif myrevision == "a02082":                  model = "Pi 3 Model B"
-    elif myrevision == "a22082  (Embest, China)": model = "Pi 3 Model B"
-    elif myrevision == "a020d3 (Sony, UK)":       model = "Pi 3 Model B+"
+    elif myrevision == "a22082":                  model = "Pi 3 Model B"
+    elif myrevision == "a020d3":                  model = "Pi 3 Model B+"
+    elif myrevision == "a03111":                  model = "Pi 4 1Gb"
+    elif myrevision == "b03111":                  model = "Pi 4 2Gb"
+    elif myrevision == "b03112":                  model = "Pi 4 2Gb"
+    elif myrevision == "c03111":                  model = "Pi 4 4Gb"
+    elif myrevision == "c03112":                  model = "Pi 4 4Gb"
     else:                                         model = "Unknown (" + myrevision + ")"
     return model
 
@@ -358,9 +430,9 @@ def PHASE0():
     # Clone the GIT repo or use local files.
     #================================
     if localinstaller():
-        print "Using local files "
+        print("Using local files ")
     else:
-        print "Fetching files from GIT to " + basedir() 
+        print("Fetching files from GIT to " + basedir() ) 
         sudo("rm -fr " + basedir() + "/build_elimupi")  
         cmd("git clone --depth 1 " + base_git + " " + basedir() + "/build_elimupi") or die("Unable to clone Elimu installer repository.")
 
@@ -372,9 +444,9 @@ def PHASE0():
         file = open(homedir() + '/.bashrc', 'a')
         file.write( basedir() + '/ElimuPi_installer.py')       # Enable autostart on logon
         file.close()
-        print "Autostart enabled"
+        print("Autostart enabled")
     else:
-        print "Autostart already enabled"
+        print("Autostart already enabled")
       
     #================================
     # Write install status to file
@@ -392,16 +464,16 @@ def PHASE0():
     # Set password
     #================================
     if not is_vagrant():
-        print "Set user password for "+ base_user + " to " + base_passwd 
+        print("Set user password for "+ base_user + " to " + base_passwd )
         sudo("echo \"" + base_user + ":" + base_passwd +"\"| sudo chpasswd ") or die("Unable to set the password")
     
     #================================
     # Reboot
     #================================
-    print "---------------------------------------------------------"    
-    print "Rebooting sytem required to enable all updates"
-    print "Press enter to reboot"
-    print "---------------------------------------------------------"
+    print("---------------------------------------------------------")    
+    print("Rebooting sytem required to enable all updates")
+    print("Press enter to reboot")
+    print("---------------------------------------------------------")
     raw_input('')
     sudo("reboot") or die("Unable to reboot Raspbian.")
 
@@ -439,6 +511,12 @@ def PHASE1():
         install_kalite() or die("Unable to install KA-Lite.")
     
     #================================
+    # Install Citadel
+    #================================
+    if args.install_citadel:
+        install_citadel() or die("Unable to install Citadel.")
+        
+    #================================
     # install the kiwix server (but not content)
     #================================
     install_kiwix()
@@ -451,7 +529,7 @@ def PHASE1():
     #================================
     # install the language for Khan
     #================================
-    install_languague()
+    install_ka_languague()
 
     #================================
     # Update hostname (LAST!)
@@ -470,43 +548,222 @@ def PHASE1():
     #================================
     # Final messages
     #================================
-    print "ELIMUPI image has been successfully created."
-    print "It can be accessed at: http://" + base_ip + "/"
+    print("ELIMUPI image has been successfully created.")
+    print("It can be accessed at: http://" + base_ip + "/")
 
     #================================
     # Reboot
     #================================
-    print "---------------------------------------------------------"    
-    print "Rebooting sytem required to enable all updates"
-    print "Press enter to reboot"
-    print "---------------------------------------------------------"
+    print("---------------------------------------------------------")    
+    print("Rebooting sytem required to enable all updates")
+    print("Press enter to reboot")
+    print("---------------------------------------------------------")
     raw_input('')
     sudo("reboot") or die("Unable to reboot Raspbian.")
+
+# ================================
+# This function displays the appropriate menu and returns the option selected
+# ================================
+def runmenu(menu, parent):
+    # work out what text to display as the last menu option
+    if parent is None:
+        lastoption = "Exit"
+    else:
+        lastoption = "Return to %s menu" % parent['title']
+
+    optioncount = len(menu['options']) # how many options in this menu
+    
+    pos=0 #pos is the zero-based index of the hightlighted menu option. Every time runmenu is called, position returns to 0, when runmenu ends the position is returned and tells the program what opt$
+    oldpos=None # used to prevent the screen being redrawn every time
+    x = None #control for while loop, let's you scroll through options until return key is pressed then returns pos to program
+    
+    # Loop until return key is pressed
+    while x !=ord('\n'):
+        if pos != oldpos:
+            oldpos = pos
+            screen.border(0)
+            screen.addstr(2,2, menu['title'], curses.A_STANDOUT) # Title for this menu
+            screen.addstr(4,2, menu['subtitle'], curses.A_BOLD) #Subtitle for this menu
+
+        # Display all the menu items, showing the 'pos' item highlighted
+        for index in range(optioncount):
+            textstyle = n
+            if pos==index:
+                textstyle = h
+            screen.addstr(5+index,4, "%d - %s" % (index+1, menu['options'][index]['title']), textstyle)
+        # Now display Exit/Return at bottom of menu
+        textstyle = n
+        if pos==optioncount:
+            textstyle = h
+        screen.addstr(5+optioncount,4, "%d - %s" % (optioncount+1, lastoption), textstyle)
+        screen.refresh()
+        # finished updating screen
+
+        x = screen.getch() # Gets user input
+
+        # What is user input?
+        if x >= ord('1') and x <= ord(str(optioncount+1)):
+            pos = x - ord('0') - 1 # convert keypress back to a number, then subtract 1 to get index
+        elif x == 258: # down arrow
+            if pos < optioncount:
+                pos += 1
+            else: 
+                pos = 0
+        elif x == 259: # up arrow
+            if pos > 0:
+                pos += -1
+            else: 
+                pos = optioncount
+
+        # return index of the selected item
+        return pos
+
+# ================================
+# This function calls showmenu and then acts on the selected item
+# ================================
+def processmenu(menu, parent=None):
+    optioncount = len(menu['options'])
+    exitmenu = False
+    while not exitmenu: #Loop until the user exits the menu
+        getin = runmenu(menu, parent)
+        if getin == optioncount:
+            menu = True
+        elif menu['options'][getin]['type'] == COMMAND:
+            curses.def_prog_mode()    # save curent curses environment
+            os.system('reset')
+            if menu['options'][getin]['title'] == 'Pianobar':
+                os.system('amixer cset numid=3 1') # Sets audio output on the pi to 3.5mm headphone jack
+            screen.clear() #clears previous screen
+            os.system(menu['options'][getin]['command']) # run the command
+            screen.clear() #clears previous screen on key press and updates display based on pos
+            curses.reset_prog_mode()   # reset to 'current' curses environment
+            curses.curs_set(1)         # reset doesn't do this right
+            curses.curs_set(0)
+            os.system('amixer cset numid=3 2') # Sets audio output on the pi back to HDMI
+        elif menu['options'][getin]['type'] == MENU:
+            screen.clear() #clears previous screen on key press and updates display based on pos
+            processmenu(menu['options'][getin], menu) # display the submenu
+            screen.clear() #clears previous screen on key press and updates display based on pos
+        elif menu['options'][getin]['type'] == EXITMENU:
+            exitmenu = True
 
 ############################################
 #    Main code start
 ############################################
+
+# ================================
+# Init screen display
+# ================================
+screen = curses.initscr() #initializes a new window for capturing key presses
+
+curses.noecho() # Disables automatic echoing of key presses (prevents program from input each key twice)
+curses.cbreak() # Disables line buffering (runs each key as it is pressed rather than waiting for the return key to pressed)
+curses.start_color() # Lets you use colors when highlighting selected menu option
+screen.keypad(1) # Capture input from keypad
+
+#================================
+# Change this to use different colors when highlighting
+#================================
+curses.init_pair(1, curses.COLOR_YELLOW, curses.COLOR_RED)  # Sets up color pair #1
+curses.init_pair(2, curses.COLOR_BLUE, curses.COLOR_WHITE)  # 
+curses.init_pair(3, curses.COLOR_YELLOW, curses.COLOR_BLUE) #
+h = curses.color_pair(1) #h is the coloring for a highlighted menu option
+n = curses.A_NORMAL #n is the coloring for a non highlighted menu option
+
+# ================================
+# Construct menu
+# ================================
+MENU = "menu"
+COMMAND = "command"
+EXITMENU = "exitmenu"
+
+menu_data = {
+    'title': "ElimuPi installer", 'type': MENU, 'subtitle': "Please select an option...",
+    'options':[
+        { 'title': "XBMC", 'type': COMMAND, 'command': 'xbmc' },
+        { 'title': "Emulation Station - Hit F4 to return to menu, Esc to exit game", 'type': COMMAND, 'command': 'emulationstation' },
+        { 'title': "Ur-Quan Masters", 'type': COMMAND, 'command': 'uqm' },
+        { 'title': "Dosbox Games", 'type': MENU, 'subtitle': "Please select an option...",
+            'options': [
+                { 'title': "Midnight Rescue", 'type': COMMAND, 'command': 'dosbox /media/samba/Apps/dosbox/doswin/games/SSR/SSR.EXE -exit' },
+                { 'title': "Outnumbered", 'type': COMMAND, 'command': 'dosbox /media/samba/Apps/dosbox/doswin/games/SSO/SSO.EXE -exit' },
+                { 'title': "Treasure Mountain", 'type': COMMAND, 'command': 'dosbox /media/samba/Apps/dosbox/doswin/games/SST/SST.EXE -exit' },
+                ]
+            },
+        { 'title': "Pianobar", 'type': COMMAND, 'command': 'clear && pianobar' },
+        { 'title': "Windows 3.1", 'type': COMMAND, 'command': 'dosbox /media/samba/Apps/dosbox/doswin/WINDOWS/WIN.COM -conf /home/pi/scripts/dosbox2.conf -exit' },
+        { 'title': "Reboot", 'type': MENU, 'subtitle': "Select Yes to Reboot",
+            'options': [
+                {'title': "NO", 'type': EXITMENU, },
+                {'title': "", 'type': COMMAND, 'command': '' },
+                {'title': "", 'type': COMMAND, 'command': '' },
+                {'title': "", 'type': COMMAND, 'command': '' },
+                {'title': "YES", 'type': COMMAND, 'command': 'sudo shutdown -r -time now' },
+                {'title': "", 'type': COMMAND, 'command': '' },
+                {'title': "", 'type': COMMAND, 'command': '' },
+                {'title': "", 'type': COMMAND, 'command': '' },
+                ]
+            },
+        ]
+    }
+
+#================================
+# Check if installer has been run before
+#================================
 if os.path.isfile(base_build + '_install'):
-    print "Continue install after reboot"
+    print("Continue install after reboot")
     # get phase
     install_phase = open(base_build + '_install').read()
-     
 else: 
     install_phase = "0"
 
-print '--------------------------------------------------------------------------'
-print 'ElimuPi build : ' + base_build                   # Build version
-print 'Hardware      : ' + getpiversion()               # Model of the PI
-print 'Platform      : ' + platform.platform()          # Platform : Linux-4.9.41-v7+-armv7l-with-debian-9.1
-print 'System        : ' + platform.system()            # System   : Linux
-print 'OS Release    : ' + platform.release()           # Release  : 4.9.41-v7+
-print 'OS Version    : ' + platform.version()           # Version  : #1023 SMP Tue Aug 8 16:00:15 BST 2017
-print "Install phase : (" + install_phase + ")"         # Installer phase
-print '--------------------------------------------------------------------------'
+
+#================================
+# Display info
+#================================
+curses.init_pair(1,curses.COLOR_WHITE, curses.COLOR_BLUE) # Sets up color pair #1
+curses.init_pair(2,curses.COLOR_BLUE, curses.COLOR_WHITE) # Sets up color pair #1
+h = curses.color_pair(1) #h is the coloring for a highlighted menu add_standard_options
+col_info = curser.color_pair(1)
+col_stat = curser.color_pair(2)
+
+
+statwin = curses.newwin( curses.LINES - 14, curses.COLS - 8 ,2,4)
+statwin.bkgd(' ', col_stat)
+statwin.border(0)
+statwin.addstr(0,2,"[ Status ]")
+statwin.addstr(2,2, "Build 1" )
+statwin.addstr(3,2, "Line2")
+statwin.refresh()
+
+infowin = curses.newwin(9, curses.COLS - 8 , curses.LINES - 10 , 4) # 
+infowin.bkgd(' ', col_info)
+infowin.border(0)
+infowin.addstr(0,2,"[ Info : phase " + install_phase + " ]")
+infowin.addstr(1,2,"ElimuPi build : " + base_build )
+infowin.addstr(2,2,'Hardware      : ' + getpiversion() )              # Model of the PI
+infowin.addstr(3,2,'Platform      : ' + platform.platform() )          # Platform : Linux-4.9.41-v7+-armv7l-with-debian-9.1
+infowin.addstr(4,2,'System        : ' + platform.system() )           # System   : Linux
+infowin.addstr(5,2,'OS Release    : ' + platform.release() )          # Release  : 4.9.41-v7+
+infowin.addstr(6,2,'OS Version    : ' + platform.version() )          # Version  : #1023 SMP Tue Aug 8 16:00:15 BST 2017
+infowin.addstr(7,2,"Install phase : (" + install_phase + ")")         # Installer phase
+infowin.refresh()
+
+#================================
+# Display menu
+#================================
+processmenu(menu_data)
+
+# ================================
+# Start installer phase
+# ================================
 if   install_phase == "0":
     PHASE0()
 elif install_phase == "1":
     PHASE1()
 else: 
-    print "Invallid installer state"
+    print("Invallid installer state")
     die('Installation aborted')
+
+curses.endwin() #VITAL! This closes out the menu system and returns you to the bash prompt.
+os.system('clear')

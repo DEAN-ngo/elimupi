@@ -1,0 +1,11 @@
+server {
+      listen        80;
+      server_name   fdroid.local;
+
+      location /{
+        autoindex on;
+        root /var/run/usbmount/Content/fdroid;
+      }
+    }
+
+
