@@ -29,7 +29,7 @@ import curses           #curses is the interface for capturing key presses on th
 import xml.etree.ElementTree as ET
 
 from time import sleep
-from builtins import true
+# from builtins import true
 
 #================================
 # Settings for build
@@ -62,6 +62,40 @@ argparser.add_argument("--citadel",
                         action="store_false",
                         help="Install Citadel mail, chat and colaboration suite")
 args = argparser.parse_args()
+
+
+# ================================
+# Init screen display
+# ================================
+screen = curses.initscr() #initializes a new window for capturing key presses
+curses.noecho() # Disables automatic echoing of key presses (prevents program from input each key twice)
+curses.cbreak() # Disables line buffering (runs each key as it is pressed rather than waiting for the return key to pressed)
+curses.start_color() # Lets you use colors when highlighting selected menu option
+screen.keypad(1) # Capture input from keypad
+
+#================================
+# Change this to use different colors when highlighting
+#================================
+curses.init_pair(1, curses.COLOR_YELLOW, curses.COLOR_RED)  # Sets up color pair #1
+curses.init_pair(2, curses.COLOR_BLUE, curses.COLOR_WHITE)  # 
+curses.init_pair(3, curses.COLOR_YELLOW, curses.COLOR_BLUE) #
+h = curses.color_pair(1) #h is the coloring for a highlighted menu option
+n = curses.A_NORMAL #n is the coloring for a non highlighted menu option
+
+# Define color pairs
+curses.init_pair(1,curses.COLOR_WHITE, curses.COLOR_BLUE) # Sets up color pair #1
+curses.init_pair(2,curses.COLOR_BLUE, curses.COLOR_WHITE) # Sets up color pair #1
+col_info = curses.color_pair(1)
+col_stat = curses.color_pair(2)
+
+# Define status window
+statwin = curses.newwin( curses.LINES - 13, curses.COLS - 8 ,2,4)
+statwin.bkgd(' ', col_stat)
+statwin.border(0)
+# Define Info window
+infowin = curses.newwin(8, curses.COLS - 8 , curses.LINES - 10 , 4) # 
+infowin.bkgd(' ', col_info)
+infowin.border(0)
 
 #================================
 # Install USB mounter 
@@ -651,24 +685,6 @@ def processmenu(menu, parent=None):
 #    Main code start
 ############################################
 
-# ================================
-# Init screen display
-# ================================
-screen = curses.initscr() #initializes a new window for capturing key presses
-
-curses.noecho() # Disables automatic echoing of key presses (prevents program from input each key twice)
-curses.cbreak() # Disables line buffering (runs each key as it is pressed rather than waiting for the return key to pressed)
-curses.start_color() # Lets you use colors when highlighting selected menu option
-screen.keypad(1) # Capture input from keypad
-
-#================================
-# Change this to use different colors when highlighting
-#================================
-curses.init_pair(1, curses.COLOR_YELLOW, curses.COLOR_RED)  # Sets up color pair #1
-curses.init_pair(2, curses.COLOR_BLUE, curses.COLOR_WHITE)  # 
-curses.init_pair(3, curses.COLOR_YELLOW, curses.COLOR_BLUE) #
-h = curses.color_pair(1) #h is the coloring for a highlighted menu option
-n = curses.A_NORMAL #n is the coloring for a non highlighted menu option
 
 # ================================
 # Construct menu
@@ -721,23 +737,16 @@ else:
 #================================
 # Display info
 #================================
-curses.init_pair(1,curses.COLOR_WHITE, curses.COLOR_BLUE) # Sets up color pair #1
-curses.init_pair(2,curses.COLOR_BLUE, curses.COLOR_WHITE) # Sets up color pair #1
-h = curses.color_pair(1) #h is the coloring for a highlighted menu add_standard_options
-col_info = curser.color_pair(1)
-col_stat = curser.color_pair(2)
-
-statwin = curses.newwin( curses.LINES - 14, curses.COLS - 8 ,2,4)
+statwin = curses.newwin( curses.LINES - 13, curses.COLS - 8 ,2,4)
 statwin.bkgd(' ', col_stat)
 statwin.border(0)
 statwin.addstr(0,2,"[ Status ]")
-statwin.addstr(2,2, "Build 1" )
-statwin.addstr(3,2, "Line2")
+statwin.addstr(1,2, "[ ] OS APT update" )
+statwin.addstr(2,2, "[ ] OS Update")
+statwin.addstr(3,2, "[ ] ")
 statwin.refresh()
 
-infowin = curses.newwin(9, curses.COLS - 8 , curses.LINES - 10 , 4) # 
-infowin.bkgd(' ', col_info)
-infowin.border(0)
+
 infowin.addstr(0,2,"[ Info : phase " + install_phase + " ]")
 infowin.addstr(1,2,"ElimuPi build : " + base_build )
 infowin.addstr(2,2,'Hardware      : ' + getpiversion() )              # Model of the PI
@@ -745,10 +754,10 @@ infowin.addstr(3,2,'Platform      : ' + platform.platform() )          # Platfor
 infowin.addstr(4,2,'System        : ' + platform.system() )           # System   : Linux
 infowin.addstr(5,2,'OS Release    : ' + platform.release() )          # Release  : 4.9.41-v7+
 infowin.addstr(6,2,'OS Version    : ' + platform.version() )          # Version  : #1023 SMP Tue Aug 8 16:00:15 BST 2017
-infowin.addstr(7,2,"Install phase : (" + install_phase + ")")         # Installer phase
 infowin.refresh()
-
 exit(0)
+
+
 #================================
 # Display menu
 #================================
