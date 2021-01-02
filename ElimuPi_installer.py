@@ -727,7 +727,6 @@ h = curses.color_pair(1) #h is the coloring for a highlighted menu add_standard_
 col_info = curser.color_pair(1)
 col_stat = curser.color_pair(2)
 
-
 statwin = curses.newwin( curses.LINES - 14, curses.COLS - 8 ,2,4)
 statwin.bkgd(' ', col_stat)
 statwin.border(0)
@@ -749,6 +748,7 @@ infowin.addstr(6,2,'OS Version    : ' + platform.version() )          # Version 
 infowin.addstr(7,2,"Install phase : (" + install_phase + ")")         # Installer phase
 infowin.refresh()
 
+exit(0)
 #================================
 # Display menu
 #================================
