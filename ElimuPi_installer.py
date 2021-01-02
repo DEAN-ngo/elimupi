@@ -77,22 +77,32 @@ screen.keypad(1) # Capture input from keypad
 # Change this to use different colors when highlighting
 #================================
 curses.init_pair(1, curses.COLOR_YELLOW, curses.COLOR_RED)  # Sets up color pair #1
-curses.init_pair(2, curses.COLOR_BLUE, curses.COLOR_WHITE)  # 
-curses.init_pair(3, curses.COLOR_YELLOW, curses.COLOR_BLUE) #
+ 
 h = curses.color_pair(1) #h is the coloring for a highlighted menu option
 n = curses.A_NORMAL #n is the coloring for a non highlighted menu option
 
+#================================
 # Define color pairs
+#================================
 curses.init_pair(1,curses.COLOR_WHITE, curses.COLOR_BLUE) # Sets up color pair #1
-curses.init_pair(2,curses.COLOR_BLUE, curses.COLOR_WHITE) # Sets up color pair #1
+curses.init_pair(2,curses.COLOR_BLUE, curses.COLOR_WHITE) # Sets up color pair #2
+curses.init_pair(2,curses.COLOR_RED, curses.COLOR_WHITE) # Sets up color pair #3
+curses.init_pair(2,curses.COLOR_GREEN, curses.COLOR_WHITE) # Sets up color pair #3
 col_info = curses.color_pair(1)
 col_stat = curses.color_pair(2)
+col_mark = curses.color_pair(3)
+col_ok  = curses.color_pair(4)
 
+#================================
 # Define status window
-statwin = curses.newwin( curses.LINES - 13, curses.COLS - 8 ,2,4)
+#================================
+statwin = curses.newwin( curses.LINES - 12, curses.COLS - 8 ,1,4)
 statwin.bkgd(' ', col_stat)
 statwin.border(0)
+
+#================================
 # Define Info window
+#================================
 infowin = curses.newwin(8, curses.COLS - 8 , curses.LINES - 10 , 4) # 
 infowin.bkgd(' ', col_info)
 infowin.border(0)
@@ -737,15 +747,23 @@ else:
 #================================
 # Display info
 #================================
-statwin = curses.newwin( curses.LINES - 13, curses.COLS - 8 ,2,4)
 statwin.bkgd(' ', col_stat)
 statwin.border(0)
-statwin.addstr(0,2,"[ Status ]")
-statwin.addstr(1,2, "[ ] OS APT update" )
-statwin.addstr(2,2, "[ ] OS Update")
-statwin.addstr(3,2, "[ ] ")
-statwin.refresh()
+statwin.addstr( 0,2, "[ Status ]")
+statwin.addstr( 1,2, "[ ] OS APT update" )
+statwin.addstr( 2,2, "[ ] OS Update")
+statwin.addstr( 3,2, "[ ] Install WiFi")
+statwin.addstr( 4,2, "[ ] Install DNS masq")
+statwin.addstr( 5,2, "[ ] Install Management Interface")
+statwin.addstr( 6,2, "[ ] Install USB mount")
+statwin.addstr( 8,2, "[ ] Install Kiwix")
+statwin.addstr( 9,2, "[ ] Install Khan Academy")
+statwin.addstr(10,2, "[ ] Install Citadel")
+statwin.addstr(11,2, "[ ] Install Moodle")
 
+statwin.addstr( 1,3, "x" , col_ok)
+statwin.addstr( 2,3, "*" , col_mark)
+statwin.refresh()
 
 infowin.addstr(0,2,"[ Info : phase " + install_phase + " ]")
 infowin.addstr(1,2,"ElimuPi build : " + base_build )
