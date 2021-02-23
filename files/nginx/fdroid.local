@@ -1,6 +1,7 @@
 server {
-      listen        80;
-      server_name   fdroid.local;
+      listen        8080;
+      listen [::]:8080;
+      server_name   www.fdroid.local fdroid.local;
 
       location /{
         autoindex on;

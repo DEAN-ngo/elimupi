@@ -1,7 +1,10 @@
 #!/bin/bash
-
+# Get Kiwix script
 sudo wget https://raw.githubusercontent.com/elimupi/elimupi2.0/master/files/kiwix-start.pl
+# Get Kiwix code
 sudo wget https://ftp.nluug.nl/pub/kiwix/release/kiwix-tools/kiwix-tools_linux-armhf-0.9.0.tar.gz
+
+# Get kiwix service
 sudo wget https://raw.githubusercontent.com/elimupi/elimupi2.0/master/files/kiwix-service
 sudo tar xvzf kiwix-tools_linux-armhf-0.9.0.tar.gz
 sudo mkdir -p /var/kiwix/bin

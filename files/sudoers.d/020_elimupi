@@ -1,0 +1,11 @@
+#
+# ElimiPi Web admin mods
+#
+Cmnd_Alias      ADDTEACHER = /usr/sbin/addteacher.sh [!;$|&<>]*
+Cmnd_Alias      ADDSTUDENT = /usr/sbin/addstudent.sh [!;$|&<>]*
+Cmnd_Alias      RESETPASSWD = /usr/sbin/changepassword.sh [!;$|&<>]*
+Cmnd_Alias      DELETEUSER = /usr/sbin/deleteuser.sh [!;$|&<>]*
+
+# Allow ElimuPi users of the group teachers to turn the Pi off and to create users (only teachers and students)
+%teachers       ALL= NOPASSWD: /sbin/shutdown, /etc/usbmount/umount.d/01_remove_model_symlink ,RESETPASSWD, ADDTEACHER, ADDSTUDENT, DELETEUSER
+

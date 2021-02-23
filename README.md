@@ -1,6 +1,6 @@
-# elimupi2.0
+# elimupi2.0.1
 
-Purpose is project is to provide a DEAN digital classroom environment for educational project in Tanzania and Kenia. This to provide full Android tablet support without any direct internet connectivity. 
+Purpose is project is to provide a DEAN digital classroom environment for educational project in Tanzania and Kenia. This includes providing full Android tablet support without any direct internet connectivity. 
 
 Please visit http://www.dean.ngo/ict4e/digital-classroom-box-elimupi/ for more information 
 
@@ -59,7 +59,9 @@ Then you need to login with the Admin account and go to Manage --> "Please follo
 
 *NOTE2: for WIFI to work on the RaspberryPi 2 unit, you must have the WIFI USB dongle inserted during installation so that the install script can configure it properly. RaspberryPi 3 models have on board WiFi and don't need a WIFI USB dongle. 
 
-Last updated : 2018/11/26 
+*NOTE3: If using  PUTTY set the setting 'window'->'translation'->'Remote Character Set' to 'use font encoding' to display the lines correctly.
+
+Last updated : 2021/02/06 
 
 Applicable Licenses: See licenses file. 
 
