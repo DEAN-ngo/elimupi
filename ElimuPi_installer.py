@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#! /usr/bin/env python3
 #coding=ASCII
 # =========================================================================================================
 #    Original script from Rachel
@@ -31,15 +31,15 @@ import os
 import subprocess
 import argparse
 import shutil
-import urllib
+import urllib.request
 import argparse
 import platform
 import curses           #curses is the interface for capturing key presses on the menu, os launches the files
 import xml.etree.ElementTree as ET
+import json
 
 from time import sleep
-
-from __builtins__ import true
+# from __builtins__ import true
 
 # ================================
 # Settings for build
@@ -77,6 +77,10 @@ argparser.add_argument( "--khan-academy",
                         choices=["none", "ka-lite"],
                         default="ka-lite",
                         help="Select Khan Academy package to install (default = \"ka-lite\")")
+argparser.add_argument("--moodle",
+                        dest="install_moodle",
+                        action="store_false",
+                        help="Install Moodle")
 # Switch to disable WiFi
 argparser.add_argument("--no-wifi",
                         dest="install_wifi",
@@ -85,8 +89,11 @@ argparser.add_argument("--no-wifi",
 # --citadel switch to enable citadel
 argparser.add_argument("--citadel",
                         dest="install_citadel",
-                        action="store_false",
+                        action="store_true",
                         help="Install Citadel mail, chat and colaboration suite")
+
+
+
 args = argparser.parse_args()
 
 
@@ -111,7 +118,7 @@ curses.init_pair(1,curses.COLOR_WHITE, curses.COLOR_BLUE) # Sets up color pair w
 curses.init_pair(2,curses.COLOR_RED, curses.COLOR_BLUE) # Sets up color pair winInfo
 curses.init_pair(3,curses.COLOR_GREEN, curses.COLOR_BLUE) # Sets up color pair winInfo
 
-curses.init_pair(4,curses.COLOR_GREEN, curses.COLOR_WHITE) # Sets up color pair OK
+curses.init_pair(4,curses.COLOR_BLUE, curses.COLOR_WHITE) # Sets up color pair OK
 curses.init_pair(5,curses.COLOR_RED , curses.COLOR_WHITE) # Sets up color pair Log
 curses.init_pair(5,curses.COLOR_BLACK, curses.COLOR_WHITE) # Sets up color pair Log
 
@@ -131,18 +138,44 @@ col_log_ok   = curses.color_pair(6)
 # ================================
 # Define status window 
 # ================================
-statwin = curses.newwin( 12, curses.COLS - 8 ,0,4)
+posx = 4
+posy= 0
+height = 12
+width = curses.COLS - 8
+statwin = curses.newwin( height, width , posy, posx)
 
 # ================================
 # Define log window
 # ================================
-logwin = curses.newpad(70,100 )
+logwin_curpos = 4
+logwin_scroll_area=32767
+logwin_width = curses.COLS - 8
+logwin = curses.newpad(logwin_scroll_area, logwin_width )
+logwin.scrollok(True)
+logwin_dwidth = curses.COLS - 4
+logwin_dheight = curses.LINES - 10
+if logwin_dheight <= 0:
+    logwin_dheight = 1
+logwin_posx = 4
+logwin_posy = 12
+# Displays a section of the pad in the middle of the screen.
+# (0,0) : coordinate of upper-left corner of pad area to display.
+# (5,5) : coordinate of upper-left corner of window area to be filled
+#         with pad content.
+# (20, 75) : coordinate of lower-right corner of window area to be
+#          : filled with pad content.
+# pad.refresh( 0,0, 5,5, 20,75)
 logwin.bkgd(' ', col_log)
+logwin.addstr("Starting install", col_log)
+logwin.refresh(logwin_curpos, 0, logwin_posy, logwin_posx, logwin_dheight, logwin_dwidth )
+
 
 # ================================
 # Define Info window
 # ================================
-infowin = curses.newwin(8, curses.COLS - 8 , curses.LINES - 9 , 4) # 
+height = 8
+posy = curses.LINES - 9
+infowin = curses.newwin(height, width , posy , posx) # 
 infowin.bkgd(' ', col_info)
 infowin.border(0)
 
@@ -150,7 +183,8 @@ infowin.border(0)
 # Install USB mounter 
 # ================================
 def install_usbmount():
-    sudo("apt-get install usbmount ntfs-3g -y","Unable to download usbmount")
+    result = sudo("apt-get install usbmount ntfs-3g -y","Unable to download usbmount")
+    display_log(result.output)
     sudo("sed -i '/MountFlags=slave/c\MountFlags=shared' /lib/systemd/system/systemd-udevd.service","Unable to update udevd configuration (systemd-udevd.service)")
     sudo("chmod +x ./build_elimupi/files/01_create_label_symlink ./build_elimupi/files/01_remove_model_symlink", False)
     cp("./files/usbmount/usbmount.conf", "/etc/usbmount/")
@@ -158,12 +192,14 @@ def install_usbmount():
     cp("./files/usbmount/01_remove_model_symlink", "/etc/usbmount/umount.d")
     cp("./files/usbmount/usbmount@.service", "/etc/systemd/system/")
     cp("./files/usbmount/usbmount.rules", "/etc/udev/rules.d")
+    display_log("usb mount installed")
     return True
 
 # ================================
 # Setup WiFi
 # ================================
 def install_wifi():
+    sudo("rfkill unblock wifi", "Unable to unblock WiFi is not")
     sudo("ifconfig {} {}".format(base_wifi, base_ip), "Unable to set {} IP address {}".format(base_wifi, base_ip))
     
     #Install hostapd, udhcpd
@@ -171,7 +207,7 @@ def install_wifi():
     
     #copy config files udhcpd
     cp("./files/udhcpd.conf", "/etc/udhcpd.conf", "Unable to copy uDHCPd configuration (udhcpd.conf)")
-    cp("./files/udhcpd", "/etc/default/udhcpd", "Unable to copy UDHCPd configuration (udhcpd)")
+    cp("./files/udhcpd", "/etc/default/udhcpd"  , "Unable to copy UDHCPd configuration (udhcpd)")
 
     #copy config files hostapd
     cp("./files/hostapd", "/etc/default/hostapd", "Unable to copy hostapd configuration (hostapd)")
@@ -214,32 +250,51 @@ def install_wifi():
 # Install Moodle components
 # ================================
 def install_moodle():
-    print("=========================================")
-    print("Installing Moodle components")
-    print("=========================================")
-	# Install MariaDB or MySQL
-    sudo("apt-get install -y mariadb-server","Unable to install MariadbServer")
+    # Install MariaDB or =MySQL 
+    sudo("apt-get install -y mariadb-server","Unable to install MariadbServer") 
 	# Determine last stable version (now fixed at 311)
+    sudo("sed -i 's//var\/run\/usbmount\/Content\/moodledb' /etc/mysql/mariadb.conf.d/nano 50-server.cnf","Unable to set mariadb folder")
+    # Restart DBserver
+    sudo("systemctl restart mariadb.service","Unable to restart DB")
+    # /etc/systemd/system/mysqld.service
+    # LimitNOFILE=16384
+
+    # create secure setup
+    # Create/setup default user
+    
+    # Add PHP mySQL support (mariaDB)
+    sudo("apt-get install php-mysql -y","Unable to install NGINX")
+    # /etc/php/7.3/fpm/php.ini
     # use /var/moodle for install
-    sudo("git clone -b MOODLE_310_STABLE git://git.moodle.org/moodle.git -C /var", "Unable to clone Moodle")  
+    sudo("git clone -b MOODLE_310_STABLE git://git.moodle.org/moodle.git /var/moodle", "Unable to clone Moodle")  
     sudo("chown -R root /var/moodle","Unable to set moodle permissions")
     sudo("chmod -R 0755 /var/moodle","Unable to set moodle permissions")
     
     # edit config.php to use mariadb
     #   $CFG->dbtype    = 'mariadb'; 
     #   $CFG->dblibrary = 'native';
+    cp("/var/moodle/config-dist.php", "/var/moodle/config.php")
+    # Set correct database
+    sudo("sed -i 's/pgsql/mariadb/' /var/moodle/config.php", "Unable to update moodle configuration (config.php)")
+    sudo("sed -i 's/example.com\/moodle/www.moodle.local/' /var/moodle/config.php", "Unable to update moodle configuration (config.php)")
+    sudo("sed -i 's/\/home\/example\/moodledata/\/var\/run\/usbmount\/Content\/moodledata/' /var/moodle/config.php", "Unable to update moodle configuration (config.php)")
     
-	# -----------------------------------
-	# Final configuration via ElimuPi Web GUI!!!
-	# -----------------------------------
     # create moodle data folder on content disk (!)
-    # mkdir /path/to/moodledata
-    # chmod 0777 /path/to/moodledata
-    
+    sudo("mkdir /var/run/usbmount/Content/moodledata","Unable to create Moodle folder")
+    # Set default permissions
+    sudo("chmod 0777 /var/run/usbmount/Content/moodledata","Unable to set rights on Moodle folder")
+    # Set owner
+    sudo("chown www-data /var/run/usbmount/Content/moodledata","Unable to set owner of Moodle folder")
     # chown www-data /path/to/moodle
     # cd /path/to/moodle/admin/cli
-    
+    # Copy moodle site settings
+    cp("./files/nginx/moodle.local", "/etc/nginx/sites-available/", "Unable to copy file moodle.local (nginx)")
+    # Enable moodle site
+    cp("ln -s /etc/nginx/sites-available/moodle.local /etc/nginx/sites-enabled/moodle.local", "Unable to copy file wiki.local (nginx)")
+    # restart NGINX service 
+    sudo("systemctl restart nginx", "Unable to restart nginx")
     # sudo -u www-data /usr/bin/php install.php
+    sudo("-u www-data /usr/bin/php /var/moodle/admin/cli/install.php","Unable to install moodle")
     # chown -R root /path/to/moodle
 
     
@@ -254,14 +309,18 @@ def install_moodle():
 # Install web interface
 # ================================
 def install_web_interface():
-    print( "=========================================")
-    print( "Installing DEAN Web Interface components")
-    print( "=========================================")
-    # Copy files for website to /var/www/html
+    #INSTALL NGINX
+    sudo("apt install php-fpm -y","Unable to install NGINX")
+    # Install nginx site files  
+    cp("./files/nginx/admin.local", "/etc/nginx/sites-available/", "Unable to copy file admin.local (nginx)")
+    cp("./files/nginx/fdroid.local", "/etc/nginx/sites-available/", "Unable to copy file fdroid.local (nginx)")
+    cp("./files/nginx/files.local", "/etc/nginx/sites-available/", "Unable to copy file files.local (nginx)")
+    cp("./files/nginx/kahn.local", "/etc/nginx/sites-available/", "Unable to copy file kahn.local (nginx)")
     
+    sudo("mkdir /var/www/log","Unable to create the NGINX log folder")
     
-    # Install nginx site file  
-    cp("./files/nginx/admin.local","/etc/nginx/sites-enabled/")
+    # restart NGINX service 
+    sudo("systemctl restart nginx", "Unable to restart nginx")
     
     # TODO: !!Put content on public GIT or use username and password!!!!!
     # sudo ('git clone https://github.com/DEANpeterV/ElimuPi-Web-Interface.git') 
@@ -295,20 +354,28 @@ def install_kalite():
     sudo("systemctl start ka-lite", "Unable to start ka-lite")
     sudo("systemctl enable ka-lite", "Unable to enable ka-lite")
     #sudo("sh -c '/usr/local/bin/kalite --version > /etc/kalite-version'", "Unable to record kalite version")
+    # setup NGINX site
+    cp("./files/nginx/khan.local", "/etc/nginx/sites-available/", "Unable to copy file khan.local (nginx)")
+    # Enable site
+    cp("ln -s /etc/nginx/sites-available/khan.local /etc/nginx/sites-enabled/khan.local", "Unable to enable file khan.local (nginx)")
+    # restart NGINX service 
+    sudo("systemctl restart nginx", "Unable to restart nginx")
     return True
 
 # ================================
 # Khan Academy languages
 # ================================
 def install_ka_languague():
-    sudo("su pi -c '/usr/bin/kalite manage retrievecontentpack local en /var/run/usbmount/Content/khan/en.zip'" , "Unable to set language for Khan Academu")
+    # Do not install as this requires a mounted content disk
+    # sudo("su pi -c '/usr/bin/kalite manage retrievecontentpack local en /var/run/usbmount/Content/khan/en.zip'" , "Unable to set language for Khan Academu")
+    return True
 
 # ================================
 # Kiwix install
 # ================================
 def install_kiwix():
     # Get release rss data from mirror
-    file = urllib2.urlopen('https://ftp.nluug.nl/pub/kiwix/release/kiwix-tools/feed.xml')
+    file = urllib.request.urlopen('https://ftp.nluug.nl/pub/kiwix/release/kiwix-tools/feed.xml')
     data = file.read()
     file.close()
     # Parse XML
@@ -322,26 +389,33 @@ def install_kiwix():
     latest_release_name = latest_release[47:-7]
     statwin.addstr(6, 20,"latest_release:" + latest_release_name )
     statwin.refresh()
-    sudo("mkdir -p /var/kiwix/bin", "Unable to make create kiwix directories")
     # get release for Linux-armhf from mirror
-    sudo("curl -s " + latest_release + " | tar xz -C /home/pi/", "Unable to get latest kiwix release")
-    
+    sudo("curl -s https://ftp.nluug.nl/pub/kiwix/release/kiwix-tools/" + latest_release_name + ".tar.gz | tar xz -C /home/pi/", "Unable to get latest kiwix release (https://ftp.nluug.nl/pub/kiwix/release/kiwix-tools/" + latest_release_name + ")")
+    # Make kiwix application folder
+    sudo("mkdir -p /var/kiwix/bin", "Unable to make create kiwix directories")
     # Copy files we need from the toolset
-    cp("./" + latest_release_name + "/kiwix-manage", "/var/kiwix/bin/")
-    cp("./" + latest_release_name + "/kiwix-read", "/var/kiwix/bin/")
-    cp("./" + latest_release_name + "/kiwix-search", "/var/kiwix/bin/")
-    cp("./" + latest_release_name + "/kiwix-serve", "/var/kiwix/bin/")
+    cp("/home/pi/" + latest_release_name + "/kiwix-manage", "/var/kiwix/bin/", "Unable to copy kiwix-manage")
+    cp("/home/pi/" + latest_release_name + "/kiwix-read", "/var/kiwix/bin/", "Unable to copy kiwix-read")
+    cp("/home/pi/" + latest_release_name + "/kiwix-search", "/var/kiwix/bin/", "Unable to copy kiwix-search")
+    cp("/home/pi/" + latest_release_name + "/kiwix-serve", "/var/kiwix/bin/", "Unable to copy kiwix-serve")
     # Copy config files
     cp("./files/kiwix/kiwix-start.pl", "/var/kiwix/bin/kiwix-start.pl", "Unable to copy dean-kiwix-start wrapper")
     sudo("chmod +x /var/kiwix/bin/kiwix-start.pl", "Unable to set permissions on dean-kiwix-start wrapper")
     cp("./files/kiwix/kiwix-service", "/etc/init.d/kiwix", "Unable to install kiwix service")
     sudo("chmod +x /etc/init.d/kiwix", "Unable to set permissions on kiwix service.")
+    # Create service
     sudo("update-rc.d kiwix defaults", "Unable to register the kiwix service.")
     sudo("systemctl daemon-reload", "systemctl daemon reload failed")
     sudo("systemctl start kiwix", "Unable to start the kiwix service")
     sudo("systemctl enable kiwix", "Unable to enable the kiwix service")
     # PBo 20180312-07 sudo("service kiwix start", "Unable to start the kiwix service.")
     #sudo("sh -c 'echo {} >/etc/kiwix-version'".format(kiwix_version), "Unable to record kiwix version.")
+    # setup NGINX site
+    cp("./files/nginx/wiki.local", "/etc/nginx/sites-available/", "Unable to copy file wiki.local (nginx)")
+    # Enable site
+    cp("ln -s /etc/nginx/sites-available/wiki.local /etc/nginx/sites-enabled/wiki.local", "Unable to enable file wiki.local (nginx)")
+    # restart NGINX service 
+    sudo("systemctl restart nginx", "Unable to restart nginx")
     return True
 
 # ================================
@@ -351,12 +425,6 @@ def install_dnsmasq():
     sudo("apt-get install dnsmasq -y", "Unable to install dnsmasq.")
     cp("./files/hosts", "/etc/hosts", "Unable to copy file hosts (/etc/hosts)")
     #sudo("rm /etc/dnsmasq.conf")
-    cp("./files/nginx/admin.local", "/etc/nginx/sites-available/", "Unable to copy file admin.local (nginx)")
-    cp("./files/nginx/fdroid.local", "/etc/nginx/sites-available/", "Unable to copy file fdroid.local (nginx)")
-    cp("./files/nginx/files.local", "/etc/nginx/sites-available/", "Unable to copy file files.local (nginx)")
-    cp("./files/nginx/kahn.local", "/etc/nginx/sites-available/", "Unable to copy file kahn.local (nginx)")
-    cp("./files/nginx/wiki.local", "/etc/nginx/sites-available/", "Unable to copy file wiki.local (nginx)")
-    sudo("systemctl restart nginx", "Unable to restart nginx")
     return True
 
 # ================================
@@ -365,13 +433,42 @@ def install_dnsmasq():
 # Note ths installer gives a GUI to configure
 # ================================
 def install_citadel():
-    print("=========================================")
-    print("Installing Citadel components")
-    print("=========================================")
     sudo("apt-get install citadel-suite -y", "Unable to install Citadel")
     sudo("/usr/lib/citadel-server/setup", "Unable to setup Citadel")
     return True
 
+# ================================
+# Install fdroid environment
+# ================================
+def install_fdroid():
+    # Install FDROID server components
+    sudo("apt-get install fdroidserver -y", "Unable to install FDroid")
+    # Enable shared folder for client access
+    cp("./files/nginx/fdroid.local", "/etc/nginx/sites-available/", "Unable to copy file fdroid.local (nginx)")
+    sudo("systemctl restart nginx", "Unable to restart nginx")
+    return True
+
+# ================================
+# Check for content disk, if mounted continue
+# If not mounted ask to attach, try to mount, check if correctly formatted and labeled 
+# ================================
+def setup_content_disk():
+    # Get all current disks
+    display_log("Get current disks\r\n")
+    result = sudo("lsblk -Jno mountpoint,label","")
+    disk_info = json.loads(result.output)
+    for item in disk_info["blockdevices"]:
+        if item["label"] is not None:
+            # print("Label: " + item["label"])
+            display_log("Label : " + str(item["label"]) + "\r\n")
+    display_log("\r\n----------------------------------\r\n")
+    sys.exit(0)
+    return True
+
+def create_img():
+    # use scripts to create an gzipped, compressed image file to distribute on the external disk
+    sudo("mkdir /mnt/","Unable to create image folder")
+    return True
 # ================================
 # Sudo 
 # ================================
@@ -557,10 +654,6 @@ def PHASE0():
     if platform.system() != 'Linux': 
         die('Incorrect OS [' + platform.system() + ']')
     
-    if platform.linux_distribution().index('debian'):
-        die('Incorrect distribution [' + platform.linux_distribution() + ']')
-    
-    
     # ================================
     # Display steps to complete for phase 0
     # ================================
@@ -579,8 +672,8 @@ def PHASE0():
     # ================================
     statwin.addstr( 1,3, "?" , col_info)
     statwin.refresh()
-    result = sudo("apt-get update -y") 
-    result.result or die("Unable to update.")
+    result = sudo("apt-get update -y", "Unable to update RASPBERRYOS.") 
+    display_log(result.output)
     statwin.addstr( 1,3, "*" , col_info_ok)
     statwin.refresh()
     
@@ -589,8 +682,8 @@ def PHASE0():
     # ================================
     statwin.addstr( 2,3, "?" , col_info)
     statwin.refresh()
-    result = sudo("apt-get dist-upgrade -y") 
-    result.result or die("Unable to upgrade Raspbian.")
+    result = sudo("apt-get dist-upgrade -y", "Unable to upgrade RASPBERRYOS distribution.")
+    display_log(result.output)
     statwin.addstr( 2,3, "*" , col_info_ok)
     statwin.refresh()
     
@@ -599,7 +692,8 @@ def PHASE0():
     # ================================
     statwin.addstr( 3,3, "?" , col_info)
     statwin.refresh()
-    sudo("apt-get install -y git", "Unable to install Git.")
+    result = sudo("apt-get install -y git", "Unable to install Git.")
+    display_log(result.output)
     statwin.addstr( 3,3, "*" , col_info_ok)
     statwin.refresh()
 
@@ -611,8 +705,7 @@ def PHASE0():
     if localinstaller():
         print("Using local files ")
     else:
-        result = sudo("rm -fr " + basedir() + "/build_elimupi")
-        result.result or die("Unable to update.")
+        result = sudo("rm -fr " + basedir() + "/build_elimupi", "Unable to update.")
           
         result = cmd("git clone --depth 1 " + base_git + " " + basedir() + "/build_elimupi") 
         result.result or die("Unable to clone Elimu installer repository.")
@@ -622,11 +715,11 @@ def PHASE0():
     # ================================
     # Make installer autorun
     # ================================
-    statwin.addstr( 5,3, "?" , col_info)
-    if not 'ElimuPi_installer.py' in open(homedir() + '/.bashrc').read():   #validate if it needs to be added
-        file = open(homedir() + '/.bashrc', 'a')
-        file.write( basedir() + '/ElimuPi_installer.py')       # Enable autostart on logon
-        file.close()
+    #statwin.addstr( 5,3, "?" , col_info)
+    #if not 'ElimuPi_installer.py' in open(homedir() + '/.bashrc').read():   #validate if it needs to be added
+    #    file = open(homedir() + '/.bashrc', 'a')
+    #    file.write( basedir() + '/ElimuPi_installer.py')       # Enable autostart on logon
+    #    file.close()
     
     # ================================
     # Write install status to file
@@ -682,10 +775,11 @@ def PHASE1():
     statwin.addstr(1,2,"[ ] Update to latest OS")
     statwin.addstr(2,2,"[ ] Update Raspberry PI firmware")
     statwin.addstr(3,2,"[ ] Setup Network")
-    statwin.addstr(4,2,"[ ] Install Khan Academy")
-    statwin.addstr(5,2,"[ ] Install Citadel")
-    statwin.addstr(6,2,"[ ] Install Kiwix")
-    statwin.addstr(7,2,"[ ] Install Moodle")
+    statwin.addstr(4,2,"[ ] Install FDroid")
+    statwin.addstr(5,2,"[ ] Install Khan Academy")
+    statwin.addstr(6,2,"[ ] Install Citadel")
+    statwin.addstr(7,2,"[ ] Install Kiwix")
+    statwin.addstr(8,2,"[ ] Install Moodle")
     statwin.refresh()
             
     # ================================
@@ -737,22 +831,22 @@ def PHASE1():
     # KAHN academy (default enabled)
     # ================================
     if args.khan_academy == "ka-lite":
-        statwin.addstr( 4, 3, "?" , col_info)
+        statwin.addstr( 5, 3, "?" , col_info)
         statwin.refresh()
         install_kalite()
         # install the language for Khan
         install_ka_languague()
-        statwin.addstr( 4, 3, "*" , col_info_ok)
+        statwin.addstr( 5, 3, "*" , col_info_ok)
         statwin.refresh()
         
     # ================================
     # Install Citadel
     # ================================
     if args.install_citadel:
-        statwin.addstr( 5, 3, "?" , col_info)
+        statwin.addstr( 6, 3, "?" , col_info)
         statwin.refresh()
         install_citadel()
-        statwin.addstr( 5, 3, "*" , col_info_ok)
+        statwin.addstr( 6, 3, "*" , col_info_ok)
         statwin.refresh()
     else:
         statwin.addstr( 5, 3, "-" , col_info)
@@ -761,20 +855,23 @@ def PHASE1():
     # ================================
     # install the kiwix server (but not content)
     # ================================
-    statwin.addstr( 6, 3, "?" , col_info)
+    statwin.addstr( 7, 3, "?" , col_info)
     statwin.refresh()
     install_kiwix()
-    statwin.addstr( 6, 3, "-" , col_info)
+    statwin.addstr( 7, 3, "-" , col_info)
     statwin.refresh()
 
     # ================================
     # Install Moodle
     # ================================
-    statwin.addstr( 7, 3, "?" , col_info)
-    statwin.refresh()
-    install_moodle()
-    statwin.addstr( 7, 3, "-" , col_info)
-    statwin.refresh()
+    if args.install_moodle:
+        statwin.addstr( 8, 3, "?" , col_info)
+        statwin.refresh()
+        install_moodle()
+        statwin.addstr( 8, 3, "*" , col_info)
+        statwin.refresh()
+    else:
+        statwin.addstr( 8, 3, "-" , col_info)
     
     # ================================
     # record the version of the installer we're using - this must be manually
@@ -822,10 +919,17 @@ def display_status():
 # ================================
 # log display
 # ================================
-def display_log():
-    logwin.bkgd(' ', col_log)
-    logwin.refresh(0,0, 12, 4, curses.LINES - 10 ,curses.COLS - 5)
-    
+def display_log(str):
+    global logwin_curpos
+    #print(str)
+    nlines = str.count('\n')
+    logwin_curpos = logwin_curpos  + nlines
+    curpos = 0 # logwin_curpos + nlines
+    if logwin_curpos > logwin_dheight:
+        curpos = logwin_curpos - logwin_dheight        
+    logwin.addstr(">" + str)
+    logwin.refresh(curpos, 0, logwin_posy  , logwin_posx , logwin_dheight, logwin_dwidth )
+    print(curpos)
 # ================================
 # Add locales for en_GB and sw_KE to environment
 # ================================
@@ -874,7 +978,7 @@ display_info()
 # ================================
 display_status()
 
-display_log()
+# display_log("")
 
 # ================================
 # Display menu
