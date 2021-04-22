@@ -52,7 +52,7 @@ base_wifi           = "wlan0"
 # ================================
 # Class for command execution
 # ================================
-class cmdResult:
+class CmdResult:
     result = True
     error = ''
     output = ''
@@ -472,7 +472,7 @@ def create_img():
 def sudo(s, error_msg = False):
     result = cmd("sudo DEBIAN_FRONTEND=noninteractive %s" % s)
     if error_msg and not result.result:
-        die(error_msg)
+        die(error_msg, result)
     return result 
 
 # ================================
@@ -486,12 +486,14 @@ def abort(msg):
 # ================================
 # die command (error exit)
 # ================================
-def die(msg):
+def die(msg, cmd_result=None):
     # End cusrses mode
     curses.endwin()
     
     # display error
     print("Error: " + str(msg))
+    if cmd_result:
+        print(cmd_result.error)
     sys.exit(1)
 
 # ================================
@@ -499,7 +501,7 @@ def die(msg):
 # ================================
 def cmd(run_cmd):
     # initialize result
-    cmd_result=cmdResult 
+    cmd_result=CmdResult()
     # Execute command, PY 2.4 - 2.6
     result = subprocess.Popen(run_cmd, shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, close_fds=True)
     # result = subprocess.check_output(c, shell=True, stdin=subprocess.PIPE, stderr=subprocess.PIPE, close_fds=True)
@@ -521,7 +523,9 @@ def exists(p):
 # Copy command
 # ================================    
 def cp(source_file, destination_file, err_msg=False):
-    if localinstaller():
+    if source_file[0] == "/":
+        sudo("cp {} {}".format(source_file, destination_file), err_msg)
+    elif localinstaller():
         sudo("cp %s/%s %s" % (basedir(), source_file, destination_file), err_msg)
     else:
         sudo("cp %s/%s %s" % (basedir() + "/build_elimupi", source_file, destination_file), err_msg)
