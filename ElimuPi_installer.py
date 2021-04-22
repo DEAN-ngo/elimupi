@@ -17,14 +17,9 @@
 #    2018-Nov-26 | PVe    | Update installation process
 #    2020-Dec-21 | PVe    | Added support for latest Raspberry OS and Moodle
 #    2021-Jan-02 | PVe    | Updated to use curses GUI
+#    2021-May-xx | xxx    | Various updates
 # =========================================================================================================
 
-
-# Menu :
-# 1. create ElimuPi image
-# 2. Create ElimuPi content disk
-# 3. ....
-# q. Exit
 
 import sys
 import os
@@ -73,10 +68,12 @@ class screenPos:
 # Command line arguments
 # ================================
 argparser = argparse.ArgumentParser()
+# Switch to install Khan Academy
 argparser.add_argument( "--khan-academy",
                         choices=["none", "ka-lite"],
                         default="ka-lite",
                         help="Select Khan Academy package to install (default = \"ka-lite\")")
+# Switch to install Moodle
 argparser.add_argument("--moodle",
                         dest="install_moodle",
                         action="store_false",
