@@ -32,6 +32,7 @@ import platform
 import curses           #curses is the interface for capturing key presses on the menu, os launches the files
 import xml.etree.ElementTree as ET
 import json
+import re
 
 from time import sleep
 # from __builtins__ import true
@@ -400,6 +401,25 @@ def install_kiwix():
     sudo("chmod +x /var/kiwix/bin/kiwix-start.pl", "Unable to set permissions on dean-kiwix-start wrapper")
     cp("./files/kiwix/kiwix-service", "/etc/init.d/kiwix", "Unable to install kiwix service")
     sudo("chmod +x /etc/init.d/kiwix", "Unable to set permissions on kiwix service.")
+    cp("./files/kiwix/kiwix.service", "/etc/systemd/system/kiwix.service", "Unable to copy kiwix systemd service file")
+
+    def latest_zim_package(url, package):
+        with urllib.request.urlopen(url) as response:
+            html = response.read().decode('utf-8')
+            versions = re.findall(package + "\d{4}-\d{2}.zim", html)
+            versions.sort()
+            #the last entry is the newest version
+            return versions[-1]
+
+    #download two sample wikis
+    url_vikidia = "https://ftp.nluug.nl/pub/kiwix/zim/vikidia/"
+    package_vikidia = latest_zim_package(url_vikidia, "vikidia_en_all_nopic_")
+    sudo("curl --silent {}{} --output /var/kiwix/bin/{}".format(url_vikidia, package_vikidia, package_vikidia), "unable to download {}{}".format(url_vikidia, package_vikidia))
+
+    url_wiktionary = "https://ftp.nluug.nl/pub/kiwix/zim/wiktionary/"
+    package_wiktionary = latest_zim_package(url_wiktionary, "wiktionary_en_simple_all_nopic_")
+    sudo("curl --silent {}{} --output /var/kiwix/bin/{}".format(url_wiktionary, package_wiktionary, package_wiktionary), "unable to download {}{}".format(url_wiktionary, package_wiktionary))
+
     # Create service
     sudo("update-rc.d kiwix defaults", "Unable to register the kiwix service.")
     sudo("systemctl daemon-reload", "systemctl daemon reload failed")
@@ -410,7 +430,7 @@ def install_kiwix():
     # setup NGINX site
     cp("./files/nginx/wiki.local", "/etc/nginx/sites-available/", "Unable to copy file wiki.local (nginx)")
     # Enable site
-    sudo("ln -s /etc/nginx/sites-available/wiki.local /etc/nginx/sites-enabled/wiki.local", "Unable to enable file wiki.local (nginx)")
+    sudo("ln --symbolic --force /etc/nginx/sites-available/wiki.local /etc/nginx/sites-enabled/wiki.local", "Unable to enable file wiki.local (nginx)")
     # restart NGINX service 
     sudo("systemctl restart nginx", "Unable to restart nginx")
     return True
@@ -523,7 +543,7 @@ def exists(p):
 # Copy command
 # ================================    
 def cp(source_file, destination_file, err_msg=False):
-    if source_file[0] == "/":
+    if source_file.startswith("/"):
         sudo("cp {} {}".format(source_file, destination_file), err_msg)
     elif localinstaller():
         sudo("cp %s/%s %s" % (basedir(), source_file, destination_file), err_msg)
@@ -541,7 +561,7 @@ def basedir():
         return bindir
 
 def localinstaller():
-    if exists( basedir() + "./files"):
+    if exists( basedir() + "/files"):
         return True
     else:
         return False 
