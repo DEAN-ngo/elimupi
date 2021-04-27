@@ -118,7 +118,7 @@ curses.init_pair(3,curses.COLOR_GREEN, curses.COLOR_BLUE) # Sets up color pair w
 
 curses.init_pair(4,curses.COLOR_BLUE, curses.COLOR_WHITE) # Sets up color pair OK
 curses.init_pair(5,curses.COLOR_RED , curses.COLOR_WHITE) # Sets up color pair Log
-curses.init_pair(5,curses.COLOR_BLACK, curses.COLOR_WHITE) # Sets up color pair Log
+curses.init_pair(6,curses.COLOR_BLACK, curses.COLOR_WHITE) # Sets up color pair Log
 
 col_info     = curses.color_pair(1)
 col_info_err = curses.color_pair(2)
@@ -145,10 +145,9 @@ statwin = curses.newwin( height, width , posy, posx)
 # ================================
 # Define log window
 # ================================
-logwin_curpos = 4
 logwin_scroll_area=32767
 logwin_width = curses.COLS - 8
-logwin = curses.newpad(logwin_scroll_area, logwin_width )
+logwin = curses.newpad(logwin_scroll_area, logwin_width)
 logwin.scrollok(True)
 logwin_dwidth = curses.COLS - 4
 logwin_dheight = curses.LINES - 10
@@ -165,7 +164,7 @@ logwin_posy = 12
 # pad.refresh( 0,0, 5,5, 20,75)
 logwin.bkgd(' ', col_log)
 logwin.addstr("Starting install", col_log)
-logwin.refresh(logwin_curpos, 0, logwin_posy, logwin_posx, logwin_dheight, logwin_dwidth )
+logwin.refresh(0, 0, logwin_posy, logwin_posx, logwin_dheight, logwin_dwidth)
 
 
 # ================================
@@ -385,7 +384,7 @@ def install_kiwix():
                     latest_release = links.text
                     break
     latest_release_name = latest_release[47:-7]
-    statwin.addstr(6, 20,"latest_release:" + latest_release_name )
+    statwin.addstr(7, 20,"latest_release:" + latest_release_name)
     statwin.refresh()
     # get release for Linux-armhf from mirror
     sudo("curl -s https://ftp.nluug.nl/pub/kiwix/release/kiwix-tools/" + latest_release_name + ".tar.gz | tar xz -C /home/pi/", "Unable to get latest kiwix release (https://ftp.nluug.nl/pub/kiwix/release/kiwix-tools/" + latest_release_name + ")")
@@ -724,7 +723,7 @@ def PHASE0():
     statwin.addstr( 4,3, "?" , col_info)
     statwin.refresh()
     if localinstaller():
-        print("Using local files ")
+        display_log("Using local files")
     else:
         result = sudo("rm -fr " + basedir() + "/build_elimupi", "Unable to update.")
           
@@ -870,7 +869,7 @@ def PHASE1():
         statwin.addstr( 6, 3, "*" , col_info_ok)
         statwin.refresh()
     else:
-        statwin.addstr( 5, 3, "-" , col_info)
+        statwin.addstr( 6, 3, "-" , col_info)
         statwin.refresh()
     
     # ================================
@@ -940,17 +939,13 @@ def display_status():
 # ================================
 # log display
 # ================================
-def display_log(str):
-    global logwin_curpos
-    #print(str)
-    nlines = str.count('\n')
-    logwin_curpos = logwin_curpos  + nlines
-    curpos = 0 # logwin_curpos + nlines
-    if logwin_curpos > logwin_dheight:
-        curpos = logwin_curpos - logwin_dheight        
-    logwin.addstr(">" + str)
-    logwin.refresh(curpos, 0, logwin_posy  , logwin_posx , logwin_dheight, logwin_dwidth )
-    print(curpos)
+def display_log(message, attribute=col_log):
+    message_string = str(message)
+    current_y_pos = logwin.getyx()[0]
+    logwin.addstr(current_y_pos + 1, 0, "> " + message_string, attribute)
+    current_y_pos = logwin.getyx()[0]
+    logwin.refresh(current_y_pos - (logwin_dheight - logwin_posy), 0, logwin_posy  , logwin_posx , logwin_dheight, logwin_dwidth )
+
 # ================================
 # Add locales for en_GB and sw_KE to environment
 # ================================
