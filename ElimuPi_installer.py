@@ -387,7 +387,9 @@ def install_kiwix():
     statwin.addstr(7, 20,"latest_release:" + latest_release_name)
     statwin.refresh()
     # get release for Linux-armhf from mirror
+    display_log("Downloading kiwix-tools...")
     sudo("curl -s https://ftp.nluug.nl/pub/kiwix/release/kiwix-tools/" + latest_release_name + ".tar.gz | tar xz -C /home/pi/", "Unable to get latest kiwix release (https://ftp.nluug.nl/pub/kiwix/release/kiwix-tools/" + latest_release_name + ")")
+    display_log("Done", col_log_ok)
     # Make kiwix application folder
     sudo("mkdir -p /var/kiwix/bin", "Unable to make create kiwix directories")
     # Copy files we need from the toolset
@@ -413,11 +415,15 @@ def install_kiwix():
     #download two sample wikis
     url_vikidia = "https://ftp.nluug.nl/pub/kiwix/zim/vikidia/"
     package_vikidia = latest_zim_package(url_vikidia, "vikidia_en_all_nopic_")
+    display_log("Downloading {}...".format(package_vikidia))
     sudo("curl --silent {}{} --output /var/kiwix/bin/{}".format(url_vikidia, package_vikidia, package_vikidia), "unable to download {}{}".format(url_vikidia, package_vikidia))
+    display_log("Done", col_log_ok)
 
     url_wiktionary = "https://ftp.nluug.nl/pub/kiwix/zim/wiktionary/"
     package_wiktionary = latest_zim_package(url_wiktionary, "wiktionary_en_simple_all_nopic_")
+    display_log("Downloading {}...".format(package_wiktionary))
     sudo("curl --silent {}{} --output /var/kiwix/bin/{}".format(url_wiktionary, package_wiktionary, package_wiktionary), "unable to download {}{}".format(url_wiktionary, package_wiktionary))
+    display_log("Done", col_log_ok)
 
     # Create service
     sudo("update-rc.d kiwix defaults", "Unable to register the kiwix service.")
@@ -902,14 +908,16 @@ def PHASE1():
     # ================================
     # Final messages
     # ================================
-    print("ELIMUPI image has been successfully created.")
-    print("It can be accessed at: http://" + base_ip + "/")
+    display_log("ELIMUPI image has been successfully created.", col_log_ok)
+    display_log("It can be accessed at: http://" + base_ip + "/", col_log_ok)
 
     # ================================
     # Reboot
     # ================================
     if yes_or_no("Reboot for normal operation", 8):
         sudo("reboot", "Unable to reboot Raspbian.")
+    else:
+        abort("Installation successful, please reboot")
 
 # ================================
 # infowin display
@@ -977,7 +985,7 @@ install_data = {
 # ================================
 if os.path.isfile(base_build + '_install'):
     logwin.addstr
-    print("Continue install after reboot")
+    display_log("Continue install after reboot")
     # get phase
     install_phase = open(base_build + '_install').read()
 else: 
@@ -1009,8 +1017,7 @@ if   install_phase == "0":
 elif install_phase == "1":
     PHASE1()
 else: 
-    print("Invallid installer state")
-    die('Installation aborted')
+    die("Invalid installer state, installation aborted")
 
 curses.endwin() #VITAL! This closes out the menu system and returns you to the bash prompt.
 os.system('clear')
