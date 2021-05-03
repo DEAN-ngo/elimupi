@@ -32,6 +32,7 @@ import platform
 import curses           #curses is the interface for capturing key presses on the menu, os launches the files
 import xml.etree.ElementTree as ET
 import json
+import re
 
 from time import sleep
 # from __builtins__ import true
@@ -52,7 +53,7 @@ base_wifi           = "wlan0"
 # ================================
 # Class for command execution
 # ================================
-class cmdResult:
+class CmdResult:
     result = True
     error = ''
     output = ''
@@ -117,7 +118,7 @@ curses.init_pair(3,curses.COLOR_GREEN, curses.COLOR_BLUE) # Sets up color pair w
 
 curses.init_pair(4,curses.COLOR_BLUE, curses.COLOR_WHITE) # Sets up color pair OK
 curses.init_pair(5,curses.COLOR_RED , curses.COLOR_WHITE) # Sets up color pair Log
-curses.init_pair(5,curses.COLOR_BLACK, curses.COLOR_WHITE) # Sets up color pair Log
+curses.init_pair(6,curses.COLOR_BLACK, curses.COLOR_WHITE) # Sets up color pair Log
 
 col_info     = curses.color_pair(1)
 col_info_err = curses.color_pair(2)
@@ -144,10 +145,9 @@ statwin = curses.newwin( height, width , posy, posx)
 # ================================
 # Define log window
 # ================================
-logwin_curpos = 4
 logwin_scroll_area=32767
 logwin_width = curses.COLS - 8
-logwin = curses.newpad(logwin_scroll_area, logwin_width )
+logwin = curses.newpad(logwin_scroll_area, logwin_width)
 logwin.scrollok(True)
 logwin_dwidth = curses.COLS - 4
 logwin_dheight = curses.LINES - 10
@@ -164,7 +164,7 @@ logwin_posy = 12
 # pad.refresh( 0,0, 5,5, 20,75)
 logwin.bkgd(' ', col_log)
 logwin.addstr("Starting install", col_log)
-logwin.refresh(logwin_curpos, 0, logwin_posy, logwin_posx, logwin_dheight, logwin_dwidth )
+logwin.refresh(0, 0, logwin_posy, logwin_posx, logwin_dheight, logwin_dwidth)
 
 
 # ================================
@@ -384,10 +384,12 @@ def install_kiwix():
                     latest_release = links.text
                     break
     latest_release_name = latest_release[47:-7]
-    statwin.addstr(6, 20,"latest_release:" + latest_release_name )
+    statwin.addstr(7, 20,"latest_release:" + latest_release_name)
     statwin.refresh()
     # get release for Linux-armhf from mirror
+    display_log("Downloading kiwix-tools...")
     sudo("curl -s https://ftp.nluug.nl/pub/kiwix/release/kiwix-tools/" + latest_release_name + ".tar.gz | tar xz -C /home/pi/", "Unable to get latest kiwix release (https://ftp.nluug.nl/pub/kiwix/release/kiwix-tools/" + latest_release_name + ")")
+    display_log("Done", col_log_ok)
     # Make kiwix application folder
     sudo("mkdir -p /var/kiwix/bin", "Unable to make create kiwix directories")
     # Copy files we need from the toolset
@@ -400,6 +402,29 @@ def install_kiwix():
     sudo("chmod +x /var/kiwix/bin/kiwix-start.pl", "Unable to set permissions on dean-kiwix-start wrapper")
     cp("./files/kiwix/kiwix-service", "/etc/init.d/kiwix", "Unable to install kiwix service")
     sudo("chmod +x /etc/init.d/kiwix", "Unable to set permissions on kiwix service.")
+    cp("./files/kiwix/kiwix.service", "/etc/systemd/system/kiwix.service", "Unable to copy kiwix systemd service file")
+
+    def latest_zim_package(url, package):
+        with urllib.request.urlopen(url) as response:
+            html = response.read().decode('utf-8')
+            versions = re.findall(package + "\d{4}-\d{2}.zim", html)
+            versions.sort()
+            #the last entry is the newest version
+            return versions[-1]
+
+    #download two sample wikis
+    url_vikidia = "https://ftp.nluug.nl/pub/kiwix/zim/vikidia/"
+    package_vikidia = latest_zim_package(url_vikidia, "vikidia_en_all_nopic_")
+    display_log("Downloading {}...".format(package_vikidia))
+    sudo("curl --silent {}{} --output /var/kiwix/bin/{}".format(url_vikidia, package_vikidia, package_vikidia), "unable to download {}{}".format(url_vikidia, package_vikidia))
+    display_log("Done", col_log_ok)
+
+    url_wiktionary = "https://ftp.nluug.nl/pub/kiwix/zim/wiktionary/"
+    package_wiktionary = latest_zim_package(url_wiktionary, "wiktionary_en_simple_all_nopic_")
+    display_log("Downloading {}...".format(package_wiktionary))
+    sudo("curl --silent {}{} --output /var/kiwix/bin/{}".format(url_wiktionary, package_wiktionary, package_wiktionary), "unable to download {}{}".format(url_wiktionary, package_wiktionary))
+    display_log("Done", col_log_ok)
+
     # Create service
     sudo("update-rc.d kiwix defaults", "Unable to register the kiwix service.")
     sudo("systemctl daemon-reload", "systemctl daemon reload failed")
@@ -410,7 +435,7 @@ def install_kiwix():
     # setup NGINX site
     cp("./files/nginx/wiki.local", "/etc/nginx/sites-available/", "Unable to copy file wiki.local (nginx)")
     # Enable site
-    cp("ln -s /etc/nginx/sites-available/wiki.local /etc/nginx/sites-enabled/wiki.local", "Unable to enable file wiki.local (nginx)")
+    sudo("ln --symbolic --force /etc/nginx/sites-available/wiki.local /etc/nginx/sites-enabled/wiki.local", "Unable to enable file wiki.local (nginx)")
     # restart NGINX service 
     sudo("systemctl restart nginx", "Unable to restart nginx")
     return True
@@ -472,7 +497,7 @@ def create_img():
 def sudo(s, error_msg = False):
     result = cmd("sudo DEBIAN_FRONTEND=noninteractive %s" % s)
     if error_msg and not result.result:
-        die(error_msg)
+        die(error_msg, result)
     return result 
 
 # ================================
@@ -486,12 +511,14 @@ def abort(msg):
 # ================================
 # die command (error exit)
 # ================================
-def die(msg):
+def die(msg, cmd_result=None):
     # End cusrses mode
     curses.endwin()
     
     # display error
     print("Error: " + str(msg))
+    if cmd_result:
+        print(cmd_result.error)
     sys.exit(1)
 
 # ================================
@@ -499,7 +526,7 @@ def die(msg):
 # ================================
 def cmd(run_cmd):
     # initialize result
-    cmd_result=cmdResult 
+    cmd_result=CmdResult()
     # Execute command, PY 2.4 - 2.6
     result = subprocess.Popen(run_cmd, shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, close_fds=True)
     # result = subprocess.check_output(c, shell=True, stdin=subprocess.PIPE, stderr=subprocess.PIPE, close_fds=True)
@@ -521,7 +548,9 @@ def exists(p):
 # Copy command
 # ================================    
 def cp(source_file, destination_file, err_msg=False):
-    if localinstaller():
+    if source_file.startswith("/"):
+        sudo("cp {} {}".format(source_file, destination_file), err_msg)
+    elif localinstaller():
         sudo("cp %s/%s %s" % (basedir(), source_file, destination_file), err_msg)
     else:
         sudo("cp %s/%s %s" % (basedir() + "/build_elimupi", source_file, destination_file), err_msg)
@@ -537,7 +566,7 @@ def basedir():
         return bindir
 
 def localinstaller():
-    if exists( basedir() + "./files"):
+    if exists( basedir() + "/files"):
         return True
     else:
         return False 
@@ -700,7 +729,7 @@ def PHASE0():
     statwin.addstr( 4,3, "?" , col_info)
     statwin.refresh()
     if localinstaller():
-        print("Using local files ")
+        display_log("Using local files")
     else:
         result = sudo("rm -fr " + basedir() + "/build_elimupi", "Unable to update.")
           
@@ -846,7 +875,7 @@ def PHASE1():
         statwin.addstr( 6, 3, "*" , col_info_ok)
         statwin.refresh()
     else:
-        statwin.addstr( 5, 3, "-" , col_info)
+        statwin.addstr( 6, 3, "-" , col_info)
         statwin.refresh()
     
     # ================================
@@ -879,14 +908,16 @@ def PHASE1():
     # ================================
     # Final messages
     # ================================
-    print("ELIMUPI image has been successfully created.")
-    print("It can be accessed at: http://" + base_ip + "/")
+    display_log("ELIMUPI image has been successfully created.", col_log_ok)
+    display_log("It can be accessed at: http://" + base_ip + "/", col_log_ok)
 
     # ================================
     # Reboot
     # ================================
     if yes_or_no("Reboot for normal operation", 8):
         sudo("reboot", "Unable to reboot Raspbian.")
+    else:
+        abort("Installation successful, please reboot")
 
 # ================================
 # infowin display
@@ -916,17 +947,13 @@ def display_status():
 # ================================
 # log display
 # ================================
-def display_log(str):
-    global logwin_curpos
-    #print(str)
-    nlines = str.count('\n')
-    logwin_curpos = logwin_curpos  + nlines
-    curpos = 0 # logwin_curpos + nlines
-    if logwin_curpos > logwin_dheight:
-        curpos = logwin_curpos - logwin_dheight        
-    logwin.addstr(">" + str)
-    logwin.refresh(curpos, 0, logwin_posy  , logwin_posx , logwin_dheight, logwin_dwidth )
-    print(curpos)
+def display_log(message, attribute=col_log):
+    message_string = str(message)
+    current_y_pos = logwin.getyx()[0]
+    logwin.addstr(current_y_pos + 1, 0, "> " + message_string, attribute)
+    current_y_pos = logwin.getyx()[0]
+    logwin.refresh(current_y_pos - (logwin_dheight - logwin_posy), 0, logwin_posy  , logwin_posx , logwin_dheight, logwin_dwidth )
+
 # ================================
 # Add locales for en_GB and sw_KE to environment
 # ================================
@@ -958,7 +985,7 @@ install_data = {
 # ================================
 if os.path.isfile(base_build + '_install'):
     logwin.addstr
-    print("Continue install after reboot")
+    display_log("Continue install after reboot")
     # get phase
     install_phase = open(base_build + '_install').read()
 else: 
@@ -990,8 +1017,7 @@ if   install_phase == "0":
 elif install_phase == "1":
     PHASE1()
 else: 
-    print("Invallid installer state")
-    die('Installation aborted')
+    die("Invalid installer state, installation aborted")
 
 curses.endwin() #VITAL! This closes out the menu system and returns you to the bash prompt.
 os.system('clear')
