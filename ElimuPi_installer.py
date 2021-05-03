@@ -247,12 +247,26 @@ def install_wifi():
 # Install Moodle components
 # ================================
 def install_moodle():
+    # quick install guide: https://docs.moodle.org/310/en/Installation_quick_guide
+    # full install guide: https://docs.moodle.org/310/en/Installing_Moodle
+
     # Install MariaDB or =MySQL 
-    sudo("apt-get install -y mariadb-server","Unable to install MariadbServer") 
+    display_log("Installing mariadb-server...")
+    sudo("apt-get install -y mariadb-server","Unable to install MariadbServer")
+    display_log("Done", col_log_ok)
 	# Determine last stable version (now fixed at 311)
-    sudo("sed -i 's//var\/run\/usbmount\/Content\/moodledb' /etc/mysql/mariadb.conf.d/nano 50-server.cnf","Unable to set mariadb folder")
-    # Restart DBserver
+    # sudo("sed -i 's//var\/run\/usbmount\/Content\/moodledb' /etc/mysql/mariadb.conf.d/nano 50-server.cnf","Unable to set mariadb folder")
+    # Start and enable DBserver
+    display_log("Configuring mariadb-server...")
+    sudo("systemctl enable mariadb.service","Unable to enable DB")
     sudo("systemctl restart mariadb.service","Unable to restart DB")
+    # copy the sql files
+    sudo("mkdir --parents /var/moodle/sql", "Unable to create /var/moodle/sql")
+    cp("files/moodle/sql/01-create-database.sql", "/var/moodle/sql", "Unable to copy 01-create-database.sql")
+    cp("files/moodle/sql/02-create-user.sql", "/var/moodle/sql", "Unable to copy 02-create-user.sql")
+    # execute the required database commands
+    sudo("cat /var/moodle/sql/*.sql | sudo mysql")
+    display_log("Done", col_log_ok)
     # /etc/systemd/system/mysqld.service
     # LimitNOFILE=16384
 
@@ -260,7 +274,7 @@ def install_moodle():
     # Create/setup default user
     
     # Add PHP mySQL support (mariaDB)
-    sudo("apt-get install php-mysql -y","Unable to install NGINX")
+    sudo("apt-get install php-mysql -y","Unable to install php-mysql")
     # /etc/php/7.3/fpm/php.ini
     # use /var/moodle for install
     sudo("git clone -b MOODLE_310_STABLE git://git.moodle.org/moodle.git /var/moodle", "Unable to clone Moodle")  
