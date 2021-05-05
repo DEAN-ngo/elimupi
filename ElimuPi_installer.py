@@ -282,10 +282,15 @@ def install_moodle():
     # Create/setup default user
     
     # Add PHP mySQL support (mariaDB)
-    display_log("Installing php and tools...")
+    display_log("Installing PHP and tools...")
     sudo("apt-get install php-fpm php-mysql php -y","Unable to install php-fpm, php-mysql or php")
     display_log("Done", col_log_ok)
     # /etc/php/7.3/fpm/php.ini
+
+    # Install PHP extensions
+    display_log("Installing PHP extensions...")
+    sudo("apt-get install php-curl php-mbstring php-zip php-gd php-intl php-xmlrpc php-soap -y","Unable to install PHP extensions")
+    display_log("Done", col_log_ok)
 
     # use /var/moodle for install
     sudo("rm --force --recursive /var/moodle")
@@ -323,10 +328,9 @@ def install_moodle():
     sudo("systemctl restart nginx", "Unable to restart nginx")
     
 
-    # sudo -u www-data /usr/bin/php install.php
-    display_log("Installing Moodle (this can take up to 30 minutes)...")
-    #sudo("-u www-data /usr/bin/php /var/moodle/admin/cli/install.php", "Unable to install moodle")
-    display_log("Done", col_log_ok)
+    # We don't need to run the install script, as the config.php is already created above.
+    # The local administrator should visit http://www.moodle.local first to setup the admin account, otherwise that account might be hijacked by students.
+    # sudo("-u www-data /usr/bin/php /var/moodle/admin/cli/install.php", "Unable to install moodle")
 
     
     # see https://docs.moodle.org/310/en/Installing_Moodle
