@@ -292,17 +292,20 @@ def install_moodle():
     display_log("Downloading Moodle...")
     sudo("git clone -b MOODLE_310_STABLE git://git.moodle.org/moodle.git /var/moodle", "Unable to clone Moodle")
     display_log("Done", col_log_ok)
-    sudo("chown --recursive root /var/moodle","Unable to set moodle permissions")
-    sudo("chmod --recursive 0755 /var/moodle","Unable to set moodle permissions")
+    # chown -R root /path/to/moodle
+    sudo("chown --recursive root /var/moodle", "Unable to set moodle permissions")
+    sudo("chmod --recursive 0755 /var/moodle", "Unable to set moodle permissions")
     
     # edit config.php to use mariadb
     #   $CFG->dbtype    = 'mariadb'; 
     #   $CFG->dblibrary = 'native';
-    # cp("/var/moodle/config-dist.php", "/var/moodle/config.php")
-    # Set correct database
-    sudo("sed -i 's/pgsql/mariadb/' /var/moodle/config-dist.php", "Unable to update moodle configuration (config.php)")
-    sudo("sed -i 's/example.com\/moodle/www.moodle.local/' /var/moodle/config-dist.php", "Unable to update moodle configuration (config.php)")
-    sudo("sed -i 's/\/home\/example\/moodledata/{}\/Content\/moodledata/' /var/moodle/config-dist.php".format(content_prefix_escaped), "Unable to update moodle configuration (config.php)")
+    cp("/var/moodle/config-dist.php", "/var/moodle/config.php")
+    # Configure Moodle
+    sudo("sed --in-place \"s/\'pgsql\'\;/\'mariadb\'\;/\" /var/moodle/config.php", "Unable to update moodle configuration database(config.php)")
+    sudo("sed --in-place \"s/\'username\'\;/\'elimu\'\;/\" /var/moodle/config.php", "Unable to update moodle configuration username (config.php)")
+    sudo("sed --in-place \"s/\'password\'\;/\'elimu\'\;/\" /var/moodle/config.php", "Unable to update moodle configuration password (config.php)")
+    sudo("sed --in-place 's/example.com\/moodle/www.moodle.local/' /var/moodle/config.php", "Unable to update moodle configuration url (config.php)")
+    sudo("sed --in-place 's/\/home\/example\/moodledata/{}\/Content\/moodledata/' /var/moodle/config.php".format(content_prefix_escaped), "Unable to update moodle configuration content (config.php)")
     
     # create moodle data folder on content disk (!)
     sudo("mkdir --parents {}/Content/moodledata".format(content_prefix), "Unable to create Moodle folder")
@@ -318,9 +321,12 @@ def install_moodle():
     sudo("ln --symbolic --force /etc/nginx/sites-available/moodle.local /etc/nginx/sites-enabled/moodle.local", "Unable to copy file wiki.local (nginx)")
     # restart NGINX service 
     sudo("systemctl restart nginx", "Unable to restart nginx")
+    
+
     # sudo -u www-data /usr/bin/php install.php
-    sudo("-u www-data /usr/bin/php /var/moodle/admin/cli/install.php","Unable to install moodle")
-    # chown -R root /path/to/moodle
+    display_log("Installing Moodle (this can take up to 30 minutes)...")
+    #sudo("-u www-data /usr/bin/php /var/moodle/admin/cli/install.php", "Unable to install moodle")
+    display_log("Done", col_log_ok)
 
     
     # see https://docs.moodle.org/310/en/Installing_Moodle
@@ -942,7 +948,7 @@ def PHASE1():
     # ================================
     # Reboot
     # ================================
-    if yes_or_no("Reboot for normal operation", 8):
+    if yes_or_no("Reboot for normal operation", 9):
         sudo("reboot", "Unable to reboot Raspbian.")
     else:
         abort("Installation successful, please reboot")
