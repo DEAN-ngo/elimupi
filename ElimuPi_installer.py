@@ -327,6 +327,9 @@ def install_moodle():
     # restart NGINX service 
     sudo("systemctl restart nginx", "Unable to restart nginx")
     
+    # Setup cron job
+    cp("files/moodle/cron.txt", "/var/moodlesql", "Unable to copy Moodle cron file")
+    sudo("crontab -u www-data /var/moodlesql/cron.txt", "Unable to setup cron for Moodle")
 
     # We don't need to run the install script, as the config.php is already created above.
     # The local administrator should visit http://www.moodle.local first to setup the admin account, otherwise that account might be hijacked by students.
