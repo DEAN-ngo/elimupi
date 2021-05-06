@@ -247,12 +247,34 @@ def install_wifi():
 # Install Moodle components
 # ================================
 def install_moodle():
+    # quick install guide: https://docs.moodle.org/310/en/Installation_quick_guide
+    # full install guide: https://docs.moodle.org/310/en/Installing_Moodle
+
+    if exists("/var/run/usbmount"):
+        content_prefix = "/var/run/usbmount"
+        content_prefix_escaped = "\/var\/run\/usbmount"
+    else:
+        sudo("mkdir --parents /var/moodlecontent")
+        content_prefix = "/var/moodlecontent"
+        content_prefix_escaped = "\/var\/moodlecontent"
+
     # Install MariaDB or =MySQL 
-    sudo("apt-get install -y mariadb-server","Unable to install MariadbServer") 
+    display_log("Installing mariadb-server...")
+    sudo("apt-get install -y mariadb-server","Unable to install MariadbServer")
+    display_log("Done", col_log_ok)
 	# Determine last stable version (now fixed at 311)
-    sudo("sed -i 's//var\/run\/usbmount\/Content\/moodledb' /etc/mysql/mariadb.conf.d/nano 50-server.cnf","Unable to set mariadb folder")
-    # Restart DBserver
+    # sudo("sed -i 's//var\/run\/usbmount\/Content\/moodledb' /etc/mysql/mariadb.conf.d/nano 50-server.cnf","Unable to set mariadb folder")
+    # Start and enable DBserver
+    display_log("Configuring mariadb-server...")
+    sudo("systemctl enable mariadb.service","Unable to enable DB")
     sudo("systemctl restart mariadb.service","Unable to restart DB")
+    # copy the sql files
+    sudo("mkdir --parents /var/moodlesql", "Unable to create /var/moodlesql")
+    cp("files/moodle/sql/01-create-database.sql", "/var/moodlesql", "Unable to copy 01-create-database.sql")
+    cp("files/moodle/sql/02-create-user.sql", "/var/moodlesql", "Unable to copy 02-create-user.sql")
+    # execute the required database commands
+    sudo("cat /var/moodlesql/*.sql | sudo mysql")
+    display_log("Done", col_log_ok)
     # /etc/systemd/system/mysqld.service
     # LimitNOFILE=16384
 
@@ -260,39 +282,58 @@ def install_moodle():
     # Create/setup default user
     
     # Add PHP mySQL support (mariaDB)
-    sudo("apt-get install php-mysql -y","Unable to install NGINX")
+    display_log("Installing PHP and tools...")
+    sudo("apt-get install php-fpm php-mysql php -y","Unable to install php-fpm, php-mysql or php")
+    display_log("Done", col_log_ok)
     # /etc/php/7.3/fpm/php.ini
+
+    # Install PHP extensions
+    display_log("Installing PHP extensions...")
+    sudo("apt-get install php-curl php-mbstring php-zip php-gd php-intl php-xmlrpc php-soap -y","Unable to install PHP extensions")
+    display_log("Done", col_log_ok)
+
     # use /var/moodle for install
-    sudo("git clone -b MOODLE_310_STABLE git://git.moodle.org/moodle.git /var/moodle", "Unable to clone Moodle")  
-    sudo("chown -R root /var/moodle","Unable to set moodle permissions")
-    sudo("chmod -R 0755 /var/moodle","Unable to set moodle permissions")
+    sudo("rm --force --recursive /var/moodle")
+    display_log("Downloading Moodle...")
+    sudo("git clone -b MOODLE_310_STABLE git://git.moodle.org/moodle.git /var/moodle", "Unable to clone Moodle")
+    display_log("Done", col_log_ok)
+    # chown -R root /path/to/moodle
+    sudo("chown --recursive root /var/moodle", "Unable to set moodle permissions")
+    sudo("chmod --recursive 0755 /var/moodle", "Unable to set moodle permissions")
     
     # edit config.php to use mariadb
     #   $CFG->dbtype    = 'mariadb'; 
     #   $CFG->dblibrary = 'native';
     cp("/var/moodle/config-dist.php", "/var/moodle/config.php")
-    # Set correct database
-    sudo("sed -i 's/pgsql/mariadb/' /var/moodle/config.php", "Unable to update moodle configuration (config.php)")
-    sudo("sed -i 's/example.com\/moodle/www.moodle.local/' /var/moodle/config.php", "Unable to update moodle configuration (config.php)")
-    sudo("sed -i 's/\/home\/example\/moodledata/\/var\/run\/usbmount\/Content\/moodledata/' /var/moodle/config.php", "Unable to update moodle configuration (config.php)")
+    # Configure Moodle
+    sudo("sed --in-place \"s/\'pgsql\'\;/\'mariadb\'\;/\" /var/moodle/config.php", "Unable to update moodle configuration database(config.php)")
+    sudo("sed --in-place \"s/\'username\'\;/\'elimu\'\;/\" /var/moodle/config.php", "Unable to update moodle configuration username (config.php)")
+    sudo("sed --in-place \"s/\'password\'\;/\'elimu\'\;/\" /var/moodle/config.php", "Unable to update moodle configuration password (config.php)")
+    sudo("sed --in-place 's/example.com\/moodle/www.moodle.local/' /var/moodle/config.php", "Unable to update moodle configuration url (config.php)")
+    sudo("sed --in-place 's/\/home\/example\/moodledata/{}\/Content\/moodledata/' /var/moodle/config.php".format(content_prefix_escaped), "Unable to update moodle configuration content (config.php)")
     
     # create moodle data folder on content disk (!)
-    sudo("mkdir /var/run/usbmount/Content/moodledata","Unable to create Moodle folder")
+    sudo("mkdir --parents {}/Content/moodledata".format(content_prefix), "Unable to create Moodle folder")
     # Set default permissions
-    sudo("chmod 0777 /var/run/usbmount/Content/moodledata","Unable to set rights on Moodle folder")
+    sudo("chmod 0777 {}/Content/moodledata".format(content_prefix), "Unable to set rights on Moodle folder")
     # Set owner
-    sudo("chown www-data /var/run/usbmount/Content/moodledata","Unable to set owner of Moodle folder")
+    sudo("chown www-data {}/Content/moodledata".format(content_prefix), "Unable to set owner of Moodle folder")
     # chown www-data /path/to/moodle
     # cd /path/to/moodle/admin/cli
     # Copy moodle site settings
-    cp("./files/nginx/moodle.local", "/etc/nginx/sites-available/", "Unable to copy file moodle.local (nginx)")
+    cp("files/nginx/moodle.local", "/etc/nginx/sites-available/", "Unable to copy file moodle.local (nginx)")
     # Enable moodle site
-    cp("ln -s /etc/nginx/sites-available/moodle.local /etc/nginx/sites-enabled/moodle.local", "Unable to copy file wiki.local (nginx)")
+    sudo("ln --symbolic --force /etc/nginx/sites-available/moodle.local /etc/nginx/sites-enabled/moodle.local", "Unable to copy file wiki.local (nginx)")
     # restart NGINX service 
     sudo("systemctl restart nginx", "Unable to restart nginx")
-    # sudo -u www-data /usr/bin/php install.php
-    sudo("-u www-data /usr/bin/php /var/moodle/admin/cli/install.php","Unable to install moodle")
-    # chown -R root /path/to/moodle
+    
+    # Setup cron job
+    cp("files/moodle/cron.txt", "/var/moodlesql", "Unable to copy Moodle cron file")
+    sudo("crontab -u www-data /var/moodlesql/cron.txt", "Unable to setup cron for Moodle")
+
+    # We don't need to run the install script, as the config.php is already created above.
+    # The local administrator should visit http://www.moodle.local first to setup the admin account, otherwise that account might be hijacked by students.
+    # sudo("-u www-data /usr/bin/php /var/moodle/admin/cli/install.php", "Unable to install moodle")
 
     
     # see https://docs.moodle.org/310/en/Installing_Moodle
@@ -391,7 +432,7 @@ def install_kiwix():
     sudo("curl -s https://ftp.nluug.nl/pub/kiwix/release/kiwix-tools/" + latest_release_name + ".tar.gz | tar xz -C /home/pi/", "Unable to get latest kiwix release (https://ftp.nluug.nl/pub/kiwix/release/kiwix-tools/" + latest_release_name + ")")
     display_log("Done", col_log_ok)
     # Make kiwix application folder
-    sudo("mkdir -p /var/kiwix/bin", "Unable to make create kiwix directories")
+    sudo("mkdir --parents /var/kiwix/bin", "Unable to make create kiwix directories")
     # Copy files we need from the toolset
     cp("/home/pi/" + latest_release_name + "/kiwix-manage", "/var/kiwix/bin/", "Unable to copy kiwix-manage")
     cp("/home/pi/" + latest_release_name + "/kiwix-read", "/var/kiwix/bin/", "Unable to copy kiwix-read")
@@ -914,7 +955,7 @@ def PHASE1():
     # ================================
     # Reboot
     # ================================
-    if yes_or_no("Reboot for normal operation", 8):
+    if yes_or_no("Reboot for normal operation", 9):
         sudo("reboot", "Unable to reboot Raspbian.")
     else:
         abort("Installation successful, please reboot")
