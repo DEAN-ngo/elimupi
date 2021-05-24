@@ -230,6 +230,7 @@ def install_wifi():
     sudo("ifconfig {}".format(base_wifi, base_ip), "Unable to set wlan0 IP address (" + base_ip + ")")
 
     #start & enable hostapd, udhcpd
+    sudo("systemctl unmask hostapd", "Unable to unmask hostapd service")
     sudo("service hostapd start", "Unable to start hostapd service.")
     sudo("service udhcpd start", "Unable to start udhcpd service.")
     sudo("update-rc.d hostapd enable", "Unable to enable hostapd on boot.")
@@ -925,7 +926,7 @@ def PHASE1():
     statwin.addstr( 7, 3, "?" , col_info)
     statwin.refresh()
     install_kiwix()
-    statwin.addstr( 7, 3, "-" , col_info)
+    statwin.addstr( 7, 3, "*" , col_info)
     statwin.refresh()
 
     # ================================
