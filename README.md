@@ -37,7 +37,9 @@ Installation
 
 *Please note that this will change the 'pi' user's password to: elimupi 
 
-7. After the reboot the installation will continue
+7. After the reboot, cconnect to the Raspberry Pi through SSH again and continue the installation by running `python3 ElimuPi_installer.py` again. 
+
+8. After another reboot, the Raspberry Pi is ready for use! 
 
 All default username and passwords will be elimupi/elimupi unless noted differently. 
 
@@ -46,9 +48,10 @@ The default password for the wifi 'elimu' is : 1234567890
 The end users can access the available resources after they are connected to the Wifi network.
 
 The following links are provided to access the resources:
-- Khan Academy - www.khan.local
-- Kiwix - www.wiki.local
-- files - www.files.local
+- Khan Academy - http://www.khan.local
+- Kiwix - http://www.wiki.local
+- Moodle: http://www.moodle.local
+- files - http://www.files.local
 
 After you finished the installation you need to visit khan.local and create an Admin account. 
 
@@ -61,7 +64,7 @@ Then you need to login with the Admin account and go to Manage --> "Please follo
 
 *NOTE3: If using  PUTTY set the setting 'window'->'translation'->'Remote Character Set' to 'use font encoding' to display the lines correctly.
 
-Last updated : 2021/02/06 
+Last updated : 2021/05/24 
 
 Applicable Licenses: See licenses file. 
 
