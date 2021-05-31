@@ -426,6 +426,8 @@ def install_ka_languague():
 # Kiwix install
 # ================================
 def install_kiwix():
+    wiki_content_directory = "{}/wiki".format(content_directory)
+
     # Get release rss data from mirror
     file = urllib.request.urlopen('https://ftp.nluug.nl/pub/kiwix/release/kiwix-tools/feed.xml')
     data = file.read()
@@ -466,19 +468,28 @@ def install_kiwix():
             versions.sort()
             #the last entry is the newest version
             return versions[-1]
+    
+    def any_zim_file_present():
+        for file_to_check in os.listdir(wiki_content_directory):
+            if file_to_check.endswith(".zim"): return True
+        return False
 
-    #download two sample wikis
-    url_vikidia = "https://ftp.nluug.nl/pub/kiwix/zim/vikidia/"
-    package_vikidia = latest_zim_package(url_vikidia, "vikidia_en_all_nopic_")
-    display_log("Downloading {}...".format(package_vikidia))
-    sudo("curl --silent {}{} --output /var/kiwix/bin/{}".format(url_vikidia, package_vikidia, package_vikidia), "unable to download {}{}".format(url_vikidia, package_vikidia))
-    display_log("Done", col_log_ok)
+    # Create content directory in case it does not exist yet
+    sudo("mkdir --parents {}".format(wiki_content_directory))
 
-    url_wiktionary = "https://ftp.nluug.nl/pub/kiwix/zim/wiktionary/"
-    package_wiktionary = latest_zim_package(url_wiktionary, "wiktionary_en_simple_all_nopic_")
-    display_log("Downloading {}...".format(package_wiktionary))
-    sudo("curl --silent {}{} --output /var/kiwix/bin/{}".format(url_wiktionary, package_wiktionary, package_wiktionary), "unable to download {}{}".format(url_wiktionary, package_wiktionary))
-    display_log("Done", col_log_ok)
+    # Download two sample wikis if no content already exists
+    if not any_zim_file_present():
+        url_vikidia = "https://ftp.nluug.nl/pub/kiwix/zim/vikidia/"
+        package_vikidia = latest_zim_package(url_vikidia, "vikidia_en_all_nopic_")
+        display_log("Downloading {}...".format(package_vikidia))
+        sudo("curl --silent {}{} --output {}/{}".format(url_vikidia, package_vikidia, wiki_content_directory, package_vikidia), "Unable to download {}{}".format(url_vikidia, package_vikidia))
+        display_log("Done", col_log_ok)
+
+        url_wiktionary = "https://ftp.nluug.nl/pub/kiwix/zim/wiktionary/"
+        package_wiktionary = latest_zim_package(url_wiktionary, "wiktionary_en_simple_all_nopic_")
+        display_log("Downloading {}...".format(package_wiktionary))
+        sudo("curl --silent {}{} --output {}/{}".format(url_wiktionary, package_wiktionary, wiki_content_directory, package_wiktionary), "Unable to download {}{}".format(url_wiktionary, package_wiktionary))
+        display_log("Done", col_log_ok)
 
     # Create service
     sudo("update-rc.d kiwix defaults", "Unable to register the kiwix service.")
