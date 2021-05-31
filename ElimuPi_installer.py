@@ -299,7 +299,7 @@ def install_moodle():
 
     # Install PHP extensions
     display_log("Installing PHP extensions...")
-    sudo("apt-get install php-curl php-mbstring php-zip php-gd php-intl php-xmlrpc php-soap -y","Unable to install PHP extensions")
+    sudo("apt-get install php-xml php-curl php-mbstring php-zip php-gd php-intl php-xmlrpc php-soap -y","Unable to install PHP extensions")
     display_log("Done", col_log_ok)
 
     # use /var/moodle for install
@@ -856,7 +856,7 @@ def PHASE1():
     # ================================
     # Ask to continue
     # ================================
-    if not yes_or_no("Do you want to continue the install the ElimuPi build"):
+    if not yes_or_no("Do you want to continue to install the ElimuPi build"):
         die('Installation aborted')
 
     statwin.addstr(1,2,"[ ] Update to latest OS")
