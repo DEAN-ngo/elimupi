@@ -37,6 +37,8 @@ import re
 from time import sleep
 # from __builtins__ import true
 
+content_directory = "/content"
+
 # ================================
 # Settings for build
 # ================================
@@ -175,6 +177,17 @@ posy = curses.LINES - 9
 infowin = curses.newwin(height, width , posy , posx) # 
 infowin.bkgd(' ', col_info)
 infowin.border(0)
+
+# ================================
+# Configure content disk to mount at boot 
+# ================================
+def add_content_disk_to_fstab():
+    with open("/etc/fstab") as fstab_readable:
+        fstab_content = fstab_readable.read()
+        if not "LABEL=Content" in fstab_content:
+            sudo("echo 'LABEL=Content /content ntfs defaults,noatime 0 0' | sudo tee --append /etc/fstab", "Could not add content disk to /etc/fstab")
+    return True
+
 
 # ================================
 # Install USB mounter 
@@ -805,6 +818,8 @@ def PHASE0():
     statwin.refresh()
     if not install_usbmount():
         die("Unable to install usbmount")
+    add_content_disk_to_fstab()
+    sudo("mount --all", "Could not mount content disk")
     statwin.addstr( 6,3, "*" , col_info_ok)
     statwin.refresh()
 
