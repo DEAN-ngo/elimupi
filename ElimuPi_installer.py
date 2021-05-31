@@ -264,13 +264,9 @@ def install_moodle():
     # quick install guide: https://docs.moodle.org/310/en/Installation_quick_guide
     # full install guide: https://docs.moodle.org/310/en/Installing_Moodle
 
-    if exists("/var/run/usbmount"):
-        content_prefix = "/var/run/usbmount"
-        content_prefix_escaped = "\/var\/run\/usbmount"
-    else:
-        sudo("mkdir --parents /var/moodlecontent")
-        content_prefix = "/var/moodlecontent"
-        content_prefix_escaped = "\/var\/moodlecontent"
+    moodle_content_directory = "{}/moodlecontent".format(content_directory)
+    moodle_content_directory_escaped = moodle_content_directory.replace("/", "\/")
+    sudo("mkdir --parents {}".format(moodle_content_directory), "Unable to create Moodle folder")
 
     # Install MariaDB or =MySQL 
     display_log("Installing mariadb-server...")
@@ -324,14 +320,12 @@ def install_moodle():
     sudo("sed --in-place \"s/\'username\'\;/\'elimu\'\;/\" /var/moodle/config.php", "Unable to update moodle configuration username (config.php)")
     sudo("sed --in-place \"s/\'password\'\;/\'elimu\'\;/\" /var/moodle/config.php", "Unable to update moodle configuration password (config.php)")
     sudo("sed --in-place 's/example.com\/moodle/www.moodle.local/' /var/moodle/config.php", "Unable to update moodle configuration url (config.php)")
-    sudo("sed --in-place 's/\/home\/example\/moodledata/{}\/Content\/moodledata/' /var/moodle/config.php".format(content_prefix_escaped), "Unable to update moodle configuration content (config.php)")
+    sudo("sed --in-place 's/\/home\/example\/moodledata/{}/' /var/moodle/config.php".format(moodle_content_directory_escaped), "Unable to update moodle configuration content (config.php)")
     
-    # create moodle data folder on content disk (!)
-    sudo("mkdir --parents {}/Content/moodledata".format(content_prefix), "Unable to create Moodle folder")
     # Set default permissions
-    sudo("chmod 0777 {}/Content/moodledata".format(content_prefix), "Unable to set rights on Moodle folder")
+    sudo("chmod 0777 {}".format(moodle_content_directory), "Unable to set rights on Moodle folder")
     # Set owner
-    sudo("chown www-data {}/Content/moodledata".format(content_prefix), "Unable to set owner of Moodle folder")
+    sudo("chown www-data {}".format(moodle_content_directory), "Unable to set owner of Moodle folder")
     # chown www-data /path/to/moodle
     # cd /path/to/moodle/admin/cli
     # Copy moodle site settings
@@ -352,7 +346,6 @@ def install_moodle():
     
     # see https://docs.moodle.org/310/en/Installing_Moodle
 	#	  https://docs.moodle.org/310/en/Administration_via_command_line#Installation
-	# Create database (mariadb)
 	
 	# Moodle command line tools for Web Gui : https://moosh-online.com/commands/ 
     return True
