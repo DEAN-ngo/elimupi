@@ -37,6 +37,8 @@ import re
 from time import sleep
 # from __builtins__ import true
 
+content_directory = "/content"
+
 # ================================
 # Settings for build
 # ================================
@@ -177,6 +179,17 @@ infowin.bkgd(' ', col_info)
 infowin.border(0)
 
 # ================================
+# Configure content disk to mount at boot 
+# ================================
+def add_content_disk_to_fstab():
+    with open("/etc/fstab") as fstab_readable:
+        fstab_content = fstab_readable.read()
+        if not "LABEL=Content" in fstab_content:
+            sudo("echo 'LABEL=Content /content ntfs defaults,noatime 0 0' | sudo tee --append /etc/fstab", "Could not add content disk to /etc/fstab")
+    return True
+
+
+# ================================
 # Install USB mounter 
 # ================================
 def install_usbmount():
@@ -230,6 +243,7 @@ def install_wifi():
     sudo("ifconfig {}".format(base_wifi, base_ip), "Unable to set wlan0 IP address (" + base_ip + ")")
 
     #start & enable hostapd, udhcpd
+    sudo("systemctl unmask hostapd", "Unable to unmask hostapd service")
     sudo("service hostapd start", "Unable to start hostapd service.")
     sudo("service udhcpd start", "Unable to start udhcpd service.")
     sudo("update-rc.d hostapd enable", "Unable to enable hostapd on boot.")
@@ -250,13 +264,9 @@ def install_moodle():
     # quick install guide: https://docs.moodle.org/310/en/Installation_quick_guide
     # full install guide: https://docs.moodle.org/310/en/Installing_Moodle
 
-    if exists("/var/run/usbmount"):
-        content_prefix = "/var/run/usbmount"
-        content_prefix_escaped = "\/var\/run\/usbmount"
-    else:
-        sudo("mkdir --parents /var/moodlecontent")
-        content_prefix = "/var/moodlecontent"
-        content_prefix_escaped = "\/var\/moodlecontent"
+    moodle_content_directory = "{}/moodlecontent".format(content_directory)
+    moodle_content_directory_escaped = moodle_content_directory.replace("/", "\/")
+    sudo("mkdir --parents {}".format(moodle_content_directory), "Unable to create Moodle folder")
 
     # Install MariaDB or =MySQL 
     display_log("Installing mariadb-server...")
@@ -289,7 +299,7 @@ def install_moodle():
 
     # Install PHP extensions
     display_log("Installing PHP extensions...")
-    sudo("apt-get install php-curl php-mbstring php-zip php-gd php-intl php-xmlrpc php-soap -y","Unable to install PHP extensions")
+    sudo("apt-get install php-xml php-curl php-mbstring php-zip php-gd php-intl php-xmlrpc php-soap -y","Unable to install PHP extensions")
     display_log("Done", col_log_ok)
 
     # use /var/moodle for install
@@ -310,14 +320,12 @@ def install_moodle():
     sudo("sed --in-place \"s/\'username\'\;/\'elimu\'\;/\" /var/moodle/config.php", "Unable to update moodle configuration username (config.php)")
     sudo("sed --in-place \"s/\'password\'\;/\'elimu\'\;/\" /var/moodle/config.php", "Unable to update moodle configuration password (config.php)")
     sudo("sed --in-place 's/example.com\/moodle/www.moodle.local/' /var/moodle/config.php", "Unable to update moodle configuration url (config.php)")
-    sudo("sed --in-place 's/\/home\/example\/moodledata/{}\/Content\/moodledata/' /var/moodle/config.php".format(content_prefix_escaped), "Unable to update moodle configuration content (config.php)")
+    sudo("sed --in-place 's/\/home\/example\/moodledata/{}/' /var/moodle/config.php".format(moodle_content_directory_escaped), "Unable to update moodle configuration content (config.php)")
     
-    # create moodle data folder on content disk (!)
-    sudo("mkdir --parents {}/Content/moodledata".format(content_prefix), "Unable to create Moodle folder")
     # Set default permissions
-    sudo("chmod 0777 {}/Content/moodledata".format(content_prefix), "Unable to set rights on Moodle folder")
+    sudo("chmod 0777 {}".format(moodle_content_directory), "Unable to set rights on Moodle folder")
     # Set owner
-    sudo("chown www-data {}/Content/moodledata".format(content_prefix), "Unable to set owner of Moodle folder")
+    sudo("chown www-data {}".format(moodle_content_directory), "Unable to set owner of Moodle folder")
     # chown www-data /path/to/moodle
     # cd /path/to/moodle/admin/cli
     # Copy moodle site settings
@@ -338,7 +346,6 @@ def install_moodle():
     
     # see https://docs.moodle.org/310/en/Installing_Moodle
 	#	  https://docs.moodle.org/310/en/Administration_via_command_line#Installation
-	# Create database (mariadb)
 	
 	# Moodle command line tools for Web Gui : https://moosh-online.com/commands/ 
     return True
@@ -412,6 +419,8 @@ def install_ka_languague():
 # Kiwix install
 # ================================
 def install_kiwix():
+    wiki_content_directory = "{}/wiki".format(content_directory)
+
     # Get release rss data from mirror
     file = urllib.request.urlopen('https://ftp.nluug.nl/pub/kiwix/release/kiwix-tools/feed.xml')
     data = file.read()
@@ -452,19 +461,28 @@ def install_kiwix():
             versions.sort()
             #the last entry is the newest version
             return versions[-1]
+    
+    def any_zim_file_present():
+        for file_to_check in os.listdir(wiki_content_directory):
+            if file_to_check.endswith(".zim"): return True
+        return False
 
-    #download two sample wikis
-    url_vikidia = "https://ftp.nluug.nl/pub/kiwix/zim/vikidia/"
-    package_vikidia = latest_zim_package(url_vikidia, "vikidia_en_all_nopic_")
-    display_log("Downloading {}...".format(package_vikidia))
-    sudo("curl --silent {}{} --output /var/kiwix/bin/{}".format(url_vikidia, package_vikidia, package_vikidia), "unable to download {}{}".format(url_vikidia, package_vikidia))
-    display_log("Done", col_log_ok)
+    # Create content directory in case it does not exist yet
+    sudo("mkdir --parents {}".format(wiki_content_directory))
 
-    url_wiktionary = "https://ftp.nluug.nl/pub/kiwix/zim/wiktionary/"
-    package_wiktionary = latest_zim_package(url_wiktionary, "wiktionary_en_simple_all_nopic_")
-    display_log("Downloading {}...".format(package_wiktionary))
-    sudo("curl --silent {}{} --output /var/kiwix/bin/{}".format(url_wiktionary, package_wiktionary, package_wiktionary), "unable to download {}{}".format(url_wiktionary, package_wiktionary))
-    display_log("Done", col_log_ok)
+    # Download two sample wikis if no content already exists
+    if not any_zim_file_present():
+        url_vikidia = "https://ftp.nluug.nl/pub/kiwix/zim/vikidia/"
+        package_vikidia = latest_zim_package(url_vikidia, "vikidia_en_all_nopic_")
+        display_log("Downloading {}...".format(package_vikidia))
+        sudo("curl --silent {}{} --output {}/{}".format(url_vikidia, package_vikidia, wiki_content_directory, package_vikidia), "Unable to download {}{}".format(url_vikidia, package_vikidia))
+        display_log("Done", col_log_ok)
+
+        url_wiktionary = "https://ftp.nluug.nl/pub/kiwix/zim/wiktionary/"
+        package_wiktionary = latest_zim_package(url_wiktionary, "wiktionary_en_simple_all_nopic_")
+        display_log("Downloading {}...".format(package_wiktionary))
+        sudo("curl --silent {}{} --output {}/{}".format(url_wiktionary, package_wiktionary, wiki_content_directory, package_wiktionary), "Unable to download {}{}".format(url_wiktionary, package_wiktionary))
+        display_log("Done", col_log_ok)
 
     # Create service
     sudo("update-rc.d kiwix defaults", "Unable to register the kiwix service.")
@@ -804,6 +822,8 @@ def PHASE0():
     statwin.refresh()
     if not install_usbmount():
         die("Unable to install usbmount")
+    add_content_disk_to_fstab()
+    sudo("mount --all", "Could not mount content disk")
     statwin.addstr( 6,3, "*" , col_info_ok)
     statwin.refresh()
 
@@ -836,7 +856,7 @@ def PHASE1():
     # ================================
     # Ask to continue
     # ================================
-    if not yes_or_no("Do you want to continue the install the ElimuPi build"):
+    if not yes_or_no("Do you want to continue to install the ElimuPi build"):
         die('Installation aborted')
 
     statwin.addstr(1,2,"[ ] Update to latest OS")
@@ -925,7 +945,7 @@ def PHASE1():
     statwin.addstr( 7, 3, "?" , col_info)
     statwin.refresh()
     install_kiwix()
-    statwin.addstr( 7, 3, "-" , col_info)
+    statwin.addstr( 7, 3, "*" , col_info)
     statwin.refresh()
 
     # ================================
