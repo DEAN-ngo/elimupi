@@ -261,10 +261,12 @@ def install_moodle():
     # Install MariaDB or =MySQL 
     display_log("Installing mariadb-server...")
     sudo("apt-get install -y mariadb-server","Unable to install MariadbServer")
-    display_log("Done", col_log_ok)
+    display_log("Completed installing mariadb-server...", col_log_ok)
+    
     # Determine last stable version (now fixed at 311)
     # sudo("sed -i 's//var\/run\/usbmount\/Content\/moodledb' /etc/mysql/mariadb.conf.d/nano 50-server.cnf","Unable to set mariadb folder")
     # Start and enable DBserver
+    
     display_log("Configuring mariadb-server...")
     sudo("systemctl enable mariadb.service","Unable to enable DB")
     sudo("systemctl restart mariadb.service","Unable to restart DB")
@@ -274,7 +276,8 @@ def install_moodle():
     cp("files/moodle/sql/02-create-user.sql", "/var/moodlesql", "Unable to copy 02-create-user.sql")
     # execute the required database commands
     sudo("cat /var/moodlesql/*.sql | sudo mysql")
-    display_log("Done", col_log_ok)
+    display_log("Completed configuring mariadb-server...")
+    
     # /etc/systemd/system/mysqld.service
     # LimitNOFILE=16384
 
@@ -284,7 +287,7 @@ def install_moodle():
     # Add PHP mySQL support (mariaDB)
     display_log("Installing PHP and tools...")
     sudo("apt-get install php-fpm php-mysql php -y","Unable to install php-fpm, php-mysql or php")
-    display_log("Done", col_log_ok)
+    display_log("Completed installing PHP and tools", col_log_ok)
     # /etc/php/7.3/fpm/php.ini
 
     # Install PHP extensions
@@ -383,27 +386,17 @@ def install_web_interface():
 # From https://kolibri.readthedocs.io/en/latest/install/raspberry_pi_manual.html
 # ================================
 def install_kolibri():
-    """
-    sudo apt install libffi-dev python3-pip python3-pkg-resources dirmngr
-    sudo pip3 install pip setuptools --upgrade
-    sudo pip3 install cffi --upgrade
-    """
+    display_log("Kolibri install support python libraries...")
     sudo("apt install libffi-dev python3-pip python3-pkg-resources dirmngr -y", "Unable to install Kolibri step 1")
     sudo("pip3 install pip setuptools --upgrade", "Unable to install setuptools")
     sudo("pip3 install cffi --upgrade","Unable to install cffi")
     
-    """
-    sudo su -c 'echo "deb http://ppa.launchpad.net/learningequality/kolibri/ubuntu bionic main" > /etc/apt/sources.list.d/learningequality-ubuntu-kolibri-bionic.list'
-    sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys DC5BAA93F9E4AE4F0411F97C74F88ADB3194DD81
-    sudo apt update
-    """
+    display_log("Add http://ppa.launchpad.net/learningequality as installer source...")
     sudo("su -c 'echo \"deb http://ppa.launchpad.net/learningequality/kolibri/ubuntu bionic main\" > /etc/apt/sources.list.d/learningequality-ubuntu-kolibri-bionic.list")
     sudo("apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys DC5BAA93F9E4AE4F0411F97C74F88ADB3194DD81")
     sudo("apt update")
     
-    """
-    sudo apt install kolibri kolibri-server
-    """
+    display_log("Install Kolibri components...")
     sudo("apt install kolibri kolibri-server")
     return True
     
@@ -459,7 +452,7 @@ def install_kiwix():
     # get release for Linux-armhf from mirror
     display_log("Downloading kiwix-tools...")
     sudo("curl -s https://ftp.nluug.nl/pub/kiwix/release/kiwix-tools/" + latest_release_name + ".tar.gz | tar xz -C /home/pi/", "Unable to get latest kiwix release (https://ftp.nluug.nl/pub/kiwix/release/kiwix-tools/" + latest_release_name + ")")
-    display_log("Done", col_log_ok)
+    display_log("Completed downloading kiwix-tools", col_log_ok)
     # Make kiwix application folder
     sudo("mkdir --parents /var/kiwix/bin", "Unable to make create kiwix directories")
     # Copy files we need from the toolset
@@ -556,6 +549,19 @@ def setup_content_disk():
     display_log("\r\n----------------------------------\r\n")
     sys.exit(0)
     return True
+
+# ================================
+# Configure content disk to mount at boot
+# ================================
+def add_content_disk_to_fstab():
+    display_log("Add content disk to fstab")
+    with open("/etc/fstab") as fstab_readable:
+        fstab_content = fstab_readable.read()
+        if not "LABEL=Content" in fstab_content:
+            sudo("echo 'LABEL=Content /content ntfs defaults,noatime 0 0' | sudo tee --append /etc/fstab", "Could not add content disk to /etc/fstab")
+    display_log("Completed update of fstab")
+    return True
+
 
 def create_img():
     # use scripts to create an gzipped, compressed image file to distribute on the external disk
@@ -759,7 +765,7 @@ def PHASE0():
     statwin.addstr( 3,2, "[ ] Install GIT", col_info)
     statwin.addstr( 4,2, "[ ] Clone ElimuPi repository", col_info)
     statwin.addstr( 5,2, "[ ] Write install status file", col_info)
-    statwin.addstr( 6,2, "[ ] Install USBmount", col_info)
+    statwin.addstr( 6,2, "[ ] Setup ftab mount", col_info)
     statwin.addstr( 7,2, "[ ] Set pi password", col_info)
     statwin.addstr( 8,2, "[ ] Reboot", col_info)
     
@@ -832,12 +838,11 @@ def PHASE0():
     # ================================    
     #Setup and configure USB Automount
     # ================================
-    #statwin.addstr( 6,3, "?" , col_info)
-    #statwin.refresh()
-    #if not install_usbmount():
-    ##    die("Unable to install usbmount")
-    #statwin.addstr( 6,3, "*" , col_info_ok)
-    #statwin.refresh()
+    statwin.addstr( 6,3, "?" , col_info)
+    statwin.refresh()
+    add_content_disk_to_fstab()
+    statwin.addstr( 6,3, "*" , col_info_ok)
+    statwin.refresh()
 
     # ================================
     # Set password
@@ -875,7 +880,7 @@ def PHASE1():
     statwin.addstr(2,2,"[ ] Update Raspberry PI firmware")
     statwin.addstr(3,2,"[ ] Setup Network")
     statwin.addstr(4,2,"[ ] Install FDroid")
-    statwin.addstr(5,2,"[ ] Install Khan Academy")
+    statwin.addstr(5,2,"[ ] Install Kolibri")
     statwin.addstr(6,2,"[ ] Install Citadel")
     statwin.addstr(7,2,"[ ] Install Kiwix")
     statwin.addstr(8,2,"[ ] Install Moodle")
@@ -929,15 +934,15 @@ def PHASE1():
     # ================================
     # KAHN academy (default enabled)
     # ================================
-    if args.khan_academy == "ka-lite":
-        statwin.addstr( 5, 3, "?" , col_info)
-        statwin.refresh()
-        install_kolibri()
+    #if args.khan_academy == "ka-lite":
+    statwin.addstr( 5, 3, "?" , col_info)
+    statwin.refresh()
+    install_kolibri()
     #    install_kalite()
     #    # install the language for Khan
     #    install_ka_languague()
-        statwin.addstr( 5, 3, "*" , col_info_ok)
-        statwin.refresh()
+    statwin.addstr( 5, 3, "*" , col_info_ok)
+    statwin.refresh()
     
     # ================================
     # Install Citadel
