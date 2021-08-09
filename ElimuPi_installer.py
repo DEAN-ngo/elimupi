@@ -553,7 +553,7 @@ def setup_content_disk():
 # Configure content disk to mount at boot
 # ================================
 def add_content_disk_to_fstab():
-    display_log("Add content disk to fstab")
+    display_log("Add content disk to fstab" )
     with open("/etc/fstab") as fstab_readable:
         fstab_content = fstab_readable.read()
         if not "LABEL=Content" in fstab_content:
