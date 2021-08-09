@@ -47,7 +47,7 @@ base_passwd         = "elimupi"                                         # Defaul
 base_ip_range       = "10.11.0"                                         # IP range (/24) for the WiFI interface
 base_ip             = "10.11.0.1"                                       # Default IP address for the WiFi interface
 base_subnet         = "255.255.255.0"                                   # Base sub net
-base_build          = "ELIMUPI-20210102-1"                              # Date of build
+base_build          = "ELIMUPI-20210809-1"                              # Date of build
 base_git            = "https://github.com/DEANpeterV/elimupi2.0.git"    # GIT location
 base_wifi           = "wlan0"
 
@@ -832,12 +832,12 @@ def PHASE0():
     # ================================    
     #Setup and configure USB Automount
     # ================================
-    statwin.addstr( 6,3, "?" , col_info)
-    statwin.refresh()
-    if not install_usbmount():
-        die("Unable to install usbmount")
-    statwin.addstr( 6,3, "*" , col_info_ok)
-    statwin.refresh()
+    #statwin.addstr( 6,3, "?" , col_info)
+    #statwin.refresh()
+    #if not install_usbmount():
+    ##    die("Unable to install usbmount")
+    #statwin.addstr( 6,3, "*" , col_info_ok)
+    #statwin.refresh()
 
     # ================================
     # Set password

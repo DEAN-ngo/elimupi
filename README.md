@@ -4,23 +4,19 @@ Purpose is project is to provide a DEAN digital classroom environment for educat
 
 Please visit http://www.dean.ngo/ict4e/digital-classroom-box-elimupi/ for more information 
 
-Introduction 
-
-THIS IS WORK IN PROGRESS: DO NOT USE!!!! -- All code will be ported to Python -- 
-
-Functions 
+##Introduction 
 
 This version of the ElimuPi build supports: 
 
 - FDROID Android application store 
 - Web pages for management of the sytem and content management (WordPress) 
 - WiKiPedia alike functions (KiWix) 
-- Khan Acadamy learning content 
+- Kolibri learning system
 - Dynamic content addition through USB storage 
 - Secured WiFi access point 
 - Local DHCP, DNS 
 
-Installation 
+## Installation 
 1. Install a base RaspBian image on a SD card and create a empty file called 'ssh' in the root of the boot partition. This will enable SSH access to the Raspberry Pi. After you finished previous steps insert the SD card into the Raspberry Pi
 
 2. Connect the external Hard Drive to the Raspberry Pi
@@ -31,7 +27,7 @@ Installation
  
 5. Expand your microSD card partition sudo raspi-config sudo reboot 
 
-6. Paste in the following command after reboot. 
+6. Type/Paste in the following command after reboot. 
 
 wget https://raw.githubusercontent.com/DEANpeterV/elimupi2.0/master/ElimuPi_installer.py && chmod 700 ElimuPi_installer.py && python ElimuPi_installer.py
 
@@ -39,29 +35,36 @@ wget https://raw.githubusercontent.com/DEANpeterV/elimupi2.0/master/ElimuPi_inst
 
 7. After the reboot the installation will continue
 
-All default username and passwords will be elimupi/elimupi unless noted differently. 
+All default username and passwords will be pi/elimupi unless noted differently. 
 
-The default password for the wifi 'elimu' is : 1234567890
+The default password for the WiFi 'elimu' is : 1234567890
 
+##User access
 The end users can access the available resources after they are connected to the Wifi network.
 
 The following links are provided to access the resources:
-- Khan Academy - www.khan.local
-- Kiwix - www.wiki.local
-- files - www.files.local
+
+- **Main interface** - www.elimupi.local
+- **Kolibri** - kolibri.elimupi.local
+- **Kiwix** - wiki.elimupi.local
+- **files** - files.elimupi.local
+- **Moodle** - moodle.elimupi.local
 
 After you finished the installation you need to visit khan.local and create an Admin account. 
 
 Then you need to login with the Admin account and go to Manage --> "Please follow the directions to register your device, so that it can synchronize with the central server."
 
 
-*NOTE1: This install is tested to work with 2018-11-13-raspbian-stretch-lite 
+##Notes
+**NOTE1**: This install is tested to work with Raspbian OS #1414 SMP Fri Apr 30 13:20:47 BST 2021
 
-*NOTE2: for WIFI to work on the RaspberryPi 2 unit, you must have the WIFI USB dongle inserted during installation so that the install script can configure it properly. RaspberryPi 3 models have on board WiFi and don't need a WIFI USB dongle. 
+**NOTE2*: for WIFI to work on the RaspberryPi 2 unit, you must have the WIFI USB dongle inserted during installation so that the install script can configure it properly. RaspberryPi 3 models have on board WiFi and don't need a WIFI USB dongle. 
 
-*NOTE3: If using  PUTTY set the setting 'window'->'translation'->'Remote Character Set' to 'use font encoding' to display the lines correctly.
+**NOTE3**: If using  PUTTY set the setting 'window'->'translation'->'Remote Character Set' to 'use font encoding' to display the lines correctly.
 
-Last updated : 2021/02/06 
+**NOTE4**: For Kolibri content use Kolibri Studio - https://studio.learningequality.org
+
+Last updated : 2021/08/09 
 
 Applicable Licenses: See licenses file. 
 
