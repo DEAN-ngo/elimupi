@@ -1,8 +1,8 @@
 # elimupi2.0.1
 
-Purpose is project is to provide a DEAN digital classroom environment for educational project in Tanzania and Kenia. This includes providing full Android tablet support without any direct internet connectivity. 
+The purpose of this project is to provide a DEAN digital classroom environment for educational project in Tanzania and Kenia. This includes providing full Android tablet support without any direct internet connectivity. 
 
-Please visit http://www.dean.ngo/ict4e/digital-classroom-box-elimupi/ for more information 
+Please visit https://www.dean.ngo/ict4e/digital-classroom-box-elimupi/ for more information 
 
 ##Introduction 
 
@@ -23,17 +23,19 @@ This version of the ElimuPi build supports:
 
 3. Powerup the RaspberryPi and wait for the initial boot process to complete 
 
-4. Connect with the Raspberry pi using SSH (ssh pi@<ipv4>; default password: raspberry)
+4. Connect with the Raspberry pi using SSH (`ssh pi@<ipv4>`; default password: raspberry)
  
-5. Expand your microSD card partition sudo raspi-config sudo reboot 
+5. Expand your microSD card partition by running `sudo raspi-config`, choose Advanced Options and there choose Expand Filesystem. Exit the menu (press the escape key a few times) and restart the Raspberry Pi: `sudo reboot`
 
 6. Type/Paste in the following command after reboot. 
 
-wget https://raw.githubusercontent.com/DEANpeterV/elimupi2.0/master/ElimuPi_installer.py && chmod 700 ElimuPi_installer.py && python ElimuPi_installer.py
+`wget https://raw.githubusercontent.com/DEANpeterV/elimupi2.0/master/ElimuPi_installer.py && chmod 700 ElimuPi_installer.py && python3 ElimuPi_installer.py`
 
 *Please note that this will change the 'pi' user's password to: elimupi 
 
-7. After the reboot the installation will continue
+7. After the reboot, connect to the Raspberry Pi through SSH again and continue the installation by running `python3 ElimuPi_installer.py` again. 
+
+8. After another reboot, the Raspberry Pi is ready for use! 
 
 All default username and passwords will be pi/elimupi unless noted differently. 
 
