@@ -19,6 +19,7 @@
 #    2021-Jan-02 | PVe    | Updated to use curses GUI
 #    2021-May-xx | xxx    | Various updates
 #    2021-Aug-04 | Pve    | updated GUI and add Kolibri for 
+#    2021-Aug-09 | Pve    | updated GUI and add Kolibri for
 # =========================================================================================================
 
 import sys
@@ -69,11 +70,6 @@ class screenPos:
 # Command line arguments
 # ================================
 argparser = argparse.ArgumentParser()
-# Switch to install Khan Academy
-argparser.add_argument( "--khan-academy",
-                        choices=["none", "ka-lite"],
-                        default="ka-lite",
-                        help="Select Khan Academy package to install (default = \"ka-lite\")")
 # Switch to install Moodle
 argparser.add_argument("--moodle",
                         dest="install_moodle",
@@ -132,25 +128,25 @@ col_log_ok   = curses.color_pair(6)
 # ================================
 # Define status window 
 # ================================
-posx = 4
-posy= 0
-height = 12
-width = curses.COLS - 8
-statwin = curses.newwin( height, width , posy, posx)
+posx    = 4
+posy    = 0
+height  = 12
+width   = curses.COLS - 8
+statwin = curses.newwin(height, width , posy, posx)
 
 # ================================
 # Define log window
 # ================================
-logwin_scroll_area=32767
-logwin_width = curses.COLS - 8
-logwin = curses.newpad(logwin_scroll_area, logwin_width)
+logwin_scroll_area  =32767
+logwin_width        = curses.COLS - 8
+logwin              = curses.newpad(logwin_scroll_area, logwin_width)
 logwin.scrollok(True)
-logwin_dwidth = curses.COLS - 4
-logwin_dheight = curses.LINES - 10
+logwin_dwidth       = curses.COLS - 4
+logwin_dheight      = curses.LINES - 10
 if logwin_dheight <= 0:
     logwin_dheight = 1
-logwin_posx = 4
-logwin_posy = 12
+logwin_posx         = 4
+logwin_posy         = 12
 # Displays a section of the pad in the middle of the screen.
 # (0,0) : coordinate of upper-left corner of pad area to display.
 # (5,5) : coordinate of upper-left corner of window area to be filled
@@ -400,36 +396,6 @@ def install_kolibri():
     return True
     
 # ================================
-# Install Khan Academy components 
-# ================================
-def install_kalite():
-    sudo("apt-get install dirmngr -y", "Unable to install dirmmgr")
-    sudo("sudo su -c 'echo deb http://ppa.launchpad.net/learningequality/ka-lite/ubuntu xenial main > /etc/apt/sources.list.d/ka-lite.list'")
-    sudo("apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 74F88ADB3194DD81", "Unable to add key")
-    sudo("apt-get update", "Unable to update the repository")
-    sudo("apt-get install ka-lite-raspberry-pi -y", "Unable to install Ka-lite-raspberry-pi")
-    #sudo("kalite manage setup --username=" + base_passwd + " --password=" + base_passwd + " --hostname=" + base_hostname + " --description=" + base_hostname) ### PBo 20180315 Removed unwanted confirmation
-    cp("./files/kalite/settings.py", "/home/pi/.kalite/")
-    sudo("systemctl start ka-lite", "Unable to start ka-lite")
-    sudo("systemctl enable ka-lite", "Unable to enable ka-lite")
-    #sudo("sh -c '/usr/local/bin/kalite --version > /etc/kalite-version'", "Unable to record kalite version")
-    # setup NGINX site
-    cp("./files/nginx/khan.local", "/etc/nginx/sites-available/", "Unable to copy file khan.local (nginx)")
-    # Enable site
-    sudo("ln -s /etc/nginx/sites-available/khan.local /etc/nginx/sites-enabled/khan.local", "Unable to enable file khan.local (nginx)")
-    # restart NGINX service 
-    sudo("systemctl restart nginx", "Unable to restart nginx")
-    return True
-
-# ================================
-# Khan Academy languages
-# ================================
-def install_ka_languague():
-    # Do not install as this requires a mounted content disk
-    # sudo("su pi -c '/usr/bin/kalite manage retrievecontentpack local en /var/run/usbmount/Content/khan/en.zip'" , "Unable to set language for Khan Academu")
-    return True
-
-# ================================
 # Kiwix install
 # ================================
 def install_kiwix():
@@ -557,7 +523,7 @@ def add_content_disk_to_fstab():
     with open("/etc/fstab") as fstab_readable:
         fstab_content = fstab_readable.read()
         if not "LABEL=Content" in fstab_content:
-            sudo("echo 'LABEL=Content /content ntfs defaults,noatime 0 0' | sudo tee --append /etc/fstab", "Could not add content disk to /etc/fstab")
+            sudo("echo 'LABEL=Content /mnt/content ntfs defaults,noatime 0 0' | sudo tee --append /etc/fstab", "Could not add content disk to /etc/fstab")
     display_log("Completed update of fstab")
     return True
 
@@ -768,9 +734,6 @@ def PHASE0():
     statwin.addstr( 7,2, "[ ] Set pi password", col_info)
     statwin.addstr( 8,2, "[ ] Reboot", col_info)
     
-    
-    # DO sudo rpi-update
-     
     # ================================
     # Get latest updates 
     # ================================
@@ -933,7 +896,6 @@ def PHASE1():
     # ================================
     # KAHN academy (default enabled)
     # ================================
-    #if args.khan_academy == "ka-lite":
     statwin.addstr( 5, 3, "?" , col_info)
     statwin.refresh()
     install_kolibri()
