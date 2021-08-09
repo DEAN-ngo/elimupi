@@ -18,6 +18,7 @@
 #    2020-Dec-21 | PVe    | Added support for latest Raspberry OS and Moodle
 #    2021-Jan-02 | PVe    | Updated to use curses GUI
 #    2021-May-xx | xxx    | Various updates
+#    2021-Aug-04 | Pve    | updated GUI and add Kolibri for 
 # =========================================================================================================
 
 
@@ -89,11 +90,7 @@ argparser.add_argument("--citadel",
                         dest="install_citadel",
                         action="store_true",
                         help="Install Citadel mail, chat and colaboration suite")
-
-
-
 args = argparser.parse_args()
-
 
 # ================================
 # Init screen display
@@ -175,6 +172,9 @@ posy = curses.LINES - 9
 infowin = curses.newwin(height, width , posy , posx) # 
 infowin.bkgd(' ', col_info)
 infowin.border(0)
+
+def install_udev_handler():
+    return True
 
 # ================================
 # Install USB mounter 
@@ -379,6 +379,35 @@ def install_web_interface():
     return True
 
 # ================================
+# Install Kolibri
+# From https://kolibri.readthedocs.io/en/latest/install/raspberry_pi_manual.html
+# ================================
+def install_kolibri():
+    """
+    sudo apt install libffi-dev python3-pip python3-pkg-resources dirmngr
+    sudo pip3 install pip setuptools --upgrade
+    sudo pip3 install cffi --upgrade
+    """
+    sudo("apt install libffi-dev python3-pip python3-pkg-resources dirmngr -y", "Unable to install Kolibri step 1")
+    sudo("pip3 install pip setuptools --upgrade", "Unable to install setuptools")
+    sudo("pip3 install cffi --upgrade","Unable to install cffi")
+    
+    """
+    sudo su -c 'echo "deb http://ppa.launchpad.net/learningequality/kolibri/ubuntu bionic main" > /etc/apt/sources.list.d/learningequality-ubuntu-kolibri-bionic.list'
+    sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys DC5BAA93F9E4AE4F0411F97C74F88ADB3194DD81
+    sudo apt update
+    """
+    sudo("su -c 'echo \"deb http://ppa.launchpad.net/learningequality/kolibri/ubuntu bionic main\" > /etc/apt/sources.list.d/learningequality-ubuntu-kolibri-bionic.list")
+    sudo("apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys DC5BAA93F9E4AE4F0411F97C74F88ADB3194DD81")
+    sudo("apt update")
+    
+    """
+    sudo apt install kolibri kolibri-server
+    """
+    sudo("apt install kolibri kolibri-server")
+    return True
+    
+# ================================
 # Install Khan Academy components 
 # ================================
 def install_kalite():
@@ -395,7 +424,7 @@ def install_kalite():
     # setup NGINX site
     cp("./files/nginx/khan.local", "/etc/nginx/sites-available/", "Unable to copy file khan.local (nginx)")
     # Enable site
-    cp("ln -s /etc/nginx/sites-available/khan.local /etc/nginx/sites-enabled/khan.local", "Unable to enable file khan.local (nginx)")
+    sudo("ln -s /etc/nginx/sites-available/khan.local /etc/nginx/sites-enabled/khan.local", "Unable to enable file khan.local (nginx)")
     # restart NGINX service 
     sudo("systemctl restart nginx", "Unable to restart nginx")
     return True
@@ -734,6 +763,9 @@ def PHASE0():
     statwin.addstr( 7,2, "[ ] Set pi password", col_info)
     statwin.addstr( 8,2, "[ ] Reboot", col_info)
     
+    
+    # DO sudo rpi-update
+     
     # ================================
     # Get latest updates 
     # ================================
@@ -749,7 +781,7 @@ def PHASE0():
     # ================================
     statwin.addstr( 2,3, "?" , col_info)
     statwin.refresh()
-    result = sudo("apt-get dist-upgrade -y", "Unable to upgrade RASPBERRYOS distribution.")
+    sudo("apt-get dist-upgrade -y", "Unable to upgrade RASPBERRYOS distribution.")
     display_log(result.output)
     statwin.addstr( 2,3, "*" , col_info_ok)
     statwin.refresh()
@@ -900,12 +932,13 @@ def PHASE1():
     if args.khan_academy == "ka-lite":
         statwin.addstr( 5, 3, "?" , col_info)
         statwin.refresh()
-        install_kalite()
-        # install the language for Khan
-        install_ka_languague()
+        install_kolibri()
+    #    install_kalite()
+    #    # install the language for Khan
+    #    install_ka_languague()
         statwin.addstr( 5, 3, "*" , col_info_ok)
         statwin.refresh()
-        
+    
     # ================================
     # Install Citadel
     # ================================
