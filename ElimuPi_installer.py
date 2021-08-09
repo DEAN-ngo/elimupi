@@ -21,7 +21,6 @@
 #    2021-Aug-04 | Pve    | updated GUI and add Kolibri for 
 # =========================================================================================================
 
-
 import sys
 import os
 import subprocess
