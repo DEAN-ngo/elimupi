@@ -34,6 +34,7 @@ import curses           #curses is the interface for capturing key presses on th
 import xml.etree.ElementTree as ET
 import json
 import re
+import crypt
 
 from time import sleep
 # from __builtins__ import true
@@ -371,10 +372,20 @@ def install_web_interface():
     
     # Add Webinterface sudo settings
     cp("./files/sudoers.d/020_elimupi", "/etc/sudoers.d/")    
-        
+    
+    
     # Add base groups
+    sudo("addgroup admins")
     sudo("addgroup teachers") 
     sudo("addgroup students")
+    
+    # Create two deanadmin account for system
+    hashed_password = crypt.crypt("topsecret","salt")
+    sudo("useradd -m -g admins -p \"" + hashed_password+ "\" deanadmin")
+    
+    # Create headmaster account for system
+    hashed_password = crypt.crypt("headmaster","salt")
+    sudo("useradd -m -g teachers -p \"" + hashed_password+ "\" headmaster")
     
     # add Pi to teachers group
     sudo("usermod -a -G teachers pi")
