@@ -2,6 +2,7 @@
 # ElimiPi Web admin mods
 #
 Defaults        logfile="/var/log/sudo"
+Defaults		editor="nano"
 
 # Allow ElimuPi users of the group teachers to turn the Pi off and to create users (only teachers and students)
 Cmnd_Alias      ADDTEACHER=/var/www/scripts//addteacher.sh [!;$|&<>]*
@@ -10,14 +11,22 @@ Cmnd_Alias      RESETPASSWD=/var/www/scripts/changepassword.sh [!;$|&<>]*
 Cmnd_Alias      RESETPASSWDALL=/var/www/scripts/changepasswordall.sh [!;$|&<>]*
 Cmnd_Alias      DELETEUSER=/var/www/scripts//deleteuser.sh [!;$|&<>]*
 Cmnd_Alias      FDROID=/usr/bin/fdroid
-%admins	All= NOPASSWD: /sbin/shutdown, /usr/bin/pumount, /etc/usbmount/umount.d/01_remove_model_symlink, RESETPASSWD, RESETPASSWDALL, ADDTEACHER, ADDSTUDENT, DELETEUSER, FDROID
+
+# Allow root and pi user to use SUDO
+root			ALL=(ALL) ALL
+pi				ALL=(ALL) ALL
+
+# Set admin group permissions
+%admins			All= NOPASSWD: /sbin/shutdown, /usr/bin/pumount, /etc/usbmount/umount.d/01_remove_model_symlink, RESETPASSWD, RESETPASSWDALL, ADDTEACHER, ADDSTUDENT, DELETEUSER, FDROID
+
+# Set teacher group permissions
 %teachers       ALL= NOPASSWD: /sbin/shutdown, /usr/bin/pumount, /etc/usbmount/umount.d/01_remove_model_symlink, RESETPASSWD, ADDTEACHER, ADDSTUDENT, DELETEUSER, FDROID
 
 # as SYSTEM user
-sudo addgroup admins
-sudo addgroup teachers 
-sudo addgroup students
-sudo adduser nameOfAdmin admins
+sudo addgroup 	admins
+sudo addgroup 	teachers 
+sudo addgroup 	students
+sudo adduser 	nameOfAdmin admins
 
 # as user of group teachers or admin
 sudo addstudent.sh boyd boyd
