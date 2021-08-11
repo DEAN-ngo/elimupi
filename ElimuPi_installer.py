@@ -191,6 +191,10 @@ def install_usbmount():
 # Setup WiFi
 # ================================
 def install_wifi():
+    # Set country for wpa_wpa_supplicant.conf
+    display_log("Set country for WiFi")
+    sudo("echo country=ke>>/etc/wpa_supplicant/wpa_supplicant.conf")
+    
     sudo("rfkill unblock wifi", "Unable to unblock WiFi is not")
     sudo("ifconfig {} {}".format(base_wifi, base_ip), "Unable to set {} IP address {}".format(base_wifi, base_ip))
     
@@ -225,8 +229,9 @@ def install_wifi():
     sudo("ifconfig {}".format(base_wifi, base_ip), "Unable to set wlan0 IP address (" + base_ip + ")")
 
     #start & enable hostapd, udhcpd
-    sudo("service hostapd start", "Unable to start hostapd service.")
-    sudo("service udhcpd start", "Unable to start udhcpd service.")
+    sudo("systemctl unmask  hostapd", "Unable to unmask hostapd")
+    sudo("systemctl start hostapd", "Unable to start hostapd service.")
+    sudo("systemctl start udhcpd", "Unable to start udhcpd service.")
     sudo("update-rc.d hostapd enable", "Unable to enable hostapd on boot.")
     sudo("update-rc.d udhcpd enable", "Unable to enable UDHCPd on boot.")
 
@@ -345,7 +350,7 @@ def install_moodle():
 # Install web interface
 # ================================
 def install_web_interface():
-    #INSTALL NGINX
+    sudo("apt-get install -y nginx","Unable to install NGINX")  #INSTALL NGINX
     sudo("apt install php-fpm -y","Unable to install NGINX")
     # Install nginx site files  
     cp("./files/nginx/admin.local", "/etc/nginx/sites-available/", "Unable to copy file admin.local (nginx)")
@@ -445,19 +450,20 @@ def install_kiwix():
     package_vikidia = latest_zim_package(url_vikidia, "vikidia_en_all_nopic_")
     display_log("Downloading {}...".format(package_vikidia))
     sudo("curl --silent {}{} --output /var/kiwix/bin/{}".format(url_vikidia, package_vikidia, package_vikidia), "unable to download {}{}".format(url_vikidia, package_vikidia))
-    display_log("Done", col_log_ok)
+    display_log("Complered download sample zim 1", col_log_ok)
 
     url_wiktionary = "https://ftp.nluug.nl/pub/kiwix/zim/wiktionary/"
     package_wiktionary = latest_zim_package(url_wiktionary, "wiktionary_en_simple_all_nopic_")
     display_log("Downloading {}...".format(package_wiktionary))
     sudo("curl --silent {}{} --output /var/kiwix/bin/{}".format(url_wiktionary, package_wiktionary, package_wiktionary), "unable to download {}{}".format(url_wiktionary, package_wiktionary))
-    display_log("Done", col_log_ok)
+    display_log("Complered download sample zim 2", col_log_ok)
 
     # Create service
     sudo("update-rc.d kiwix defaults", "Unable to register the kiwix service.")
     sudo("systemctl daemon-reload", "systemctl daemon reload failed")
     sudo("systemctl start kiwix", "Unable to start the kiwix service")
     sudo("systemctl enable kiwix", "Unable to enable the kiwix service")
+    display_log("Kiwix service created", col_log_ok)
     # PBo 20180312-07 sudo("service kiwix start", "Unable to start the kiwix service.")
     #sudo("sh -c 'echo {} >/etc/kiwix-version'".format(kiwix_version), "Unable to record kiwix version.")
     # setup NGINX site
@@ -840,12 +846,13 @@ def PHASE1():
 
     statwin.addstr(1,2,"[ ] Update to latest OS")
     statwin.addstr(2,2,"[ ] Update Raspberry PI firmware")
-    statwin.addstr(3,2,"[ ] Setup Network")
-    statwin.addstr(4,2,"[ ] Install FDroid")
-    statwin.addstr(5,2,"[ ] Install Kolibri")
-    statwin.addstr(6,2,"[ ] Install Citadel")
-    statwin.addstr(7,2,"[ ] Install Kiwix")
-    statwin.addstr(8,2,"[ ] Install Moodle")
+    statwin.addstr(3,2,"[ ] Setup webserver")
+    statwin.addstr(4,2,"[ ] Setup Network")
+    statwin.addstr(5,2,"[ ] Install FDroid")
+    statwin.addstr(6,2,"[ ] Install Kolibri")
+    statwin.addstr(7,2,"[ ] Install Citadel")
+    statwin.addstr(8,2,"[ ] Install Kiwix")
+    statwin.addstr(9,2,"[ ] Install Moodle")
     statwin.refresh()
             
     # ================================
@@ -873,7 +880,7 @@ def PHASE1():
     # Setup wifi hotspot
     # ================================
     if wifi_present() and args.install_wifi:
-        statwin.addstr( 3,3, "?" , col_info)
+        statwin.addstr( 4,3, "?" , col_info)
         statwin.refresh()
         install_wifi()
         
@@ -890,54 +897,54 @@ def PHASE1():
         cp("files/hostname", "/etc/hostname", "Unable to copy hostname file.")
         result = sudo("chmod 644 ElimuPi_installer.py") 
         result.result or die("Unable to change file permissions.")
-    statwin.addstr( 3,3, "*" , col_info_ok)
+    statwin.addstr( 4,3, "*" , col_info_ok)
     statwin.refresh()
     
     # ================================
     # KAHN academy (default enabled)
     # ================================
-    statwin.addstr( 5, 3, "?" , col_info)
+    statwin.addstr( 6, 3, "?" , col_info)
     statwin.refresh()
     install_kolibri()
     #    install_kalite()
     #    # install the language for Khan
     #    install_ka_languague()
-    statwin.addstr( 5, 3, "*" , col_info_ok)
+    statwin.addstr( 6, 3, "*" , col_info_ok)
     statwin.refresh()
     
     # ================================
     # Install Citadel
     # ================================
     if args.install_citadel:
-        statwin.addstr( 6, 3, "?" , col_info)
+        statwin.addstr( 7, 3, "?" , col_info)
         statwin.refresh()
         install_citadel()
-        statwin.addstr( 6, 3, "*" , col_info_ok)
+        statwin.addstr( 7, 3, "*" , col_info_ok)
         statwin.refresh()
     else:
-        statwin.addstr( 6, 3, "-" , col_info)
+        statwin.addstr( 7, 3, "-" , col_info)
         statwin.refresh()
     
     # ================================
     # install the kiwix server (but not content)
     # ================================
-    statwin.addstr( 7, 3, "?" , col_info)
+    statwin.addstr( 8, 3, "?" , col_info)
     statwin.refresh()
     install_kiwix()
-    statwin.addstr( 7, 3, "-" , col_info)
+    statwin.addstr( 8, 3, "-" , col_info)
     statwin.refresh()
 
     # ================================
     # Install Moodle
     # ================================
     if args.install_moodle:
-        statwin.addstr( 8, 3, "?" , col_info)
+        statwin.addstr( 9, 3, "?" , col_info)
         statwin.refresh()
         install_moodle()
-        statwin.addstr( 8, 3, "*" , col_info)
+        statwin.addstr( 9, 3, "*" , col_info)
         statwin.refresh()
     else:
-        statwin.addstr( 8, 3, "-" , col_info)
+        statwin.addstr( 9, 3, "-" , col_info)
     
     # ================================
     # record the version of the installer we're using - this must be manually
