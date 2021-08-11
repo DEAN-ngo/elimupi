@@ -250,7 +250,7 @@ def install_wifi():
 def install_moodle():
     # quick install guide: https://docs.moodle.org/310/en/Installation_quick_guide
     # full install guide: https://docs.moodle.org/310/en/Installing_Moodle
-
+    display_log("Install Moodle...")
     if exists("/mnt/"):
         content_prefix = "/mnt/content "
         content_prefix_escaped = "\/mnt\/content"
@@ -324,11 +324,10 @@ def install_moodle():
     sudo("chown www-data {}/Content/moodledata".format(content_prefix), "Unable to set owner of Moodle folder")
     # chown www-data /path/to/moodle
     # cd /path/to/moodle/admin/cli
+
     # Copy moodle site settings
     cp("files/nginx/moodle.local", "/etc/nginx/sites-available/", "Unable to copy file moodle.local (nginx)")
-    
-    # Enable moodle site
-    sudo("ln --symbolic --force /etc/nginx/sites-available/moodle.local /etc/nginx/sites-enabled/moodle.local", "Unable to copy file wiki.local (nginx)")
+    sudo("ln --symbolic --force /etc/nginx/sites-available/moodle.local /etc/nginx/sites-enabled/moodle.local", "Unable to copy file moodle.local (nginx)")
     
     # restart NGINX service 
     sudo("systemctl restart nginx", "Unable to restart nginx")
@@ -353,17 +352,25 @@ def install_moodle():
 # Install web interface
 # ================================
 def install_web_interface():
+    display_log("Install nginx...")
     sudo("apt-get install -y nginx","Unable to install NGINX")  #INSTALL NGINX
+    display_log("Install PHP extensions...", col_log_ok)
     sudo("apt install php-fpm -y","Unable to install NGINX")
-    # Install nginx site files  
+    
+    # Install nginx site files
+    display_log("Set site ingo...")  
     cp("./files/nginx/admin.local", "/etc/nginx/sites-available/", "Unable to copy file admin.local (nginx)")
     cp("./files/nginx/files.local", "/etc/nginx/sites-available/", "Unable to copy file files.local (nginx)")
+    sudo("ln --symbolic --force /etc/nginx/sites-available/admin.local /etc/nginx/sites-enabled/admin.local", "Unable to copy file admin.local (nginx)")
+    sudo("ln --symbolic --force /etc/nginx/sites-available/files.local /etc/nginx/sites-enabled/files.local", "Unable to copy file files.local (nginx)")
    
     # If folder doesn't exist create   
     if not os.path.exists('/var/www/log'):
+        display_log("Create log folder...", col_log_ok)
         sudo("mkdir /var/www/log","Unable to create the NGINX log folder")
     
     # restart NGINX service 
+    display_log("Restart nginx...", col_log_ok)
     sudo("systemctl restart nginx", "Unable to restart nginx")
     
     # TODO: !!Put content on public GIT or use username and password!!!!!
@@ -373,10 +380,12 @@ def install_web_interface():
     # Copy the script in the admin/scripts folder to /usr/sbin/ as executable
     
     # Add Webinterface sudo settings
+    display_log("Update sudo permissions...", col_log_ok)
     cp("./files/sudoers.d/020_elimupi", "/etc/sudoers.d/")    
     
     
     # Add base groups
+    display_log("Add users andgroups...", col_log_ok)
     sudo("addgroup admins")
     sudo("addgroup teachers") 
     sudo("addgroup students")
@@ -391,7 +400,7 @@ def install_web_interface():
     
     # add Pi to teachers group
     sudo("usermod -a -G teachers pi")
-
+    display_log("Done setting up web interface...", col_log_ok)
     return True
 
 # ================================
@@ -404,13 +413,14 @@ def install_kolibri():
     sudo("pip3 install pip setuptools --upgrade", "Unable to install setuptools")
     sudo("pip3 install cffi --upgrade","Unable to install cffi")
     
-    display_log("Add http://ppa.launchpad.net/learningequality as installer source...")
+    display_log("Add http://ppa.launchpad.net/learningequality as installer source...", col_log_ok)
     sudo("su -c 'echo \"deb http://ppa.launchpad.net/learningequality/kolibri/ubuntu bionic main\" > /etc/apt/sources.list.d/learningequality-ubuntu-kolibri-bionic.list")
     sudo("apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys DC5BAA93F9E4AE4F0411F97C74F88ADB3194DD81")
     sudo("apt update")
     
     display_log("Install Kolibri components...")
     sudo("apt install kolibri kolibri-server")
+    display_log("Install Kolibri completed...", col_log_ok)
     return True
     
 # ================================
@@ -418,6 +428,8 @@ def install_kolibri():
 # ================================
 def install_kiwix():
     # Get release rss data from mirror
+    display_log("Install KIWIX components...")
+    display_log("Get KIWIX versions...", col_log_ok)
     file = urllib.request.urlopen('https://ftp.nluug.nl/pub/kiwix/release/kiwix-tools/feed.xml')
     data = file.read()
     file.close()
@@ -430,8 +442,8 @@ def install_kiwix():
                     latest_release = links.text
                     break
     latest_release_name = latest_release[47:-7]
-    statwin.addstr(7, 20,"latest_release:" + latest_release_name)
-    statwin.refresh()
+    display_log("Latest KIWIX release : " + latest_release_name, col_log_ok)
+    
     # get release for Linux-armhf from mirror
     display_log("Downloading kiwix-tools...")
     sudo("curl -s https://ftp.nluug.nl/pub/kiwix/release/kiwix-tools/" + latest_release_name + ".tar.gz | tar xz -C /home/pi/", "Unable to get latest kiwix release (https://ftp.nluug.nl/pub/kiwix/release/kiwix-tools/" + latest_release_name + ")")
@@ -884,8 +896,10 @@ def PHASE1():
     if not is_vagrant():
         statwin.addstr( 2,3, "?" , col_info)
         statwin.refresh()
+        display_log("Update RaspberryPi firmware...")
         result = sudo("yes | sudo rpi-update") 
         result.result or die("Unable to upgrade Raspberry Pi firmware")
+        display_log("Update RaspberryPi firmware completed...", col_log_ok)
         statwin.addstr( 2,3, "*" , col_info_ok)
         statwin.refresh()
     
@@ -903,23 +917,7 @@ def PHASE1():
     # ================================
     statwin.addstr( 4,3, "?" , col_info)
     statwin.refresh()
-    # ================================
-    # Setup WiFi if present
-    # ================================
-    if wifi_present() and args.install_wifi:
-        install_wifi()
-    # ================================
-    # install dnsmasq
-    # ================================
-    install_dnsmasq()
-    # ================================
-    # Update hostname (LAST!)
-    # ================================
-    if not is_vagrant():
-        cp("files/hosts", "/etc/hosts", "Unable to copy hosts file.")
-        cp("files/hostname", "/etc/hostname", "Unable to copy hostname file.")
-        result = sudo("chmod 644 ElimuPi_installer.py") 
-        result.result or die("Unable to change file permissions.")
+    install_network()
     statwin.addstr( 4,3, "*" , col_info_ok)
     statwin.refresh()
     
@@ -1041,7 +1039,30 @@ def install_locales():
     #$ sudo update-locale
     #$ sudo service apache2 restart
     return  True
-    
+
+# ================================
+# Setup network configuration
+# ================================
+def install_network():
+    # ================================
+    # Setup WiFi if present
+    # ================================
+    if wifi_present() and args.install_wifi:
+        install_wifi()
+    # ================================
+    # install dnsmasq
+    # ================================
+    install_dnsmasq()
+    # ================================
+    # Update hostname (LAST!)
+    # ================================
+    if not is_vagrant():
+        cp("files/hosts", "/etc/hosts", "Unable to copy hosts file.")
+        cp("files/hostname", "/etc/hostname", "Unable to copy hostname file.")
+        result = sudo("chmod 644 ElimuPi_installer.py") 
+        result.result or die("Unable to change file permissions.")
+    return True
+ 
 ############################################
 #    Main code start
 ############################################
