@@ -35,7 +35,7 @@ if (-e $db) {
 # find all the zim files in the modules directoy
 # then take only the first from each module
 my %zimset;
-foreach my $file (`ls /var/run/usbmount/Content/wiki/*.zim 2> /dev/null`) {
+foreach my $file (`ls /mnt/content/wiki/*.zim 2> /dev/null`) {
 
     chomp $file;
 

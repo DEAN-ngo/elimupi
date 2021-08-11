@@ -3,7 +3,7 @@ Description=kiwix
 After=network.target
 
 [Service]
-ExecStart=/bin/sh -c '/var/kiwix/bin/kiwix-serve --port 81 /content/wiki/*.zim'
+ExecStart=/bin/sh -c '/var/kiwix/bin/kiwix-serve --port 81 /mnt/content/wiki/*.zim'
 WorkingDirectory=/content/wiki
 StandardOutput=inherit
 StandardError=inherit

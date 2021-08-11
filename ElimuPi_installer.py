@@ -250,9 +250,9 @@ def install_moodle():
     # quick install guide: https://docs.moodle.org/310/en/Installation_quick_guide
     # full install guide: https://docs.moodle.org/310/en/Installing_Moodle
 
-    if exists("/var/run/usbmount"):
-        content_prefix = "/var/run/usbmount"
-        content_prefix_escaped = "\/var\/run\/usbmount"
+    if exists("/mnt/"):
+        content_prefix = "/mnt/content "
+        content_prefix_escaped = "\/mnt\/content"
     else:
         sudo("mkdir --parents /var/moodlecontent")
         content_prefix = "/var/moodlecontent"
@@ -292,14 +292,14 @@ def install_moodle():
 
     # Install PHP extensions
     display_log("Installing PHP extensions...")
-    sudo("apt-get install php-curl php-mbstring php-zip php-gd php-intl php-xmlrpc php-soap -y","Unable to install PHP extensions")
-    display_log("Done", col_log_ok)
+    sudo("apt-get install php-curl php-xml php-mbstring php-zip php-gd php-intl php-xmlrpc php-soap -y","Unable to install PHP extensions")
+    display_log("Done installing PHP extensions", col_log_ok)
 
     # use /var/moodle for install
     sudo("rm --force --recursive /var/moodle")
     display_log("Downloading Moodle...")
     sudo("git clone -b MOODLE_310_STABLE git://git.moodle.org/moodle.git /var/moodle", "Unable to clone Moodle")
-    display_log("Done", col_log_ok)
+    display_log("Done downloading Moodle", col_log_ok)
     # chown -R root /path/to/moodle
     sudo("chown --recursive root /var/moodle", "Unable to set moodle permissions")
     sudo("chmod --recursive 0755 /var/moodle", "Unable to set moodle permissions")
@@ -325,8 +325,10 @@ def install_moodle():
     # cd /path/to/moodle/admin/cli
     # Copy moodle site settings
     cp("files/nginx/moodle.local", "/etc/nginx/sites-available/", "Unable to copy file moodle.local (nginx)")
+    
     # Enable moodle site
     sudo("ln --symbolic --force /etc/nginx/sites-available/moodle.local /etc/nginx/sites-enabled/moodle.local", "Unable to copy file wiki.local (nginx)")
+    
     # restart NGINX service 
     sudo("systemctl restart nginx", "Unable to restart nginx")
     
@@ -354,10 +356,8 @@ def install_web_interface():
     sudo("apt install php-fpm -y","Unable to install NGINX")
     # Install nginx site files  
     cp("./files/nginx/admin.local", "/etc/nginx/sites-available/", "Unable to copy file admin.local (nginx)")
-    cp("./files/nginx/fdroid.local", "/etc/nginx/sites-available/", "Unable to copy file fdroid.local (nginx)")
     cp("./files/nginx/files.local", "/etc/nginx/sites-available/", "Unable to copy file files.local (nginx)")
-    cp("./files/nginx/kahn.local", "/etc/nginx/sites-available/", "Unable to copy file kahn.local (nginx)")
-    
+   
     sudo("mkdir /var/www/log","Unable to create the NGINX log folder")
     
     # restart NGINX service 
@@ -875,20 +875,30 @@ def PHASE1():
         result.result or die("Unable to upgrade Raspberry Pi firmware")
         statwin.addstr( 2,3, "*" , col_info_ok)
         statwin.refresh()
-        
+    
     # ================================
-    # Setup wifi hotspot
+    # Install webserver
+    # ================================
+    statwin.addstr( 3,3, "?" , col_info)
+    statwin.refresh()
+    install_web_interface()
+    statwin.addstr( 3,3, "*" , col_info_ok)
+    statwin.refresh()
+    
+    # ================================
+    # Setup Network
+    # ================================
+    statwin.addstr( 4,3, "?" , col_info)
+    statwin.refresh()
+    # ================================
+    # Setup WiFi if present
     # ================================
     if wifi_present() and args.install_wifi:
-        statwin.addstr( 4,3, "?" , col_info)
-        statwin.refresh()
         install_wifi()
-        
     # ================================
     # install dnsmasq
     # ================================
     install_dnsmasq()
-    
     # ================================
     # Update hostname (LAST!)
     # ================================
@@ -901,19 +911,25 @@ def PHASE1():
     statwin.refresh()
     
     # ================================
-    # KAHN academy (default enabled)
+    # FDROID
+    # ================================
+    statwin.addstr( 5, 3, "?" , col_info)
+    statwin.refresh()
+    install_fdroid()
+    statwin.addstr( 5, 3, "*" , col_info_ok)
+    statwin.refresh()
+    
+    # ================================
+    # Install Kolibri
     # ================================
     statwin.addstr( 6, 3, "?" , col_info)
     statwin.refresh()
     install_kolibri()
-    #    install_kalite()
-    #    # install the language for Khan
-    #    install_ka_languague()
     statwin.addstr( 6, 3, "*" , col_info_ok)
     statwin.refresh()
     
     # ================================
-    # Install Citadel
+    # Install optional Citadel
     # ================================
     if args.install_citadel:
         statwin.addstr( 7, 3, "?" , col_info)
