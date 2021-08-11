@@ -359,7 +359,9 @@ def install_web_interface():
     cp("./files/nginx/admin.local", "/etc/nginx/sites-available/", "Unable to copy file admin.local (nginx)")
     cp("./files/nginx/files.local", "/etc/nginx/sites-available/", "Unable to copy file files.local (nginx)")
    
-    sudo("mkdir /var/www/log","Unable to create the NGINX log folder")
+    # If folder doesn't exist create   
+    if not os.path.exists('/var/www/log'):
+        sudo("mkdir /var/www/log","Unable to create the NGINX log folder")
     
     # restart NGINX service 
     sudo("systemctl restart nginx", "Unable to restart nginx")
