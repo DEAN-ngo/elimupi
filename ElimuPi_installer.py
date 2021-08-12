@@ -260,7 +260,7 @@ def install_moodle():
         content_prefix_escaped = "\/var\/moodlecontent"
 
     # Install MariaDB or =MySQL 
-    display_log("Installing mariadb-server...")
+    display_log("Installing mariadb-server...", col_log_ok)
     sudo("apt-get install -y mariadb-server","Unable to install MariadbServer")
     display_log("Completed installing mariadb-server...", col_log_ok)
     
@@ -268,7 +268,7 @@ def install_moodle():
     # sudo("sed -i 's//var\/run\/usbmount\/Content\/moodledb' /etc/mysql/mariadb.conf.d/nano 50-server.cnf","Unable to set mariadb folder")
     # Start and enable DBserver
     
-    display_log("Configuring mariadb-server...")
+    display_log("Configuring mariadb-server...", col_log_ok)
     sudo("systemctl enable mariadb.service","Unable to enable DB")
     sudo("systemctl restart mariadb.service","Unable to restart DB")
     # copy the sql files
@@ -277,7 +277,7 @@ def install_moodle():
     cp("files/moodle/sql/02-create-user.sql", "/var/moodlesql", "Unable to copy 02-create-user.sql")
     # execute the required database commands
     sudo("cat /var/moodlesql/*.sql | sudo mysql")
-    display_log("Completed configuring mariadb-server...")
+    display_log("Completed configuring mariadb-server...", col_log_ok)
     
     # /etc/systemd/system/mysqld.service
     # LimitNOFILE=16384
@@ -286,19 +286,19 @@ def install_moodle():
     # Create/setup default user
     
     # Add PHP mySQL support (mariaDB)
-    display_log("Installing PHP and tools...")
+    display_log("Installing PHP and tools...", col_log_ok)
     sudo("apt-get install php-fpm php-mysql php -y","Unable to install php-fpm, php-mysql or php")
     display_log("Completed installing PHP and tools", col_log_ok)
     # /etc/php/7.3/fpm/php.ini
 
     # Install PHP extensions
-    display_log("Installing PHP extensions...")
+    display_log("Installing PHP extensions...", col_log_ok)
     sudo("apt-get install php-curl php-xml php-mbstring php-zip php-gd php-intl php-xmlrpc php-soap -y","Unable to install PHP extensions")
     display_log("Done installing PHP extensions", col_log_ok)
 
     # use /var/moodle for install
     sudo("rm --force --recursive /var/moodle")
-    display_log("Downloading Moodle...")
+    display_log("Downloading Moodle...", col_log_ok)
     sudo("git clone -b MOODLE_310_STABLE git://git.moodle.org/moodle.git /var/moodle", "Unable to clone Moodle")
     display_log("Done downloading Moodle", col_log_ok)
     # chown -R root /path/to/moodle
@@ -414,7 +414,7 @@ def install_kolibri():
     sudo("pip3 install cffi --upgrade","Unable to install cffi")
     
     display_log("Add http://ppa.launchpad.net/learningequality as installer source...", col_log_ok)
-    sudo("su -c 'echo \"deb http://ppa.launchpad.net/learningequality/kolibri/ubuntu bionic main\" > /etc/apt/sources.list.d/learningequality-ubuntu-kolibri-bionic.list")
+    sudo("su -c 'echo deb http://ppa.launchpad.net/learningequality/kolibri/ubuntu bionic main > /etc/apt/sources.list.d/learningequality-ubuntu-kolibri-bionic.list'")
     sudo("apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys DC5BAA93F9E4AE4F0411F97C74F88ADB3194DD81")
     sudo("apt update")
     
@@ -445,7 +445,7 @@ def install_kiwix():
     display_log("Latest KIWIX release : " + latest_release_name, col_log_ok)
     
     # get release for Linux-armhf from mirror
-    display_log("Downloading kiwix-tools...")
+    display_log("Downloading kiwix-tools...", col_log_ok)
     sudo("curl -s https://ftp.nluug.nl/pub/kiwix/release/kiwix-tools/" + latest_release_name + ".tar.gz | tar xz -C /home/pi/", "Unable to get latest kiwix release (https://ftp.nluug.nl/pub/kiwix/release/kiwix-tools/" + latest_release_name + ")")
     display_log("Completed downloading kiwix-tools", col_log_ok)
     # Make kiwix application folder
@@ -473,13 +473,13 @@ def install_kiwix():
     #download two sample wikis
     url_vikidia = "https://ftp.nluug.nl/pub/kiwix/zim/vikidia/"
     package_vikidia = latest_zim_package(url_vikidia, "vikidia_en_all_nopic_")
-    display_log("Downloading {}...".format(package_vikidia))
+    display_log("Downloading {}...".format(package_vikidia), col_log_ok)
     sudo("curl --silent {}{} --output /var/kiwix/bin/{}".format(url_vikidia, package_vikidia, package_vikidia), "unable to download {}{}".format(url_vikidia, package_vikidia))
     display_log("Complered download sample zim 1", col_log_ok)
 
     url_wiktionary = "https://ftp.nluug.nl/pub/kiwix/zim/wiktionary/"
     package_wiktionary = latest_zim_package(url_wiktionary, "wiktionary_en_simple_all_nopic_")
-    display_log("Downloading {}...".format(package_wiktionary))
+    display_log("Downloading {}...".format(package_wiktionary), col_log_ok)
     sudo("curl --silent {}{} --output /var/kiwix/bin/{}".format(url_wiktionary, package_wiktionary, package_wiktionary), "unable to download {}{}".format(url_wiktionary, package_wiktionary))
     display_log("Complered download sample zim 2", col_log_ok)
 
@@ -958,7 +958,7 @@ def PHASE1():
     statwin.addstr( 8, 3, "?" , col_info)
     statwin.refresh()
     install_kiwix()
-    statwin.addstr( 8, 3, "-" , col_info)
+    statwin.addstr( 8, 3, "*" , col_info)
     statwin.refresh()
 
     # ================================
