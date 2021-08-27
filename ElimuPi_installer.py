@@ -554,7 +554,7 @@ def add_content_disk_to_fstab():
     with open("/etc/fstab") as fstab_readable:
         fstab_content = fstab_readable.read()
         if not "LABEL=Content" in fstab_content:
-            sudo("echo 'LABEL=Content /mnt/content ntfs defaults,noatime 0 0' | sudo tee --append /etc/fstab", "Could not add content disk to /etc/fstab")
+            sudo("echo 'LABEL=Content /mnt/content ntfs defaults,noatime,nofail 0 0' | sudo tee --append /etc/fstab", "Could not add content disk to /etc/fstab")
     display_log("Completed update of fstab")
     return True
 
@@ -761,7 +761,7 @@ def PHASE0():
     statwin.addstr( 3,2, "[ ] Install GIT", col_info)
     statwin.addstr( 4,2, "[ ] Clone ElimuPi repository", col_info)
     statwin.addstr( 5,2, "[ ] Write install status file", col_info)
-    statwin.addstr( 6,2, "[ ] Setup ftab mount", col_info)
+    statwin.addstr( 6,2, "[ ] Setup fstab mount", col_info)
     statwin.addstr( 7,2, "[ ] Set pi password", col_info)
     statwin.addstr( 8,2, "[ ] Reboot", col_info)
     
