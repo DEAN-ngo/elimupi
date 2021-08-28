@@ -35,6 +35,7 @@ import xml.etree.ElementTree as ET
 import json
 import re
 import crypt
+import datetime
 
 from time import sleep
 # from __builtins__ import true
@@ -576,6 +577,8 @@ def sudo(s, error_msg = False):
 # abort command (clean exit)
 # ================================
 def abort(msg):
+    file_log("aborting with the following message: ")
+    file_log(msg)
     curses.endwin()
     print("Exit: " + str(msg))
     sys.exit(0)
@@ -584,12 +587,16 @@ def abort(msg):
 # die command (error exit)
 # ================================
 def die(msg, cmd_result=None):
+    file_log("dying with the following message: ")
+    file_log(msg)
     # End cusrses mode
     curses.endwin()
     
     # display error
     print("Error: " + str(msg))
     if cmd_result:
+        file_log("the following error ocurred: ")
+        file_log(cmd_result.error)
         print(cmd_result.error)
     sys.exit(1)
 
@@ -1022,11 +1029,24 @@ def display_status():
 # log display
 # ================================
 def display_log(message, attribute=col_log):
+    file_log(message)
     message_string = str(message)
     current_y_pos = logwin.getyx()[0]
     logwin.addstr(current_y_pos + 1, 0, "> " + message_string, attribute)
     current_y_pos = logwin.getyx()[0]
     logwin.refresh(current_y_pos - (logwin_dheight - logwin_posy), 0, logwin_posy  , logwin_posx , logwin_dheight, logwin_dwidth )
+
+# ================================
+# log to file
+# ================================
+def file_log(message):
+    message_string = str(message)
+    with open("/home/pi/elimupi-install-script.log", "a") as log_file:
+        log_file.write("\n") # newline
+        log_file.write(str(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")))
+        log_file.write(": ")
+        log_file.write(message_string)
+
 
 # ================================
 # Add locales for en_GB and sw_KE to environment
