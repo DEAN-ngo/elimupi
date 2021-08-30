@@ -595,7 +595,7 @@ def die(msg, cmd_result=None):
     # display error
     print("Error: " + str(msg))
     if cmd_result:
-        file_log("the following error ocurred: ")
+        file_log("The following error ocurred: ")
         file_log(cmd_result.error)
         print(cmd_result.error)
     sys.exit(1)
@@ -1022,8 +1022,8 @@ def display_info():
 # ================================
 def log_info():
     file_log("--- Info about the system ---")
-    file_log("[ Phase " + install_phase + " ]")                      # Phase of the installation
-    file_log("ElimuPi build : " + base_build )                       # Build of the installer
+    file_log("[ Phase " + install_phase + " ]")                  # Phase of the installation
+    file_log("ElimuPi build : " + base_build )                   # Build of the installer
     file_log('Hardware      : ' + getpiversion() )               # Model of the PI
     file_log('Platform      : ' + platform.platform() )          # Platform : Linux-4.9.41-v7+-armv7l-with-debian-9.1
     file_log('System        : ' + platform.system() )            # System   : Linux
