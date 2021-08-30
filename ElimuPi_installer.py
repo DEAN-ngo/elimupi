@@ -595,7 +595,7 @@ def die(msg, cmd_result=None):
     # display error
     print("Error: " + str(msg))
     if cmd_result:
-        file_log("The following error ocurred: ")
+        file_log("The following error occurred: ")
         file_log(cmd_result.error)
         print(cmd_result.error)
     sys.exit(1)
