@@ -1,12 +1,4 @@
----
-- name: 'Provision Image'
-  hosts: all
-  vars:
-    template_path: templates/ # For local ansible runs, packer overwrites this.
-  become: true
-
-  tasks:
-  - name: Enable ssh
+- name: Enable ssh
     file:
       path: /boot/ssh
       state: touch
@@ -17,7 +9,7 @@
 
   - name: Set hostsfile
     template:
-      src: "{{ template_path }}hosts"
+      src: "hosts"
       dest: /etc/hosts
 
   - name: Create groups
