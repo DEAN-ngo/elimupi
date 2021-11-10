@@ -1,0 +1,13 @@
+# inventory for local development
+
+# Prerequisites:
+# - ssh key on pi user
+# - ansible installed
+# - local pi
+# run ansible against local raspberry pi:
+# ansible-playbook ansible/playbook.yml -i ansible/inventory.yml
+
+all:
+  hosts:
+    192.168.178.82:
+      ansible_user: pi

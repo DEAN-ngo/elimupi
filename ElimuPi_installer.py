@@ -35,7 +35,6 @@ import xml.etree.ElementTree as ET
 import json
 import re
 import crypt
-import datetime
 
 from time import sleep
 # from __builtins__ import true
@@ -476,13 +475,13 @@ def install_kiwix():
     package_vikidia = latest_zim_package(url_vikidia, "vikidia_en_all_nopic_")
     display_log("Downloading {}...".format(package_vikidia), col_log_ok)
     sudo("curl --silent {}{} --output /var/kiwix/bin/{}".format(url_vikidia, package_vikidia, package_vikidia), "unable to download {}{}".format(url_vikidia, package_vikidia))
-    display_log("Completed download sample zim 1", col_log_ok)
+    display_log("Complered download sample zim 1", col_log_ok)
 
     url_wiktionary = "https://ftp.nluug.nl/pub/kiwix/zim/wiktionary/"
     package_wiktionary = latest_zim_package(url_wiktionary, "wiktionary_en_simple_all_nopic_")
     display_log("Downloading {}...".format(package_wiktionary), col_log_ok)
     sudo("curl --silent {}{} --output /var/kiwix/bin/{}".format(url_wiktionary, package_wiktionary, package_wiktionary), "unable to download {}{}".format(url_wiktionary, package_wiktionary))
-    display_log("Completed download sample zim 2", col_log_ok)
+    display_log("Complered download sample zim 2", col_log_ok)
 
     # Create service
     sudo("update-rc.d kiwix defaults", "Unable to register the kiwix service.")
@@ -577,8 +576,6 @@ def sudo(s, error_msg = False):
 # abort command (clean exit)
 # ================================
 def abort(msg):
-    file_log("Aborting with the following message: ")
-    file_log(msg)
     curses.endwin()
     print("Exit: " + str(msg))
     sys.exit(0)
@@ -587,16 +584,12 @@ def abort(msg):
 # die command (error exit)
 # ================================
 def die(msg, cmd_result=None):
-    file_log("Dying with the following message: ")
-    file_log(msg)
     # End cusrses mode
     curses.endwin()
     
     # display error
     print("Error: " + str(msg))
     if cmd_result:
-        file_log("The following error occurred: ")
-        file_log(cmd_result.error)
         print(cmd_result.error)
     sys.exit(1)
 
@@ -747,7 +740,6 @@ def wifi_present():
 # PHASE 0 install
 ############################################
 def PHASE0():
-    file_log("Starting phase 0")
     # ================================
     # Ask to continue
     # ================================
@@ -871,7 +863,6 @@ def PHASE0():
 # PHASE 1 install
 ############################################
 def PHASE1():
-    file_log("Starting phase 1")
     # ================================
     # Ask to continue
     # ================================
@@ -1018,20 +1009,6 @@ def display_info():
     infowin.refresh()
 
 # ================================
-# infowin log
-# ================================
-def log_info():
-    file_log("--- Info about the system ---")
-    file_log("[ Phase " + install_phase + " ]")                  # Phase of the installation
-    file_log("ElimuPi build : " + base_build )                   # Build of the installer
-    file_log('Hardware      : ' + getpiversion() )               # Model of the PI
-    file_log('Platform      : ' + platform.platform() )          # Platform : Linux-4.9.41-v7+-armv7l-with-debian-9.1
-    file_log('System        : ' + platform.system() )            # System   : Linux
-    file_log('OS Release    : ' + platform.release() )           # Release  : 4.9.41-v7+
-    file_log('OS Version    : ' + platform.version() )           # Version  : #1023 SMP Tue Aug 8 16:00:15 BST 2017
-    file_log("--- End info about the system ---")
-
-# ================================
 # statwin display
 # ================================
 def display_status():
@@ -1045,24 +1022,11 @@ def display_status():
 # log display
 # ================================
 def display_log(message, attribute=col_log):
-    file_log(message)
     message_string = str(message)
     current_y_pos = logwin.getyx()[0]
     logwin.addstr(current_y_pos + 1, 0, "> " + message_string, attribute)
     current_y_pos = logwin.getyx()[0]
     logwin.refresh(current_y_pos - (logwin_dheight - logwin_posy), 0, logwin_posy  , logwin_posx , logwin_dheight, logwin_dwidth )
-
-# ================================
-# log to file
-# ================================
-def file_log(message):
-    message_string = str(message)
-    with open("/home/pi/elimupi-install-script.log", "a") as log_file:
-        log_file.write("\n") # newline
-        log_file.write(str(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"))) # human-readable timestamp with precision in seconds
-        log_file.write(": ")
-        log_file.write(message_string)
-
 
 # ================================
 # Add locales for en_GB and sw_KE to environment
@@ -1102,7 +1066,6 @@ def install_network():
 ############################################
 #    Main code start
 ############################################
-file_log("***Starting installation script***")
 # ================================
 # Construct install data
 # ================================
@@ -1127,15 +1090,16 @@ else:
 
 curses.curs_set(False)
 # ================================
-# Display and log info
+# Display info
 # ================================
-log_info()
 display_info()
 
 # ================================
 # Display status window
 # ================================
 display_status()
+
+# display_log("")
 
 # ================================
 # Display menu
