@@ -32,6 +32,14 @@ build {
     ]
   }
 
+  provisioner "shell" {
+    inline = [
+      "ls -lah /tmp",
+      "ls -lah /tmp/templates",
+      "ls -lah /tmp/templates/*"
+    ]
+  }
+
   provisioner "ansible-local" {
     playbook_file = "ansible/playbook.yml"
     extra_arguments = [
@@ -40,13 +48,7 @@ build {
     ]
   }
 
-  # provisioner "shell" {
-  #   inline = [
-  #     "ls -lah /tmp",
-  #     "ls -lah /tmp/templates",
-  #     "ls -lah /tmp/templates/*"
-  #   ]
-  # }
+
 
   post-processor "shell-local" {
     inline = ["wget https://raw.githubusercontent.com/Drewsif/PiShrink/master/pishrink.sh -O pishrink.sh"]
