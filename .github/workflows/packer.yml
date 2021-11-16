@@ -30,12 +30,13 @@ jobs:
       uses: hashicorp-contrib/setup-packer@v1
 
     - name: Validate template
-      run: packer validate -syntax-only packer/image.pkr.hcl
+      run: packer validate -syntax-only $GITHUB_WORKSPACE/packer/image.pkr.hcl
 
     - name: Build image from template
-      run: sudo packer build packer/image.pkr.hcl
+      run: sudo packer build $GITHUB_WORKSPACE/packer/image.pkr.hcl
 
     - name: Upload zip
       uses: actions/upload-artifact@v2
       with:
         path: output.zip
+

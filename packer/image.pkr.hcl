@@ -11,16 +11,16 @@ source "arm-image" "elimupi-raspios-buster" {
 build {
   sources = [ "source.arm-image.elimupi-raspios-buster" ]
 
-  provisioner "shell" {
-    inline = [
-      "mkdir /tmp/templates"
-    ]
-  }
+  // provisioner "shell" {
+  //   inline = [
+  //     "mkdir /tmp/templates"
+  //   ]
+  // }
 
-  provisioner "file" {
-    source = "ansible/templates"
-    destination = "/tmp/templates"
-  }
+  // provisioner "file" {
+  //   source = "ansible/templates"
+  //   destination = "/tmp/templates"
+  // }
 
   provisioner "shell" {
     inline = [
@@ -32,20 +32,21 @@ build {
     ]
   }
 
-  provisioner "shell" {
-    inline = [
-      "ls -lah /tmp",
-      "ls -lah /tmp/templates",
-      "ls -lah /tmp/templates/*"
-    ]
-  }
+  // provisioner "shell" {
+  //   inline = [
+  //     "ls -lah /tmp",
+  //     "ls -lah /tmp/templates",
+  //     "ls -lah /tmp/templates/*"
+  //   ]
+  // }
 
   provisioner "ansible-local" {
     playbook_file = "ansible/site.yml"
     extra_arguments = [
-      "--extra-vars template_path=/tmp/templates/",
       "--verbose"
     ]
+    playbook_dir = "ansible" 
+
   }
 
 

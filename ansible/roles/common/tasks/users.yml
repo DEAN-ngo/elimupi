@@ -1,0 +1,27 @@
+- name: Create groups
+  group:
+    name: "{{ item }}"
+  loop:
+    - admins
+    - teachers
+    - students
+
+- name: Change password
+  user:
+    name: pi
+    password: "$6$b3gxvKWPUcs2g3t0$5XgHJvkpolByOwgowa3FZLF7Mp3g1u3fj7x/eoGlBRZ0IoauLx7Icik/lnaRcn7hJMnlwrdZwXNTZnUb.bXPN1" # elimupi
+    group: pi
+    groups:
+    - teachers
+
+- name: Create admin account
+  user:
+    name: deanadmin
+    password: "$6$8nyRab3gxvKWPUcs$tEoTxWLx8G6EusYnd0oldZrg9hcQj6YR4qjD.Alwr9B8HmyT23r1ERw4SyI6S./zhtcPcD2X8J.2slvVUsNHi." # topsecret
+    group: admins
+
+- name: Create headmaster account
+  user:
+    name: headmaster
+    password: "$6$JUefhA0qvD7b5LSh$6L5Pne1tpXvqL/VBu4U/pQh0K2XYuP6ip7I3XI0No.Q8AXLT1DY74F4gaAJ6vZ90jfg1O5IGA3jgaP.GyWqC8." # headmaster
+    group: teachers

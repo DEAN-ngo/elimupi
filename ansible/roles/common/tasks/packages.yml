@@ -1,0 +1,52 @@
+- name: Upgrade OS
+  apt:
+    upgrade: dist
+
+# TODO update rbp firmware on first boot
+
+- name: Add repo key learningequality
+  apt_key:
+    keyserver: hkp://keyserver.ubuntu.com:80
+    id: DC5BAA93F9E4AE4F0411F97C74F88ADB3194DD81
+
+- name: Add repository learningeqality
+  apt_repository:
+    repo: deb http://ppa.launchpad.net/learningequality/kolibri/ubuntu bionic main
+
+- name: Install applications
+  apt:
+    name:
+    - ufw
+    - git
+    - nginx
+    - php
+    - php-fpm
+    - php-curl
+    - php-xml
+    - php-mbstring
+    - php-zip
+    - php-gd
+    - php-intl
+    - php-xmlrpc
+    - php-soap
+    - php-mysql
+    - iptables
+    - libffi-dev
+    - python3-pip
+    - python3-pkg-resources
+    - dirmngr
+    - kolibri
+    - kolibri-server
+    - dnsmasq
+    - citadel-suite
+    - fdroidserver
+    - usbmount
+    - ntfs-3g
+    - mariadb-server
+    - hostapd
+    - udhcpd
+
+- name: Remove dependencies that are no longer required
+  apt:
+    autoremove: yes
+    autoclean: yes

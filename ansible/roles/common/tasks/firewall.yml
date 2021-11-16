@@ -1,0 +1,35 @@
+# TOFO fix firewall part
+# ==> arm-image.elimupi-raspios-buster: iptables/1.8.2 Failed to initialize nft: Protocol family not supported
+
+# - name: Reset firewall
+#   ufw:
+#     state: reset
+
+# - name: Enable firewall
+#   ufw:
+#     state: enabled
+#     policy: deny
+
+# - name: Allow http
+#   ufw:
+#     rule: allow
+#     port: 80
+#     proto: tcp
+#     src: '{{ item }}'
+#   loop:
+#     - fe80::/10
+#     - 10.0.0.0/8
+#     - 172.16.0.0/12
+#     - 192.168.0.0/16
+
+# - name: Allow ssh
+#   ufw:
+#     port: 22
+#     proto: tcp
+#     rule: allow
+#     src: '{{ item }}'
+#   loop:
+#     - fe80::/10
+#     - 10.0.0.0/8
+#     - 172.16.0.0/12
+#     - 192.168.0.0/16

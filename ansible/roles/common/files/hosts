@@ -1,0 +1,6 @@
+# Only for local access
+127.0.0.1 elimupi localhost
+
+# Remote access/shared 
+10.11.0.1 wiki.local files.local khan.local fdroid.local moodle.local www.wiki.local www.files.local www.khan.local www.moodle.local
+

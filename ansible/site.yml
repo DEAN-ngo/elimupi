@@ -1,8 +1,6 @@
 ---
 - name: 'Provision Image'
   hosts: all
-  vars:
-    template_path: templates/ # For local ansible runs, packer overwrites this.
   become: true
   roles:
     - common

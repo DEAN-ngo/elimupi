@@ -1,0 +1,9 @@
+server {
+	listen        	80;    
+	server_name		www.files.local files.local;
+	error_log 		/var/www/log/files-log;
+	location /{
+		autoindex on;
+		root /mnt/content/files;
+	}
+}
