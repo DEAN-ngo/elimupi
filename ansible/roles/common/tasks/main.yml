@@ -1,11 +1,8 @@
-- name: Include setup.yml
-  include: setup.yaml
+- include_tasks: setup.yml
 
-- name: Include users.yml
-  include: users.yaml
+- include_tasks: users.yml
 
-- name: Include packages.yml
-  include: packages.yaml
+- include_tasks: packages.yml
 
 # - name: Include firewall.yml
 #   include: firewall.yaml
