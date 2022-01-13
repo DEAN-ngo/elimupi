@@ -1,3 +1,4 @@
+# Put empty ssh bile on the boot partition (mounted under /boot on a Raspberry Pi)
 - name: Enable ssh
   file:
     path: /boot/ssh
