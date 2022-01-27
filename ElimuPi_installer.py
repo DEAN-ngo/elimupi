@@ -294,7 +294,7 @@ def install_moodle():
 
     # Install PHP extensions
     display_log("Installing PHP extensions...", col_log_ok)
-    sudo("apt-get install php-curl php-xml php-mbstring php-zip php-gd php-intl php-xmlrpc php-soap -y","Unable to install PHP extensions")
+    sudo("apt-get install php-curl php-xml php-mbstring php-zip php-gd php-intl php-xmlrpc php-soap php_ldap -y","Unable to install PHP extensions")
     display_log("Done installing PHP extensions", col_log_ok)
 
     # use /var/moodle for install
