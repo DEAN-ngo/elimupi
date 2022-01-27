@@ -6,7 +6,7 @@ ou: ElimuPi
 
 dn: o=school,dc=elimupi,dc=local
 o: school
-dc: elimipi
+dc: elimupi
 description: School 1
 objectClass: dcObject
 objectClass: top
