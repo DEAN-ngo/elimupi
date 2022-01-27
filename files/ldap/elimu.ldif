@@ -1,0 +1,37 @@
+dn: dc=elimupi,dc=local
+dc: elimupi
+objectClass: dcObject
+objectClass: organizationalUnit
+ou: ElimuPi
+
+dn: o=school,dc=elimupi,dc=local
+o: school
+dc: elimipi
+description: School 1
+objectClass: dcObject
+objectClass: top
+objectClass: organization
+
+dn: ou=it,o=school,dc=elimupi,dc=local
+description: IT staff
+objectClass: organizationalUnit
+ou: it
+
+dn: ou=teachers,o=school,dc=elimupi,dc=local
+description: Teachers
+objectClass: organizationalUnit
+ou: teachers
+
+dn: ou=students,o=school,dc=elimupi,dc=local
+description: Students
+objectClass: organizationalUnit
+ou: students
+
+# user: pi passwd: elimupi
+dn: cn=pi,ou=it,o=school,dc=elimupi,dc=local
+objectClass: person
+objectClass: inetorgperson
+cn: pi
+sn: Elimu
+userPassword: {SSHA}qv4BGoBhku6AfD+Nla19ov0Tg0iRKUHT
+mail: pi@elimupi.local
