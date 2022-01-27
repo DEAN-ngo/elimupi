@@ -814,7 +814,7 @@ def PHASE0():
     else:
         result = sudo("rm -fr " + basedir() + "/build_elimupi", "Unable to update.")
           
-        result = cmd("git clone --depth 1 " + base_git + " --branch openldap " + basedir() + "/build_elimupi") 
+        result = cmd("git clone --depth 1 --branch openldap " + base_git + " " + basedir() + "/build_elimupi") 
         result.result or die("Unable to clone Elimu installer repository.")
     statwin.addstr( 4,3, "*" , col_info_ok)
     statwin.refresh()
