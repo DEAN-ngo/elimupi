@@ -24,9 +24,6 @@ sudo slapmodify -n 0 -l suffix.ldif
 
 sudo slapmodify -n 0 -l resetpassword.ldif
 
-sudo /usr/local/libexec/slapd 
+sudo service slapd start
 
 ldapadd -f elimu.ldif -x -D "cn=Manager,dc=elimupi,dc=local" -w elimupi
-
-sudo kill -INT `cat /usr/local/var/run/slapd.pid`
-
