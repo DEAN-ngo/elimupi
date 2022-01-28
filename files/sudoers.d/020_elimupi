@@ -10,9 +10,10 @@ Cmnd_Alias      RESETPASSWD=/var/www/scripts/changepassword.sh [!;$|&<>]*
 Cmnd_Alias      RESETPASSWDALL=/var/www/scripts/changepasswordall.sh [!;$|&<>]*
 Cmnd_Alias      DELETEUSER=/var/www/scripts//deleteuser.sh [!;$|&<>]*
 Cmnd_Alias      FDROID=/usr/bin/fdroid
+Cmnd_Alias	MOOSH=/usr/local/bin/moosh
 
 # Set admin group permissions
-%admins			All= NOPASSWD: /sbin/shutdown, /usr/bin/pumount, /etc/usbmount/umount.d/01_remove_model_symlink, RESETPASSWD, RESETPASSWDALL, ADDTEACHER, ADDSTUDENT, DELETEUSER, FDROID
+%admins			All= NOPASSWD: /sbin/shutdown, /usr/bin/pumount, /etc/usbmount/umount.d/01_remove_model_symlink, RESETPASSWD, RESETPASSWDALL, ADDTEACHER, ADDSTUDENT, DELETEUSER, FDROID, MOOSH
 
 # Set teacher group permissions
-%teachers       ALL= NOPASSWD: /sbin/shutdown, /usr/bin/pumount, /etc/usbmount/umount.d/01_remove_model_symlink, RESETPASSWD, ADDTEACHER, ADDSTUDENT, DELETEUSER, FDROID
+%teachers       ALL= NOPASSWD: /sbin/shutdown, /usr/bin/pumount, /etc/usbmount/umount.d/01_remove_model_symlink, RESETPASSWD, ADDTEACHER, ADDSTUDENT, DELETEUSER, FDROID, MOOSH
