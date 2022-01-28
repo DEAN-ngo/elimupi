@@ -2,7 +2,9 @@ server {
 	listen 80;
 	listen [::]:80;
 	server_name   www.fdroid.local fdroid.local;
-	error_log 		/var/www/log/fdroid-log;
+	error_log /mnt/content/www_log/fdroid_error.log warn;
+	access_log /mnt/content/www_log/fdroid_access.log;
+
 	location /{
 		autoindex on;
 		root /mnt/content/fdroid;

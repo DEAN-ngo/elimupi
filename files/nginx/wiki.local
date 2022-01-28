@@ -2,6 +2,9 @@ server {
     listen 80;
     listen [::]:80;
     server_name wiki.local www.wiki.local;
+    error_log /mnt/content/www_log/wiki_error.log
+    access_log /mnt/content/www_log/wiki_access.log
+
     location / {
         proxy_pass http://127.0.0.1:81;
         proxy_http_version 1.1;
