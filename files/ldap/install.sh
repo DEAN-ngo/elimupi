@@ -23,8 +23,4 @@ sudo make install
 install -v -dm700 -o ldap -g ldap /usr/local/var/openldap-data
 install -v -dm700 -o ldap -g ldap /usr/local/etc/openldap/slapd.ldif
 
-sudo cp servers/slapd/slapd.service /usr/lib/systemd/system/slapd.service
-
-sudo systemctl enable slapd
-
 rm -Rf /tmp/openldap
