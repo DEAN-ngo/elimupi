@@ -387,7 +387,7 @@ def install_web_interface():
     
     
     # Add base groups
-    display_log("Add users andgroups...", col_log_ok)
+    display_log("Add users and groups...", col_log_ok)
     sudo("addgroup admins")
     sudo("addgroup teachers") 
     sudo("addgroup students")
