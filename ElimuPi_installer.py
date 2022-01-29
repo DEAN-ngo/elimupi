@@ -888,6 +888,7 @@ def PHASE1():
     statwin.addstr(7,2,"[ ] Install Citadel")
     statwin.addstr(8,2,"[ ] Install Kiwix")
     statwin.addstr(9,2,"[ ] Install Moodle")
+    statwin.addstr(10,2,"[] Install locales")
     statwin.refresh()
             
     # ================================
@@ -982,6 +983,16 @@ def PHASE1():
         statwin.refresh()
     else:
         statwin.addstr( 9, 3, "-" , col_info)
+
+    # ================================
+    # Install locales
+    # ================================
+   if True:
+       statwin.addstr( 10,3, "?", col_info)
+       statwin.refresh()
+       install_locales()
+       statwin.addstr( 10,3, "*", col_info)
+       statwin.refresh()
     
     # ================================
     # record the version of the installer we're using - this must be manually
@@ -1074,7 +1085,13 @@ def install_locales():
     #$ sudo locale-gen es_AR
     #$ sudo locale-gen es_AR.UTF-8
     #$ sudo update-locale
-    #$ sudo service apache2 restart
+    sudo sed -i 's/[#] sw_KE UTF-8/sw_KE UTF-8/' /etc/locale.gen
+    sudo sed -i 's/[#] sw_TZ UTF-8/sw_TZ UTF-8/' /etc/locale.gen
+    sudo sed -i 's/[#] am_ET UTF-8/am_ET UTF-8/' /etc/locale.gen
+    sudo sed -i 's/[#] nl_NL.UTF-8 UTF-8/nl_NL.UTF-8 UTF-8/' /etc/locale.gen
+    sudo locale-gen
+
+    #sudo service apache2 restart
     return  True
 
 # ================================
