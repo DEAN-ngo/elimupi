@@ -20,6 +20,7 @@
 /mnt/content/www_log/*.log {
         monthly
         missingok
+	maxsize 100M
         rotate 12
         compress
         delaycompress
