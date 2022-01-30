@@ -133,7 +133,7 @@ col_log_ok   = curses.color_pair(6)
 # ================================
 posx    = 4
 posy    = 0
-height  = 12
+height  = 14
 width   = curses.COLS - 8
 statwin = curses.newwin(height, width , posy, posx)
 
@@ -295,7 +295,7 @@ def install_moodle():
 
     # Install PHP extensions
     display_log("Installing PHP extensions...", col_log_ok)
-    sudo("apt-get install php-curl php-xml php-mbstring php-zip php-gd php-intl php-xmlrpc php-soap php_ldap -y","Unable to install PHP extensions")
+    sudo("apt-get install php-curl php-xml php-mbstring php-zip php-gd php-intl php-xmlrpc php-soap php-ldap -y","Unable to install PHP extensions")
     display_log("Done installing PHP extensions", col_log_ok)
 
     # use /var/moodle for install
@@ -337,17 +337,30 @@ def install_moodle():
     # Setup cron job
     cp("files/moodle/cron.txt", "/var/moodlesql", "Unable to copy Moodle cron file")
     sudo("crontab -u www-data /var/moodlesql/cron.txt", "Unable to setup cron for Moodle")
+    
+    # Moodle command line tools for Web Gui : https://moosh-online.com/commands/ 
+    # install moosh
+    display_log("Downloading and installing moosh", col_info_ok);
+    sudo("mkdir /var/moosh", "Unable to create directory for moosh")
+    sudo("files/moosh/install.sh", "Unable to install moosh")
+
+    display_log("Done installed moosh", col_log_ok);
 
     # We don't need to run the install script, as the config.php is already created above.
     # The local administrator should visit http://www.moodle.local first to setup the admin account, otherwise that account might be hijacked by students.
     # sudo("-u www-data /usr/bin/php /var/moodle/admin/cli/install.php", "Unable to install moodle")
-
     
     # see https://docs.moodle.org/310/en/Installing_Moodle
     #      https://docs.moodle.org/310/en/Administration_via_command_line#Installation
     # Create database (mariadb)
-    
-    # Moodle command line tools for Web Gui : https://moosh-online.com/commands/ 
+    return True
+
+def install_LDAP():
+    display_log("Downloading and installing LDAP server", col_log_ok)
+    sudo("./files/ldap/install.sh", "Unable to install LDAP")
+    sudo("./files/ldap/enable.sh", "Unable to enable LDAP")
+    sudo("./files/ldap/init.sh", "Unable to create LDAP database")
+    display_log("Done installing and configuring LDAP", col_log_ok)
     return True
 
 # ================================
@@ -402,6 +415,14 @@ def install_web_interface():
     
     # add Pi to teachers group
     sudo("usermod -a -G teachers pi")
+
+    # set min days before password change user pi
+    sudo("passwd -n 10000 pi", "Unable to set min days for password change")
+    display_log("Done set min days before password change user pi", col_log_ok)
+
+    sudo("./files/php/php.sh", "Unable to change php.ini")
+    display_log("Done set max_upload_filesize to 2G", col_log_ok)
+
     display_log("Done setting up web interface...", col_log_ok)
     return True
 
@@ -887,8 +908,9 @@ def PHASE1():
     statwin.addstr(6,2,"[ ] Install Kolibri")
     statwin.addstr(7,2,"[ ] Install Citadel")
     statwin.addstr(8,2,"[ ] Install Kiwix")
-    statwin.addstr(9,2,"[ ] Install Moodle")
-    statwin.addstr(10,2,"[] Install locales")
+    statwin.addstr(9,2,"[ ] Install Moodle and Moosh")
+    statwin.addstr(10,2,"[ ] Install LDAP")
+    statwin.addstr(11,2,"[ ] Install locales")
     statwin.refresh()
             
     # ================================
@@ -904,7 +926,7 @@ def PHASE1():
     # ================================
     # Update Raspi firmware
     # ================================
-    if not is_vagrant():
+    if not is_vagrant() and False:
         statwin.addstr( 2,3, "?" , col_info)
         statwin.refresh()
         display_log("Update RaspberryPi firmware...")
@@ -985,13 +1007,23 @@ def PHASE1():
         statwin.addstr( 9, 3, "-" , col_info)
 
     # ================================
-    # Install locales
+    # Install LDAP
     # ================================
-   if True:
+    if True:
        statwin.addstr( 10,3, "?", col_info)
        statwin.refresh()
-       install_locales()
+       install_LDAP()
        statwin.addstr( 10,3, "*", col_info)
+       statwin.refresh() 
+
+    # ================================
+    # Install locales
+    # ================================
+    if True:
+       statwin.addstr( 11,3, "?", col_info)
+       statwin.refresh()
+       install_locales()
+       statwin.addstr( 11,3, "*", col_info)
        statwin.refresh()
     
     # ================================
@@ -1080,16 +1112,13 @@ def file_log(message):
 # Add locales for en_GB and sw_KE to environment
 # ================================
 def install_locales():
-    # modify /etc/locale.gen
-    # run  locale-gen
-    #$ sudo locale-gen es_AR
-    #$ sudo locale-gen es_AR.UTF-8
-    #$ sudo update-locale
-    sudo sed -i 's/[#] sw_KE UTF-8/sw_KE UTF-8/' /etc/locale.gen
-    sudo sed -i 's/[#] sw_TZ UTF-8/sw_TZ UTF-8/' /etc/locale.gen
-    sudo sed -i 's/[#] am_ET UTF-8/am_ET UTF-8/' /etc/locale.gen
-    sudo sed -i 's/[#] nl_NL.UTF-8 UTF-8/nl_NL.UTF-8 UTF-8/' /etc/locale.gen
-    sudo locale-gen
+
+    sudo("sed -i 's/[#] en_GB.UTF-8 UTF-8/en_GB.UTF-8 UTF-8' /etc/locale.gen", "Unable to set locale en_GB")
+    sudo("sed -i 's/[#] sw_KE UTF-8/sw_KE UTF-8/' /etc/locale.gen", "Unable to set locale sw_KE")
+    sudo("sed -i 's/[#] sw_TZ UTF-8/sw_TZ UTF-8/' /etc/locale.gen", "Unable to set locale sw_TZ")
+    sudo("sed -i 's/[#] am_ET UTF-8/am_ET UTF-8/' /etc/locale.gen", "Unable to set locale am_ET")
+    sudo("sed -i 's/[#] nl_NL.UTF-8 UTF-8/nl_NL.UTF-8 UTF-8/' /etc/locale.gen", "Unable to set locale nl_NL")
+    sudo("locale-gen", "Unable to load all locales")
 
     #sudo service apache2 restart
     return  True
@@ -1141,7 +1170,7 @@ if os.path.isfile(base_build + '_install'):
     # get phase
     install_phase = open(base_build + '_install').read()
 else: 
-    install_phase = "0"
+    install_phase = "1"
 
 curses.curs_set(False)
 # ================================

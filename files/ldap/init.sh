@@ -1,5 +1,7 @@
 #!/bin/bash
 
+cd files/ldap
+
 # Create config database directory
 if [ ! -d /usr/local/etc/openldap/slapd.d ];
 then
