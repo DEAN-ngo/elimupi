@@ -1170,7 +1170,7 @@ if os.path.isfile(base_build + '_install'):
     # get phase
     install_phase = open(base_build + '_install').read()
 else: 
-    install_phase = "1"
+    install_phase = "0"
 
 curses.curs_set(False)
 # ================================
