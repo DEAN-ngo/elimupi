@@ -443,6 +443,7 @@ def install_kolibri():
     
     display_log("Install Kolibri components...")
     sudo("apt install kolibri kolibri-server")
+    sudo("kolibri manage content movedirectory /mnt/content/kolibri")
     display_log("Install Kolibri completed...", col_log_ok)
     return True
     
@@ -547,6 +548,8 @@ def install_citadel():
 def install_fdroid():
     # Install FDROID server components
     sudo("apt-get install fdroidserver -y", "Unable to install FDroid")
+    # Init a repository
+    sudo("./files/fdroid/install.sh")
     # Enable shared folder for client access
     cp("./files/nginx/fdroid.local", "/etc/nginx/sites-available/", "Unable to copy file fdroid.local (nginx)")
     sudo("systemctl restart nginx", "Unable to restart nginx")
@@ -1113,7 +1116,7 @@ def file_log(message):
 # ================================
 def install_locales():
 
-    sudo("sed -i 's/[#] en_GB.UTF-8 UTF-8/en_GB.UTF-8 UTF-8' /etc/locale.gen", "Unable to set locale en_GB")
+    sudo("sed -i 's/[#] en_GB.UTF-8 UTF-8/en_GB.UTF-8 UTF-8/' /etc/locale.gen", "Unable to set locale en_GB")
     sudo("sed -i 's/[#] sw_KE UTF-8/sw_KE UTF-8/' /etc/locale.gen", "Unable to set locale sw_KE")
     sudo("sed -i 's/[#] sw_TZ UTF-8/sw_TZ UTF-8/' /etc/locale.gen", "Unable to set locale sw_TZ")
     sudo("sed -i 's/[#] am_ET UTF-8/am_ET UTF-8/' /etc/locale.gen", "Unable to set locale am_ET")
