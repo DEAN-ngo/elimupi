@@ -36,7 +36,7 @@
     - python3-pkg-resources
     - dirmngr
     - kolibri
-    - kolibri-server
+    #- kolibri-server
     - dnsmasq
     - citadel-suite
     - fdroidserver
