@@ -17,3 +17,9 @@
   file:
     name: /mnt/content
     state: directory
+
+- name: 'fstab-content'
+  lineinfile:
+    path: /etc/fstab
+    regexp: '^LABEL=Content'
+    line: 'LABEL=Content /mnt/content ntfs defaults,noatime,nofail 0 0'

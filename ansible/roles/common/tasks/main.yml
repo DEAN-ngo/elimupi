@@ -1,9 +1,36 @@
+# Main flow of the Ansible tasks
+# setup - basic setup
 - include_tasks: setup.yml
 
+# users - add users and groups
 - include_tasks: users.yml
 
-- include_tasks: packages.yml
+# ospackages - install OS packages
+- include_tasks: ospackages.yml
 
-# - name: Include firewall.yml
+# git clone
+- include_tasks: gitclone.yml
+
+# firewall - setup firewall
 #   include: firewall.yaml
 
+# network - setup network wifi
+#- include_tasks: network.yml
+
+# webserver - install webserver
+- include_tasks: webserver.yml
+
+# fdroid - install fdroid
+#- include_tasks: fdroid.yml
+
+# kolibri - install kolibri
+#- include_tasks: kolibri.yml
+
+# citadel - install citadel
+#- include_tasks: citadel.yml
+
+# kiwix - install kiwix
+#- include_tasks: kiwix.yml
+
+# moodle - install moodle
+#- include_tasks: moodle.yml
