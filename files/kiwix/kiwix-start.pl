@@ -40,7 +40,7 @@ foreach my $file (`ls /mnt/content/wiki/*.zim 2> /dev/null`) {
     chomp $file;
 
     # skip anything that was hidden
-    my ($moddir) = $file =~ /\/var\/www\/modules\/(.+?)\/data\//;
+    my ($moddir) = $file =~ /\/mnt\/content\/wiki\/(.+?)/;
     next if $hidden{$moddir};
 
     my ($noext) = $file =~ /([^\/]+)\.zim.*$/;
@@ -60,7 +60,7 @@ if (not %zimset) {
 # go through the zim files and add them to the new library
 foreach my $noext (keys(%zimset)) {
     my $zim = $zimset{$noext};
-    my ($moddir) = $zim =~ /(\/var\/www\/modules\/.+?)\/data\//;
+    my ($moddir) = $zim =~ /\/mnt\/content\/wiki\/(.+?)/;
     my $cmd = "/var/kiwix/bin/kiwix-manage /var/kiwix/library.xml add $zim";
     if (-d "$moddir/data/index/$noext.zim.idx") {
         $cmd .= " --indexPath=$moddir/data/index/$noext.zim.idx";
