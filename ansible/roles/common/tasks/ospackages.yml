@@ -35,7 +35,7 @@
     - python3-pip
     - python3-pkg-resources
     - dirmngr
-    - kolibri
+    #- kolibri
     #- kolibri-server
     - dnsmasq
     - citadel-suite

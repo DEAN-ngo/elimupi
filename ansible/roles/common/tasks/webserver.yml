@@ -18,16 +18,12 @@
   ansible.builtin.file:
     src: /etc/nginx/sites-available/admin.local
     dest: /etc/nginx/sites-enabled/admin.local
-    owner: pi
-    group: pi
     state: link
 
 - name: Create a symbolic link files.local
   ansible.builtin.file:
     src: /etc/nginx/sites-available/files.local
     dest: /etc/nginx/sites-enabled/files.local
-    owner: pi
-    group: pi
     state: link        
    
 - name: Create  directory /var/www/log
@@ -47,7 +43,7 @@
 - name: Set sudo file 020_elimupi
   copy:
     src: "sudoers.d/020_elimupi"
-    dest: /etc/sudoers.d/sudoers.d/020_elimupi   
+    dest: /etc/sudoers.d/020_elimupi   
     
 # Add base groups -> moved to users.yml
 # Create two deanadmin account for system -> moved to users.yml

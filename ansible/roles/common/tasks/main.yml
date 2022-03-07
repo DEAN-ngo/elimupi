@@ -21,16 +21,16 @@
 - include_tasks: webserver.yml
 
 # fdroid - install fdroid
-#- include_tasks: fdroid.yml
+- include_tasks: fdroid.yml
 
 # kolibri - install kolibri
-#- include_tasks: kolibri.yml
+- include_tasks: kolibri.yml
 
 # citadel - install citadel
-#- include_tasks: citadel.yml
+#- include_tasks: citadel.yml Does not work yet
 
 # kiwix - install kiwix
-#- include_tasks: kiwix.yml
+#- include_tasks: kiwix.yml Does not work yet
 
 # moodle - install moodle
-#- include_tasks: moodle.yml
+#- include_tasks: moodle.yml Does not work yet

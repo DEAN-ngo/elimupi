@@ -9,5 +9,6 @@
 
 all:
   hosts:
-    192.168.178.82:
+    192.168.2.31:
       ansible_user: pi
+      ansible_ssh_pass: elimupi
