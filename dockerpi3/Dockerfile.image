@@ -1,0 +1,22 @@
+FROM ubuntu:20.04
+ENV IMG_URL="http://downloads.raspberrypi.org/raspios_lite_armhf/images/raspios_lite_armhf-2022-01-28/2022-01-28-raspios-bullseye-armhf-lite.zip"
+ENV IMG_SHA256="f6e2a3e907789ac25b61f7acfcbf5708a6d224cf28ae12535a2dc1d76a62efbc"
+ENV DEBIAN_FRONTEND=noninteractive
+RUN apt-get update
+RUN DEBIAN_FRONTEND=noninteractive apt-get -qq install libguestfs-tools linux-image-generic qemu-utils unzip  wget
+
+RUN wget --quiet -O raspios-bullseye-armhf-lite.zip ${IMG_URL}
+RUN echo "${IMG_SHA256} raspios-bullseye-armhf-lite.zip" | sha256sum --check
+RUN unzip raspios-bullseye-armhf-lite.zip
+
+ENV LIBGUESTFS_BACKEND=direct
+RUN virt-copy-out -m /dev/sda1 -a *-raspios-bullseye-armhf-lite.img /kernel8.img /bcm2710-rpi-3-b-plus.dtb ./
+RUN touch /tmp/ssh
+RUN virt-copy-in -m /dev/sda1 -a *-raspios-bullseye-armhf-lite.img /tmp/ssh /
+
+VOLUME /sd
+
+COPY ./entrypoint.sh /
+RUN chmod 755 /entrypoint.sh
+
+ENTRYPOINT ["/entrypoint.sh"]
