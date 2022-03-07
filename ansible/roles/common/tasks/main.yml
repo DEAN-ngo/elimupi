@@ -1,15 +1,18 @@
+---
 # Main flow of the Ansible tasks
 # setup - basic setup
-- include_tasks: setup.yml
+- name: Include setup tasks
+  include_tasks: setup.yml
 
 # users - add users and groups
-- include_tasks: users.yml
+- name: Include accounts tasks
+  include_tasks: accounts.yml
 
 # ospackages - install OS packages
-- include_tasks: ospackages.yml
+- include_tasks: packages.yml
 
 # git clone
-- include_tasks: gitclone.yml
+- include_tasks: repo.yml
 
 # firewall - setup firewall
 #   include: firewall.yaml

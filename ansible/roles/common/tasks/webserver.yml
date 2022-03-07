@@ -1,48 +1,43 @@
-# install webserver / webinterface
-
-# install package nginx -> moved to ospackages.yml
-# install package php-fpm -> movd to ospackages.yml
-    
+---
 # Install nginx site file
-- name: Set admin.local
-  copy:
-    src: "nginx/admin.local"
-    dest: /etc/nginx/sites-available/admin.local
+- name: Webserver | Copy configuration files
+  ansible.builtin.copy:
+    src: nginx/{{ item }}
+    dest: /etc/nginx/sites-available/{{ item }}
+  loop:
+    - files.local
+    - admin.local
+  notify:
+    - Restart Nginx
 
-- name: Set files.local
-  copy:
-    src: "nginx/files.local"
-    dest: /etc/nginx/sites-available/files.local     
-
-- name: Create a symbolic link admin.local
+- name: Webserver | Enable websites
   ansible.builtin.file:
-    src: /etc/nginx/sites-available/admin.local
-    dest: /etc/nginx/sites-enabled/admin.local
+    src: /etc/nginx/sites-available/{{ item }}
+    dest: /etc/nginx/sites-enabled/{{ item }}
     state: link
+  loop:
+    - files.local
+    - admin.local
+  notify:
+    - Restart Nginx
 
-- name: Create a symbolic link files.local
-  ansible.builtin.file:
-    src: /etc/nginx/sites-available/files.local
-    dest: /etc/nginx/sites-enabled/files.local
-    state: link        
-   
-- name: Create  directory /var/www/log
+- name: Webserver | Create  directory /var/www/log
   ansible.builtin.file:
     path: /var/www/log
     state: directory
     mode: '0755'
-    
-# restart NGINX service 
-- name: Restart service nginx
-  ansible.builtin.systemd:
-    state: restarted
-    daemon_reload: yes
-    name: nginx
+
+- name: Webserver | Enable services
+  ansible.builtin.service:
+    name: "{{ item }}"
+    state: started
+  loop:
+    - nginx
 
 # Add Webinterface sudo settings
-- name: Set sudo file 020_elimupi
-  copy:
-    src: "sudoers.d/020_elimupi"
+- name: Webserver | Set sudo file 020_elimupi
+  ansible.builtin.copy:
+    src: sudoers.d/020_elimupi
     dest: /etc/sudoers.d/020_elimupi   
     
 # Add base groups -> moved to users.yml

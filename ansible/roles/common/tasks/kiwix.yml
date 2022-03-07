@@ -1,3 +1,4 @@
+---
 # Installation KIWIX
 
 # Get the version number of the latest release -> for now solved with variable in site.yml
@@ -23,7 +24,7 @@
     
 # get release for Linux-armhf from mirror
 - name: Download kiwix
-  get_url:
+  ansible.builtin.get_url:
     url: https://ftp.nluug.nl/pub/kiwix/release/kiwix-tools/{{ kiwix_version }}.tar.gz
     dest: /home/pi
     mode: '0440'
@@ -43,7 +44,7 @@
 
 # Copy files we need from the toolset
 - name: Copy some files to /var/kiwix/bin/
-  copy:
+  ansible.builtin.copy:
     src: "{{ item }}"
     dest: /var/kiwix/bin/
     owner: pi
@@ -58,7 +59,7 @@
 
 # Copy config files
 - name: Copy file kiwix-start.pl
-  copy:
+  ansible.builtin.copy:
     src: kiwix/kiwix-start.pl
     dest: /var/kiwix/bin/kiwix-start.pl
     owner: pi
@@ -66,7 +67,7 @@
     mode: '0755'
 
 - name: Copy file kiwix-service
-  copy:
+  ansible.builtin.copy:
     src: kiwix/kiwix-start.pl
     dest: /etc/init.d/kiwix
     owner: pi
@@ -74,7 +75,7 @@
     mode: '0755'
 
 - name: Copy file kiwix-service2
-  copy:
+  ansible.builtin.copy:
     src: kiwix/kiwix-start.pl
     dest: /etc/systemd/system/kiwix.service
     owner: pi
@@ -93,13 +94,13 @@
 
 #download two sample wikis
 - name: Download vikidia
-  get_url:
+  ansible.builtin.get_url:
     url: https://ftp.nluug.nl/pub/kiwix/zim/vikidia/{{ vikidia_version }}.zim
     dest: /var/kiwix/bin/
     #mode: '0440'
 
 - name: Download wiktionary
-  get_url:
+  ansible.builtin.get_url:
     url: https://ftp.nluug.nl/pub/kiwix/zim/wiktionary/{{ wiktionary_version }}.zim
     dest: /var/kiwix/bin/
     #mode: '0440'
@@ -114,9 +115,11 @@
 
 # setup NGINX site
 - name: Set wiki.local
-  copy:
+  ansible.builtin.copy:
     src: "nginx/wiki.local"
-    dest: /etc/nginx/sites-available/wiki.local     
+    dest: /etc/nginx/sites-available/wiki.local
+  notify:
+    - Restart Nginx
     
 # Enable site
 - name: Create a symbolic link wiki.local
@@ -125,11 +128,6 @@
     dest: /etc/nginx/sites-enabled/wiki.local
     owner: pi
     group: pi
-    state: link  
-
-# restart NGINX service 
-- name: Restart service nginx
-  ansible.builtin.systemd:
-    state: restarted
-    daemon_reload: yes
-    name: nginx
+    state: link
+  notify:
+    - Restart Nginx

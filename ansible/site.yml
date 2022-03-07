@@ -1,6 +1,6 @@
 ---
 - name: 'Provision Image'
-  hosts: all
+  hosts: dockerpi
   become: true
 
   vars:
