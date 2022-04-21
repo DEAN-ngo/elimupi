@@ -70,17 +70,17 @@
   ansible.builtin.copy:
     src: kiwix/kiwix-service
     dest: /etc/init.d/kiwix
-    owner: pi
-    group: pi
-    mode: '0755'
+    owner: root
+    group: root
+    mode: '0644'
 
 - name: Copy file kiwix-service2
   ansible.builtin.copy:
     src: kiwix/kiwix.service
     dest: /etc/systemd/system/kiwix.service
-    owner: pi
-    group: pi
-    mode: '0755'    
+    owner: root
+    group: root
+    mode: '0644'    
 
 
 # Get latest version of zim package:  -> for now solved with variable in site.yml
