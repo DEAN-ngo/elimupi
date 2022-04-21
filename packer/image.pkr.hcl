@@ -25,18 +25,6 @@ build {
 
   provisioner "shell" {
     inline = [
-      "echo 'before install add repo'",
-    ]
-  }
-
-  provisioner "shell" {
-    inline = [
-      "apt-add-repository --yes --update deb http://ppa.launchpad.net/ansible/ansible/ubuntu bionic main",
-    ]
-  }
-
-  provisioner "shell" {
-    inline = [
       "echo 'before apt-key'",
     ]
   }
@@ -44,7 +32,19 @@ build {
   // install the latest version of ansible from ubuntu.com
   provisioner "shell" {
     inline = [
-      "apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 6125E2A8C77F2818FB7BD15B93C4A3FD7BB9C367",
+      "apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 93C4A3FD7BB9C367",
+    ]
+  }
+
+  provisioner "shell" {
+    inline = [
+      "echo 'before install add repo'",
+    ]
+  }
+
+  provisioner "shell" {
+    inline = [
+      "apt-add-repository --yes --update 'deb http://ppa.launchpad.net/ansible/ansible/ubuntu bionic main'",
     ]
   }
 
