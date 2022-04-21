@@ -22,13 +22,16 @@ build {
   //   destination = "/tmp/templates"
   // }
 
+  // install the latest version of ansible from ubuntu.com
   provisioner "shell" {
     inline = [
       # "lsblk",
       # "df -h",
       # "ls -lah /",
+      "apt-add-repository --yes --update ppa:ansible/ansible",
+      "sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 6125E2A8C77F2818FB7BD15B93C4A3FD7BB9C367",
       "apt-get update",
-      "apt-get install ansible -y"
+      "apt-get install ansible-core -y"
     ]
   }
 
@@ -41,7 +44,7 @@ build {
   // }
 
   provisioner "ansible-local" {
-    playbook_file = "ansible/site.yml"
+    playbook_file = "ansible/playbook-docker.yml"
     extra_arguments = [
       "--verbose"
     ]

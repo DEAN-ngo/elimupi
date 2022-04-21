@@ -12,7 +12,7 @@ all:
     raspberrypi:
       ansible_user: pi
       ansible_ssh_pass: elimupi
-      ansible_host: 192.168.1.19
+      ansible_host: 192.168.1.54
     dockerpi:
       ansible_host: 127.0.0.1
       ansible_port: 5022
