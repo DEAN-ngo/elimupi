@@ -33,7 +33,7 @@
 #- include_tasks: citadel.yml Does not work yet
 
 # kiwix - install kiwix
-#- include_tasks: kiwix.yml Does not work yet
+- include_tasks: kiwix.yml
 
 # moodle - install moodle
 #- include_tasks: moodle.yml Does not work yet

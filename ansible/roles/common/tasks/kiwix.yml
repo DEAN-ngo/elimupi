@@ -49,7 +49,7 @@
     dest: /var/kiwix/bin/
     owner: pi
     group: pi
-    mode: '0664'
+    mode: '0764'
     remote_src: yes
   loop:
     - /home/pi/{{ kiwix_version }}/kiwix-manage
@@ -68,7 +68,7 @@
 
 - name: Copy file kiwix-service
   ansible.builtin.copy:
-    src: kiwix/kiwix-start.pl
+    src: kiwix/kiwix-service
     dest: /etc/init.d/kiwix
     owner: pi
     group: pi
@@ -76,7 +76,7 @@
 
 - name: Copy file kiwix-service2
   ansible.builtin.copy:
-    src: kiwix/kiwix-start.pl
+    src: kiwix/kiwix.service
     dest: /etc/systemd/system/kiwix.service
     owner: pi
     group: pi

@@ -39,7 +39,7 @@
     #- kolibri
     #- kolibri-server
     - dnsmasq
-    - citadel-suite
+    # - citadel-suite
     - fdroidserver
     - usbmount
     - ntfs-3g
