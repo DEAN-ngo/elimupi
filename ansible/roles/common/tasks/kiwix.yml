@@ -96,13 +96,13 @@
 - name: Download vikidia
   ansible.builtin.get_url:
     url: https://ftp.nluug.nl/pub/kiwix/zim/vikidia/{{ vikidia_version }}.zim
-    dest: /var/kiwix/bin/
+    dest: /mnt/content/wiki/
     #mode: '0440'
 
 - name: Download wiktionary
   ansible.builtin.get_url:
     url: https://ftp.nluug.nl/pub/kiwix/zim/wiktionary/{{ wiktionary_version }}.zim
-    dest: /var/kiwix/bin/
+    dest: /mnt/content/wiki/
     #mode: '0440'
 
 # Create service
