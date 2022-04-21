@@ -13,66 +13,16 @@ build {
 
   provisioner "shell" {
     inline = [
-      "echo 'before install software-properties-common'",
+      "echo 'before install ansible with pip'",
     ]
   }
 
   provisioner "shell" {
     inline = [
-      "apt-get install software-properties-common -y",
+      "python3 -m pip install ansible",
     ]
   }
 
-  provisioner "shell" {
-    inline = [
-      "echo 'before apt-key'",
-    ]
-  }
-
-  // install the latest version of ansible from ubuntu.com
-  provisioner "shell" {
-    inline = [
-      "apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 93C4A3FD7BB9C367",
-    ]
-  }
-
-  provisioner "shell" {
-    inline = [
-      "echo 'before install add repo'",
-    ]
-  }
-
-  provisioner "shell" {
-    inline = [
-      "apt-add-repository --yes --update 'deb http://ppa.launchpad.net/ansible/ansible/ubuntu bionic main'",
-    ]
-  }
-
-  provisioner "shell" {
-    inline = [
-      "echo 'before apt-get update'",
-    ]
-  }
-
-  // install the latest version of ansible from ubuntu.com
-  provisioner "shell" {
-    inline = [
-      "apt-get update",
-      "apt-get install ansible-core -y"
-    ]
-  }
-
-  provisioner "shell" {
-    inline = [
-      "echo 'before apt-get install ansible-core'",
-    ]
-  }
-
-  provisioner "shell" {
-    inline = [
-      "apt-get install ansible-core -y"
-    ]
-  }
 
 //  provisioner "shell" {
 //    inline = [
