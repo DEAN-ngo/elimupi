@@ -14,6 +14,7 @@ build {
   provisioner "shell" {
     inline = [
       "python3 -m pip install ansible",
+      "apt-get update",
     ]
   }
   
@@ -23,7 +24,6 @@ build {
       "--verbose"
     ]
     playbook_dir = "ansible" 
-
   }
 
   post-processor "shell-local" {
