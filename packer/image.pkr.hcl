@@ -22,16 +22,66 @@ build {
   //   destination = "/tmp/templates"
   // }
 
+  provisioner "shell" {
+    inline = [
+      "echo 'before install software-properties-common'",
+    ]
+  }
+
+  provisioner "shell" {
+    inline = [
+      "apt-get install software-properties-common -y",
+    ]
+  }
+
+  provisioner "shell" {
+    inline = [
+      "echo 'before install add repo'",
+    ]
+  }
+
+  provisioner "shell" {
+    inline = [
+      "apt-add-repository --yes --update ppa:ansible/ansible",
+    ]
+  }
+
+  provisioner "shell" {
+    inline = [
+      "echo 'before apt-key'",
+    ]
+  }
+
   // install the latest version of ansible from ubuntu.com
   provisioner "shell" {
     inline = [
-      # "lsblk",
-      # "df -h",
-      # "ls -lah /",
-      "apt-get install software-properties-common -y",
-      "apt-add-repository --yes --update ppa:ansible/ansible",
-      "sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 6125E2A8C77F2818FB7BD15B93C4A3FD7BB9C367",
+      "apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 6125E2A8C77F2818FB7BD15B93C4A3FD7BB9C367",
+    ]
+  }
+
+  provisioner "shell" {
+    inline = [
+      "echo 'before apt-get update'",
+    ]
+  }
+
+  // install the latest version of ansible from ubuntu.com
+  provisioner "shell" {
+    inline = [
       "apt-get update",
+      "apt-get install ansible-core -y"
+    ]
+  }
+
+  provisioner "shell" {
+    inline = [
+      "echo 'before apt-get install ansible-core'",
+    ]
+  }
+
+  // install the latest version of ansible from ubuntu.com
+  provisioner "shell" {
+    inline = [
       "apt-get install ansible-core -y"
     ]
   }
