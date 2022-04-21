@@ -13,32 +13,9 @@ build {
 
   provisioner "shell" {
     inline = [
-      "echo 'before install ansible with pip'",
-    ]
-  }
-
-  provisioner "shell" {
-    inline = [
       "python3 -m pip install ansible",
     ]
   }
-
-
-//  provisioner "shell" {
-//    inline = [
-//      # "lsblk",
-//      # "df -h",
-//      # "ls -lah /",
-//      "apt-get install software-properties-common -y",
-//      "apt-add-repository --yes --update ppa:ansible/ansible",
-//      "sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 6125E2A8C77F2818FB7BD15B93C4A3FD7BB9C367",
-//      "apt-get update",
-//      "apt-get install ansible-core -y"
-//    ]
-//
-//   TO-DO   python3 -m pip install ansible
-//
-//  }  
   
   provisioner "ansible-local" {
     playbook_file = "ansible/playbook-dockerpi.yml"
