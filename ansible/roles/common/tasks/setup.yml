@@ -34,7 +34,7 @@
   block:
   - name: Setup | Change partition table
     ansible.builtin.shell:
-      cmd: raspi-config nonint do_expand_rootfs
+      cmd: raspi-config nonint do_expand_rootfs >> /root/.resized
       creates: /root/.resized
 
   - name: Setup | Reboot after resizing root partition
