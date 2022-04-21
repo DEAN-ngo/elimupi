@@ -85,6 +85,9 @@ build {
 //      "apt-get update",
 //      "apt-get install ansible-core -y"
 //    ]
+//
+//   TO-DO   python3 -m pip install ansible
+//
 //  }  
   
   provisioner "ansible-local" {
