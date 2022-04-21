@@ -32,7 +32,7 @@ build {
   // install the latest version of ansible from ubuntu.com
   provisioner "shell" {
     inline = [
-      "apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 93C4A3FD7BB9C367",
+      "apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 93C4A3FD7BB9C367",
     ]
   }
 
