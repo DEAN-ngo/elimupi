@@ -11,17 +11,6 @@ source "arm-image" "elimupi-raspios-buster" {
 build {
   sources = [ "source.arm-image.elimupi-raspios-buster" ]
 
-  // provisioner "shell" {
-  //   inline = [
-  //     "mkdir /tmp/templates"
-  //   ]
-  // }
-
-  // provisioner "file" {
-  //   source = "ansible/templates"
-  //   destination = "/tmp/templates"
-  // }
-
   provisioner "shell" {
     inline = [
       "echo 'before install software-properties-common'",
@@ -42,7 +31,7 @@ build {
 
   provisioner "shell" {
     inline = [
-      "apt-add-repository --yes --update ppa:ansible/ansible",
+      "apt-add-repository --yes --update deb http://ppa.launchpad.net/ansible/ansible/ubuntu bionic main",
     ]
   }
 
@@ -79,21 +68,25 @@ build {
     ]
   }
 
-  // install the latest version of ansible from ubuntu.com
   provisioner "shell" {
     inline = [
       "apt-get install ansible-core -y"
     ]
   }
 
-  // provisioner "shell" {
-  //   inline = [
-  //     "ls -lah /tmp",
-  //     "ls -lah /tmp/templates",
-  //     "ls -lah /tmp/templates/*"
-  //   ]
-  // }
-
+//  provisioner "shell" {
+//    inline = [
+//      # "lsblk",
+//      # "df -h",
+//      # "ls -lah /",
+//      "apt-get install software-properties-common -y",
+//      "apt-add-repository --yes --update ppa:ansible/ansible",
+//      "sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 6125E2A8C77F2818FB7BD15B93C4A3FD7BB9C367",
+//      "apt-get update",
+//      "apt-get install ansible-core -y"
+//    ]
+//  }  
+  
   provisioner "ansible-local" {
     playbook_file = "ansible/playbook-dockerpi.yml"
     extra_arguments = [
@@ -102,8 +95,6 @@ build {
     playbook_dir = "ansible" 
 
   }
-
-
 
   post-processor "shell-local" {
     inline = ["wget https://raw.githubusercontent.com/Drewsif/PiShrink/master/pishrink.sh -O pishrink.sh"]
