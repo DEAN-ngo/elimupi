@@ -1,7 +1,7 @@
 ---
 - name: 'Provision Image'
   hosts: raspberrypi
-  become: true
+  become: yes
 
   vars:
     kiwix_version: kiwix-tools_linux-armhf-3.2.0-1

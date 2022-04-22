@@ -2,69 +2,34 @@
 # Installation moodle
     # quick install guide: https://docs.moodle.org/310/en/Installation_quick_guide
     # full install guide: https://docs.moodle.org/310/en/Installing_Moodle
+    # Install PHP extensions -> moved to ospackages.yml
 
+- name: Create and configure moodle database
+  include_role:
+    name: geerlingguy.mysql
 
-- name: Create  directory /var/moodlecontent
+- name: Create directory /var/moodlecontent
   ansible.builtin.file:
     path: /var/moodlecontent
     state: directory
     mode: '0755'
 
-# Install MariaDB or =MySQL  -> moved to ospackages.yml
-
-# Start and enable DBserver
-- name: start service mariadb
-  ansible.builtin.systemd:
-    state: started
-    enabled: yes
-    daemon_reload: yes
-    name: mariadb
-
-# copy the sql files
-- name: Create  directory /var/moodlesql
+- name: Create directory /var/moodlesql
   ansible.builtin.file:
     path: /var/moodlesql
     state: directory
     mode: '0755'
 
-- name: Set admin.local
-  copy:
-    src: "moodle/sql/01-create-database.sql"
-    dest: /var/moodlesql/01-create-database.sql
-
-- name: Set admin.local
-  copy:
-    src: "moodle/sql/02-create-user.sql"
-    dest: /var/moodlesql/02-create-user.sql
-
-
-# execute the required database commands
-   #cat /var/moodlesql/*.sql | sudo mysql"
-- name: Run setup command citadel
-  ansible.builtin.command: cat /var/moodlesql/*.sql | mysql
-  #args:
-  #  creates: /path/to/database    
-
-    
-# Add PHP mySQL support (mariaDB) -> moved to ospackages.yml
-
-# Install PHP extensions -> moved to ospackages.yml
-
-# use /var/moodle for install
-    # sudo("rm --force --recursive /var/moodle")     # how?
-    # sudo("git clone -b MOODLE_310_STABLE git://git.moodle.org/moodle.git /var/moodle", "Unable to clone Moodle")
-
 - name: Clone moodle
   ansible.builtin.git:
     repo: https://github.com/moodle/moodle.git
     dest: /var/moodle
-    single_branch: yes
     version: MOODLE_310_STABLE
-    
-# chown -R root /path/to/moodle
-    sudo("chown --recursive root /var/moodle", "Unable to set moodle permissions")
-    sudo("chmod --recursive 0755 /var/moodle", "Unable to set moodle permissions")
-- name: directory /var/moodle
+    force: yes
+    depth: 1
+    accept_hostkey: true
+
+- name: Change owner and persmissions of directory /var/moodle
   ansible.builtin.file:
     path: /var/moodle
     state: directory
@@ -72,35 +37,40 @@
     mode: '0755'
     recurse: yes
 
-# edit config.php to use mariadb
-    #   $CFG->dbtype    = 'mariadb'; 
-    #   $CFG->dblibrary = 'native';
-    cp("/var/moodle/config-dist.php", "/var/moodle/config.php")
+- name: Create moodle data directory
+  ansible.builtin.file:
+    path: "{{ moodle_data_directory }}"
+    state: directory
+    owner: "{{ moodle_httpd_owner }}"
+    group: "{{ moodle_httpd_group }}"
+    mode: "{{ moodle_directory_mode }}"
 
-- name: Set config.php
-  copy:
-    src: "moodle/config-dist.php"
-    dest: /var/moodle/config.phpl    
-    
-# Configure Moodle    --- solve with template??? 
-    sudo("sed --in-place \"s/\'pgsql\'\;/\'mariadb\'\;/\" /var/moodle/config.php", "Unable to update moodle configuration database(config.php)")
-    sudo("sed --in-place \"s/\'username\'\;/\'elimu\'\;/\" /var/moodle/config.php", "Unable to update moodle configuration username (config.php)")
-    sudo("sed --in-place \"s/\'password\'\;/\'elimu\'\;/\" /var/moodle/config.php", "Unable to update moodle configuration password (config.php)")
-    sudo("sed --in-place 's/example.com\/moodle/www.moodle.local/' /var/moodle/config.php", "Unable to update moodle configuration url (config.php)")
-    sudo("sed --in-place 's/\/home\/example\/moodledata/{}\/Content\/moodledata/' /var/moodle/config.php".format(content_prefix_escaped), "Unable to update moodle configuration content (config.php)")
-    
-# create moodle data folder on content disk (!)
-    sudo("mkdir --parents {}/Content/moodledata".format(content_prefix), "Unable to create Moodle folder")
-    sudo("chmod 0777 {}/Content/moodledata".format(content_prefix), "Unable to set rights on Moodle folder")
-    sudo("chown www-data {}/Content/moodledata".format(content_prefix), "Unable to set owner of Moodle folder")
+- name: Configure moodle
+  ansible.builtin.template:
+    src: config.php.j2
+    dest: "{{ moodle_httpd_data_directory }}/moodle/config.php"
+    mode: "0755"
 
-# Copy moodle site settings
-    cp("files/nginx/moodle.local", "/etc/nginx/sites-available/", "Unable to copy file moodle.local (nginx)")
-    sudo("ln --symbolic --force /etc/nginx/sites-available/moodle.local /etc/nginx/sites-enabled/moodle.local", "Unable to copy file moodle.local (nginx)")
-    
-# restart NGINX service 
-    sudo("systemctl restart nginx", "Unable to restart nginx")
-    
-# Setup cron job
-    cp("files/moodle/cron.txt", "/var/moodlesql", "Unable to copy Moodle cron file")
-    sudo("crontab -u www-data /var/moodlesql/cron.txt", "Unable to setup cron for Moodle")
+- name: Copy moodle nginx configuration
+  ansible.builtin.copy:
+    src: nginx/moodle.local
+    dest: /etc/nginx/sites-available/
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: Enable moodle nginx configuration
+  ansible.builtin.file:
+    src: /etc/nginx/sites-available/moodle.local
+    dest: /etc/nginx/sites-enabled/moodle.local
+    owner: root
+    group: root
+    state: link
+  notify:
+    - Restart Nginx
+
+- name: setup cron job
+  ansible.builtin.cron:
+    name: moodle
+    job: "/usr/bin/php {{ moodle_httpd_data_directory }}/moodle/admin/cli/cron.php >/dev/null"
+    user: "{{ moodle_httpd_owner }}"

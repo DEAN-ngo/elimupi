@@ -4,8 +4,9 @@
   become: true
 
   vars:
-    kiwix_version: kiwix-tools_linux-armhf-3.2.0-1
-    vikidia_version: vikidia_en_all_nopic_2021-03
-    wiktionary_version: wiktionary_en_simple_all_nopic_2022-02
+
+    #kiwix_version: kiwix-tools_linux-armhf-3.2.0-1
+    #vikidia_version: vikidia_en_all_nopic_2021-03
+    #wiktionary_version: wiktionary_en_simple_all_nopic_2022-02
   roles:
     - common

@@ -43,10 +43,10 @@
     - fdroidserver
     - usbmount
     - ntfs-3g
-    - mariadb-server
     - hostapd
     - udhcpd
     update_cache: yes
+    state: present
 
 - name: Packages | Remove dependencies that are no longer required
   apt:

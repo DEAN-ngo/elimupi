@@ -223,37 +223,37 @@ def install_wifi():
 # ================================
 # Install Moodle components
 # ================================
-def install_moodle():
-    # quick install guide: https://docs.moodle.org/310/en/Installation_quick_guide
-    # full install guide: https://docs.moodle.org/310/en/Installing_Moodle
-    display_log("Install Moodle...")
-    if exists("/mnt/"):
-        content_prefix = "/mnt/content "
-        content_prefix_escaped = "\/mnt\/content"
-    else:
-        sudo("mkdir --parents /var/moodlecontent")
-        content_prefix = "/var/moodlecontent"
-        content_prefix_escaped = "\/var\/moodlecontent"
+## done ## def install_moodle():
+## done ##    # quick install guide: https://docs.moodle.org/310/en/Installation_quick_guide
+## done ##    # full install guide: https://docs.moodle.org/310/en/Installing_Moodle
+## done ##     display_log("Install Moodle...")
+## done ##    if exists("/mnt/"):
+## done ##        content_prefix = "/mnt/content "
+## done ##        content_prefix_escaped = "\/mnt\/content"
+## done ##    else:
+## done ##        sudo("mkdir --parents /var/moodlecontent")
+## done ##        content_prefix = "/var/moodlecontent"
+## done ##        content_prefix_escaped = "\/var\/moodlecontent"
 
     # Install MariaDB or =MySQL 
     display_log("Installing mariadb-server...", col_log_ok)
-    ## done ##  sudo("apt-get install -y mariadb-server","Unable to install MariadbServer")
+## done ##    ## done ##  sudo("apt-get install -y mariadb-server","Unable to install MariadbServer")
     display_log("Completed installing mariadb-server...", col_log_ok)
     
     # Determine last stable version (now fixed at 311)
     # sudo("sed -i 's//var\/run\/usbmount\/Content\/moodledb' /etc/mysql/mariadb.conf.d/nano 50-server.cnf","Unable to set mariadb folder")
     # Start and enable DBserver
     
-    display_log("Configuring mariadb-server...", col_log_ok)
-    sudo("systemctl enable mariadb.service","Unable to enable DB")
-    sudo("systemctl restart mariadb.service","Unable to restart DB")
+## done ##    display_log("Configuring mariadb-server...", col_log_ok)
+## done ##    sudo("systemctl enable mariadb.service","Unable to enable DB")
+## done ##    sudo("systemctl restart mariadb.service","Unable to restart DB")
     # copy the sql files
-    sudo("mkdir --parents /var/moodlesql", "Unable to create /var/moodlesql")
-    cp("files/moodle/sql/01-create-database.sql", "/var/moodlesql", "Unable to copy 01-create-database.sql")
-    cp("files/moodle/sql/02-create-user.sql", "/var/moodlesql", "Unable to copy 02-create-user.sql")
+## done ##    sudo("mkdir --parents /var/moodlesql", "Unable to create /var/moodlesql")
+## done ##    cp("files/moodle/sql/01-create-database.sql", "/var/moodlesql", "Unable to copy 01-create-database.sql")
+## done ##    cp("files/moodle/sql/02-create-user.sql", "/var/moodlesql", "Unable to copy 02-create-user.sql")
     # execute the required database commands
-    sudo("cat /var/moodlesql/*.sql | sudo mysql")
-    display_log("Completed configuring mariadb-server...", col_log_ok)
+## done ##    sudo("cat /var/moodlesql/*.sql | sudo mysql")
+## done ##    display_log("Completed configuring mariadb-server...", col_log_ok)
     
     # /etc/systemd/system/mysqld.service
     # LimitNOFILE=16384
@@ -274,43 +274,43 @@ def install_moodle():
 
     # use /var/moodle for install
     sudo("rm --force --recursive /var/moodle")
-    display_log("Downloading Moodle...", col_log_ok)
-    sudo("git clone -b MOODLE_310_STABLE git://git.moodle.org/moodle.git /var/moodle", "Unable to clone Moodle")
-    display_log("Done downloading Moodle", col_log_ok)
+## done ##    display_log("Downloading Moodle...", col_log_ok)
+## done ##    sudo("git clone -b MOODLE_310_STABLE git://git.moodle.org/moodle.git /var/moodle", "Unable to clone Moodle")
+## done ##    display_log("Done downloading Moodle", col_log_ok)
     # chown -R root /path/to/moodle
-    sudo("chown --recursive root /var/moodle", "Unable to set moodle permissions")
-    sudo("chmod --recursive 0755 /var/moodle", "Unable to set moodle permissions")
+## done ##    sudo("chown --recursive root /var/moodle", "Unable to set moodle permissions")
+## done ##    sudo("chmod --recursive 0755 /var/moodle", "Unable to set moodle permissions")
     
     # edit config.php to use mariadb
     #   $CFG->dbtype    = 'mariadb'; 
     #   $CFG->dblibrary = 'native';
-    cp("/var/moodle/config-dist.php", "/var/moodle/config.php")
+## done ##    cp("/var/moodle/config-dist.php", "/var/moodle/config.php")
     # Configure Moodle
-    sudo("sed --in-place \"s/\'pgsql\'\;/\'mariadb\'\;/\" /var/moodle/config.php", "Unable to update moodle configuration database(config.php)")
-    sudo("sed --in-place \"s/\'username\'\;/\'elimu\'\;/\" /var/moodle/config.php", "Unable to update moodle configuration username (config.php)")
-    sudo("sed --in-place \"s/\'password\'\;/\'elimu\'\;/\" /var/moodle/config.php", "Unable to update moodle configuration password (config.php)")
-    sudo("sed --in-place 's/example.com\/moodle/www.moodle.local/' /var/moodle/config.php", "Unable to update moodle configuration url (config.php)")
-    sudo("sed --in-place 's/\/home\/example\/moodledata/{}\/Content\/moodledata/' /var/moodle/config.php".format(content_prefix_escaped), "Unable to update moodle configuration content (config.php)")
+## done ##    sudo("sed --in-place \"s/\'pgsql\'\;/\'mariadb\'\;/\" /var/moodle/config.php", "Unable to update moodle configuration database(config.php)")
+## done ##    sudo("sed --in-place \"s/\'username\'\;/\'elimu\'\;/\" /var/moodle/config.php", "Unable to update moodle configuration username (config.php)")
+## done ##    sudo("sed --in-place \"s/\'password\'\;/\'elimu\'\;/\" /var/moodle/config.php", "Unable to update moodle configuration password (config.php)")
+## done ##    sudo("sed --in-place 's/example.com\/moodle/www.moodle.local/' /var/moodle/config.php", "Unable to update moodle configuration url (config.php)")
+## done ##    sudo("sed --in-place 's/\/home\/example\/moodledata/{}\/Content\/moodledata/' /var/moodle/config.php".format(content_prefix_escaped), "Unable to update moodle configuration content (config.php)")
     
     # create moodle data folder on content disk (!)
-    sudo("mkdir --parents {}/Content/moodledata".format(content_prefix), "Unable to create Moodle folder")
+## done ##    sudo("mkdir --parents {}/Content/moodledata".format(content_prefix), "Unable to create Moodle folder")
     # Set default permissions
-    sudo("chmod 0777 {}/Content/moodledata".format(content_prefix), "Unable to set rights on Moodle folder")
+## done ##    sudo("chmod 0777 {}/Content/moodledata".format(content_prefix), "Unable to set rights on Moodle folder")
     # Set owner
-    sudo("chown www-data {}/Content/moodledata".format(content_prefix), "Unable to set owner of Moodle folder")
+## done ##    sudo("chown www-data {}/Content/moodledata".format(content_prefix), "Unable to set owner of Moodle folder")
     # chown www-data /path/to/moodle
     # cd /path/to/moodle/admin/cli
 
     # Copy moodle site settings
-    cp("files/nginx/moodle.local", "/etc/nginx/sites-available/", "Unable to copy file moodle.local (nginx)")
-    sudo("ln --symbolic --force /etc/nginx/sites-available/moodle.local /etc/nginx/sites-enabled/moodle.local", "Unable to copy file moodle.local (nginx)")
+## done ##    cp("files/nginx/moodle.local", "/etc/nginx/sites-available/", "Unable to copy file moodle.local (nginx)")
+## done ##    sudo("ln --symbolic --force /etc/nginx/sites-available/moodle.local /etc/nginx/sites-enabled/moodle.local", "Unable to copy file moodle.local (nginx)")
     
     # restart NGINX service 
-    sudo("systemctl restart nginx", "Unable to restart nginx")
+## done ##    sudo("systemctl restart nginx", "Unable to restart nginx")
     
     # Setup cron job
-    cp("files/moodle/cron.txt", "/var/moodlesql", "Unable to copy Moodle cron file")
-    sudo("crontab -u www-data /var/moodlesql/cron.txt", "Unable to setup cron for Moodle")
+## done ##    cp("files/moodle/cron.txt", "/var/moodlesql", "Unable to copy Moodle cron file")
+## done ##    sudo("crontab -u www-data /var/moodlesql/cron.txt", "Unable to setup cron for Moodle")
 
     # We don't need to run the install script, as the config.php is already created above.
     # The local administrator should visit http://www.moodle.local first to setup the admin account, otherwise that account might be hijacked by students.
@@ -322,7 +322,7 @@ def install_moodle():
     # Create database (mariadb)
     
     # Moodle command line tools for Web Gui : https://moosh-online.com/commands/ 
-    return True
+## done ##    return True
 
 # ================================
 # Install web interface
