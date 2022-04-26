@@ -25,8 +25,8 @@ build {
   }
 
   provisioner "ansible-local" {
-    playbook_file = "./playbook-dockerpi.yml",
-    inventory_groups = ["dockerpi"],
+    playbook_file = "./playbook-dockerpi.yml"
+    inventory_groups = ["dockerpi"]
     extra_arguments = [
       "--verbose"
     ]
