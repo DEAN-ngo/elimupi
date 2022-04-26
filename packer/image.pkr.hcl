@@ -17,12 +17,6 @@ build {
       "apt-get update",
     ]
   }
-  
-  provisioner "shell" {
-    inline = [
-      "ansible-inventory -i ansible/inventory.yml --list"
-    ]
-  }
 
   provisioner "ansible-local" {
     playbook_file = "ansible/playbook-dockerpi.yml"

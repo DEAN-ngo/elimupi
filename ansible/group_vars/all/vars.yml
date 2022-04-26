@@ -48,7 +48,6 @@ moodle_database_prefix: ""
 moodle_httpd_data_directory: /var
 moodle_httpd_owner: www-data
 moodle_httpd_group: www-data
-moodle_directory_mode: "0777"
 
 # The URL where to serve content.
 moodle_wwwroot: "http://moodle.local"
