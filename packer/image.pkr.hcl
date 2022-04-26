@@ -25,7 +25,7 @@ build {
   }
 
   provisioner "ansible-local" {
-    playbook_file = "playbook-dockerpi.yml"
+    playbook_file = "ansible/playbook-dockerpi.yml"
     extra_arguments = [
       "--verbose"
     ]
