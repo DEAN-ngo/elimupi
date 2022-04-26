@@ -20,7 +20,7 @@ build {
   
   provisioner "shell" {
     inline = [
-      ansible-inventory -i inventory.yml --list
+      "ansible-inventory -i inventory.yml --list"
     ]
   }
 
