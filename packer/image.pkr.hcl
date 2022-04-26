@@ -20,12 +20,12 @@ build {
   
   provisioner "shell" {
     inline = [
-      "ansible-inventory -i ./inventory.yml --list"
+      "ansible-inventory -i ansible/inventory.yml --list"
     ]
   }
 
   provisioner "ansible-local" {
-    playbook_file = "./playbook-dockerpi.yml"
+    playbook_file = "ansible/playbook-dockerpi.yml"
     inventory_groups = ["dockerpi"]
     extra_arguments = [
       "--verbose"
