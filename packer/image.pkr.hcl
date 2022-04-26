@@ -18,8 +18,14 @@ build {
     ]
   }
   
+  provisioner "shell" {
+    inline = [
+      ansible-inventory -i inventory.yml --list
+    ]
+  }
+
   provisioner "ansible-local" {
-    playbook_file = "ansible/playbook-dockerpi.yml"
+    playbook_file = "playbook-dockerpi.yml"
     extra_arguments = [
       "--verbose"
     ]
