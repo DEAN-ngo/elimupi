@@ -18,7 +18,7 @@
 #   include: firewall.yaml
 
 # network - setup network wifi
-#- include_tasks: network.yml
+- include_tasks: network.yml
 
 # webserver - install webserver
 - include_tasks: webserver.yml
@@ -30,7 +30,7 @@
 - include_tasks: kolibri.yml
 
 # kiwix - install kiwix
-- include_tasks: kiwix.yml
+#- include_tasks: kiwix.yml
 
 # moodle - install moodle
 - include_tasks: moodle.yml

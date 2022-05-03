@@ -169,32 +169,32 @@ def install_udev_handler():
 # ================================
 def install_wifi():
     # Set country for wpa_wpa_supplicant.conf
-    display_log("Set country for WiFi")
-    sudo("echo country=ke>>/etc/wpa_supplicant/wpa_supplicant.conf")
+## done ##    display_log("Set country for WiFi")
+## done ##    sudo("echo country=ke>>/etc/wpa_supplicant/wpa_supplicant.conf")
     
-    sudo("rfkill unblock wifi", "Unable to unblock WiFi is not")
-    sudo("ifconfig {} {}".format(base_wifi, base_ip), "Unable to set {} IP address {}".format(base_wifi, base_ip))
+## done ##    sudo("rfkill unblock wifi", "Unable to unblock WiFi is not")
+## done ##    sudo("ifconfig {} {}".format(base_wifi, base_ip), "Unable to set {} IP address {}".format(base_wifi, base_ip))
     
     #Install hostapd, udhcpd
-    sudo("apt-get -y install hostapd udhcpd", "Unable install hostapd and udhcpd.")
+## done ##    sudo("apt-get -y install hostapd udhcpd", "Unable install hostapd and udhcpd.")
     
     #copy config files udhcpd
-    cp("./files/udhcpd.conf", "/etc/udhcpd.conf", "Unable to copy uDHCPd configuration (udhcpd.conf)")
-    cp("./files/udhcpd", "/etc/default/udhcpd"  , "Unable to copy UDHCPd configuration (udhcpd)")
+## done ##    cp("./files/udhcpd.conf", "/etc/udhcpd.conf", "Unable to copy uDHCPd configuration (udhcpd.conf)")
+## done ##    cp("./files/udhcpd", "/etc/default/udhcpd"  , "Unable to copy UDHCPd configuration (udhcpd)")
 
     #copy config files hostapd
-    cp("./files/hostapd", "/etc/default/hostapd", "Unable to copy hostapd configuration (hostapd)")
-    cp("./files/hostapd.conf", "/etc/hostapd/hostapd.conf", "Unable to copy hostapd configuration (hostapd.conf)")
+## done ##    cp("./files/hostapd", "/etc/default/hostapd", "Unable to copy hostapd configuration (hostapd)")
+## done ##    cp("./files/hostapd.conf", "/etc/hostapd/hostapd.conf", "Unable to copy hostapd configuration (hostapd.conf)")
     
     #change udhcpd file
-    sudo("sed -i '/interface    wlan0/c\interface    {}' /etc/udhcpd.conf".format(base_wifi)) 
-    sudo("sed -i '/start/c\start        " + base_ip_range + ".11    #default: 192.168.0.20\' /etc/udhcpd.conf", "Unable to update uDHCPd configuration (udhcpd.conf)") 
-    sudo("sed -i '/end/c\end        " + base_ip_range + ".199    #default: 192.168.0.254\' /etc/udhcpd.conf", "Unable to update uDHCPd configuration (udhcpd.conf)")
-    sudo("sed -i '/^option.*subnet/c\option    subnet    " + base_subnet + "' /etc/udhcpd.conf", "Unable to update uDHCPd configuration (udhcpd.conf)")
-    sudo("sed -i '/^opt.*router/c\opt    router    " + base_ip + "' /etc/udhcpd.conf", "Unable to update uDHCPd configuration (udhcpd.conf)")
+## done ##    sudo("sed -i '/interface    wlan0/c\interface    {}' /etc/udhcpd.conf".format(base_wifi)) 
+## done ##    sudo("sed -i '/start/c\start        " + base_ip_range + ".11    #default: 192.168.0.20\' /etc/udhcpd.conf", "Unable to update uDHCPd configuration (udhcpd.conf)") 
+## done ##    sudo("sed -i '/end/c\end        " + base_ip_range + ".199    #default: 192.168.0.254\' /etc/udhcpd.conf", "Unable to update uDHCPd configuration (udhcpd.conf)")
+## done ##    sudo("sed -i '/^option.*subnet/c\option    subnet    " + base_subnet + "' /etc/udhcpd.conf", "Unable to update uDHCPd configuration (udhcpd.conf)")
+## done ##    sudo("sed -i '/^opt.*router/c\opt    router    " + base_ip + "' /etc/udhcpd.conf", "Unable to update uDHCPd configuration (udhcpd.conf)")
 
     #change hostapd file
-    sudo("sed -i '/interface=wlan0/c\interface={}' /etc/hostapd/hostapd.conf".format(base_wifi)) 
+## done ##    sudo("sed -i '/interface=wlan0/c\interface={}' /etc/hostapd/hostapd.conf".format(base_wifi)) 
 
     #change iptables
     #sudo("sh -c 'echo 1 > /proc/sys/net/ipv4/ip_forward'", "Unable to set ipv4 forwarding")
@@ -203,20 +203,20 @@ def install_wifi():
     #sudo("iptables -A FORWARD -i eth0 -o {} -m state --state RELATED,ESTABLISHED -j ACCEPT".format(base_wifi), "Unable to forward wlan0 to eth0.")
     #sudo("iptables -A FORWARD -i {} -o eth0 -j ACCEPT".format(base_wifi), "Unable to forward wlan0 to eth0.")
     #sudo("sh -c 'iptables-save > /etc/iptables.ipv4.nat'", "Unable to save iptables configuration.")
-    sudo("ifconfig {}".format(base_wifi, base_ip), "Unable to set wlan0 IP address (" + base_ip + ")")
+## done ##    sudo("ifconfig {}".format(base_wifi, base_ip), "Unable to set wlan0 IP address (" + base_ip + ")")
 
     #start & enable hostapd, udhcpd
-    sudo("systemctl unmask  hostapd", "Unable to unmask hostapd")
-    sudo("systemctl start hostapd", "Unable to start hostapd service.")
-    sudo("systemctl start udhcpd", "Unable to start udhcpd service.")
-    sudo("update-rc.d hostapd enable", "Unable to enable hostapd on boot.")
-    sudo("update-rc.d udhcpd enable", "Unable to enable UDHCPd on boot.")
+## done ##    sudo("systemctl unmask  hostapd", "Unable to unmask hostapd")
+## done ##    sudo("systemctl start hostapd", "Unable to start hostapd service.")
+## done ##    sudo("systemctl start udhcpd", "Unable to start udhcpd service.")
+## done ##    sudo("update-rc.d hostapd enable", "Unable to enable hostapd on boot.")
+## done ##    sudo("update-rc.d udhcpd enable", "Unable to enable UDHCPd on boot.")
 
     # udhcpd wasn't starting properly at boot (probably starting before interface was ready)
     # for now we we just force it to restart after setting the interface
-    sudo("sh -c 'sed -i \"s/^exit 0//\" /etc/rc.local'", "Unable to remove exit from end of /etc/rc.local")
-    sudo("sh -c 'echo rfkill unblock all >> /etc/rc.local; echo ifconfig {} {} >> /etc/rc.local; echo service udhcpd restart >> /etc/rc.local;'".format(base_wifi, base_ip), "Unable to setup udhcpd reset at boot.")
-    sudo("sh -c 'echo exit 0 >> /etc/rc.local'", "Unable to replace exit to end of /etc/rc.local")
+## done ##    sudo("sh -c 'sed -i \"s/^exit 0//\" /etc/rc.local'", "Unable to remove exit from end of /etc/rc.local")
+## done ##    sudo("sh -c 'echo rfkill unblock all >> /etc/rc.local; echo ifconfig {} {} >> /etc/rc.local; echo service udhcpd restart >> /etc/rc.local;'".format(base_wifi, base_ip), "Unable to setup udhcpd reset at boot.")
+## done ##    sudo("sh -c 'echo exit 0 >> /etc/rc.local'", "Unable to replace exit to end of /etc/rc.local")
     # sudo("ifdown eth0 && ifdown wlan0 && ifup eth0 && ifup wlan0", "Unable to restart network interfaces.")
     return True
 
