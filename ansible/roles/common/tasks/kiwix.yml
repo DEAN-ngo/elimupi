@@ -91,18 +91,24 @@
    #         versions.sort()
    #         #the last entry is the newest version
    #         return versions[-1]
+  
+- name: Create kiwix data directory
+  ansible.builtin.file:
+    path: "{{ kiwix_data_directory }}"
+    state: directory
+    mode: "{{ kiwix_directory_mode }}"
 
 #download two sample wikis
 - name: Download vikidia
   ansible.builtin.get_url:
     url: https://ftp.nluug.nl/pub/kiwix/zim/vikidia/{{ vikidia_version }}.zim
-    dest: /mnt/content/wiki/
+    dest: "{{ kiwix_data_directory }}"
     #mode: '0440'
 
 - name: Download wiktionary
   ansible.builtin.get_url:
     url: https://ftp.nluug.nl/pub/kiwix/zim/wiktionary/{{ wiktionary_version }}.zim
-    dest: /mnt/content/wiki/
+    dest: "{{ kiwix_data_directory }}"
     #mode: '0440'
 
 # Create service
