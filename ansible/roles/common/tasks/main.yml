@@ -30,7 +30,7 @@
 - include_tasks: kolibri.yml
 
 # kiwix - install kiwix
-#- include_tasks: kiwix.yml
+- include_tasks: kiwix.yml
 
 # moodle - install moodle
 - include_tasks: moodle.yml
