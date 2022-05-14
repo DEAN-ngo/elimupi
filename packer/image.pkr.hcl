@@ -22,7 +22,9 @@ build {
     playbook_file = "ansible/playbook-dockerpi.yml"
     inventory_groups = ["dockerpi"]
     extra_arguments = [
-      "--verbose"
+      "--verbose",
+      "--vault-password-file",
+      "$GITHUB_WORKSPACE/ansible/password"
     ]
     playbook_dir = "ansible" 
   }

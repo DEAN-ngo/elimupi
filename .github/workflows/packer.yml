@@ -32,6 +32,11 @@ jobs:
     - name: Validate template
       run: packer validate -syntax-only $GITHUB_WORKSPACE/packer/image.pkr.hcl
 
+    - run: 'echo "$ANSIBLE_VAULT_PASSWORD" > $GITHUB_WORKSPACE/ansible/password'
+      shell: bash
+      env:
+        ANSIBLE_VAULT_PASSWORD: ${{secrets.ANSIBLE_VAULT_PASSWORD}}
+
     - name: Build image from template
       run: sudo packer build $GITHUB_WORKSPACE/packer/image.pkr.hcl
 
