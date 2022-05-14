@@ -24,7 +24,9 @@ build {
     extra_arguments = [
       "--verbose",
       "--vault-password-file",
-      "password"
+      "password",
+      "--skip-tags",
+      "reboot"
     ]
     playbook_dir = "ansible" 
   }
