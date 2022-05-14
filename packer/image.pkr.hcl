@@ -24,7 +24,7 @@ build {
     extra_arguments = [
       "--verbose",
       "--vault-password-file",
-      "$GITHUB_WORKSPACE/ansible/password"
+      "ansible/password"
     ]
     playbook_dir = "ansible" 
   }
