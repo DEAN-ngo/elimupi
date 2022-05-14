@@ -4,7 +4,7 @@
   ansible.builtin.systemd:
     state: started
     enabled: yes
-    name: sshd
+    name: ssh
 
 - name: Setup | Make .ssh dir for root user
   ansible.builtin.file:
