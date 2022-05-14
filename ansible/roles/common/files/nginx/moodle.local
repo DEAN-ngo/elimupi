@@ -2,7 +2,7 @@ server {
 	root /var/moodle;
 	listen 80;
 	listen [::]:80;
-	server_name moodle.local www.moodle.local;
+	server_name moodle.local www.moodle.local moodle.online www.moodle.online;
 	index index.php index.html index.htm;
 
 	location ~ [^/]\.php(/|$) {

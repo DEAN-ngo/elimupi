@@ -1,9 +1,27 @@
 ---
 # Put empty ssh file on the boot partition (mounted under /boot on a Raspberry Pi)
 - name: Setup | Enable ssh
+  ansible.builtin.systemd:
+    state: started
+    enabled: yes
+    name: sshd
+
+- name: Setup | Make .ssh dir for root user
   ansible.builtin.file:
-    path: /boot/ssh
-    state: touch
+    name: /root/.ssh
+    state: directory
+    mode: 0700
+
+- name: "Setup | Add github key"
+  copy:
+    dest: "/root/.ssh/github_key"
+    content: "{{ github_key }}"
+    mode: 0600
+
+- name: Setup | Copy ssh config for root user
+  ansible.builtin.copy:
+    src: "ssh_config"
+    dest: "/root/.ssh/config"
 
 - name: Setup | Set hostname
   ansible.builtin.hostname:

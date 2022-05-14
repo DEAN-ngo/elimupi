@@ -1,0 +1,3 @@
+Host github-elimupi-web-interface
+    Hostname github.com
+    IdentityFile=/root/.ssh/github_key
