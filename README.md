@@ -4,7 +4,7 @@ The purpose of this project is to provide a DEAN digital classroom environment f
 
 Please visit https://www.dean.ngo/ict4e/digital-classroom-box-elimupi/ for more information 
 
-##Introduction 
+## Introduction 
 
 This version of the ElimuPi build supports: 
 
@@ -41,23 +41,23 @@ All default username and passwords will be pi/elimupi unless noted differently.
 
 The default password for the WiFi 'elimu' is : 1234567890
 
-##User access
+## User access
 The end users can access the available resources after they are connected to the Wifi network.
 
 The following links are provided to access the resources:
 
-- **Main interface** - www.elimupi.local
-- **Kolibri** - kolibri.elimupi.local
-- **Kiwix** - wiki.elimupi.local
-- **files** - files.elimupi.local
-- **Moodle** - moodle.elimupi.local
+- **Main interface** - www.elimupi.online
+- **Kolibri** - kolibri.elimupi.online
+- **Kiwix** - wiki.elimupi.online
+- **files** - files.elimupi.online
+- **Moodle** - moodle.elimupi.online
 
-After you finished the installation you need to visit khan.local and create an Admin account. 
+After you finished the installation you need to visit khan.elimupi.online and create an Admin account. 
 
 Then you need to login with the Admin account and go to Manage --> "Please follow the directions to register your device, so that it can synchronize with the central server."
 
 
-##Notes
+## Notes
 **NOTE1**: This install is tested to work with Raspbian OS #1414 SMP Fri Apr 30 13:20:47 BST 2021
 
 **NOTE2*: for WIFI to work on the RaspberryPi 2 unit, you must have the WIFI USB dongle inserted during installation so that the install script can configure it properly. RaspberryPi 3 models have on board WiFi and don't need a WIFI USB dongle. 
