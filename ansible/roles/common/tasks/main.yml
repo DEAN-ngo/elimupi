@@ -16,6 +16,7 @@
 
 # network - setup network wifi
 - include_tasks: network.yml
+  when: "'dockerpi' not in inventory_hostname"
 
 # webserver - install webserver
 - include_tasks: webserver.yml
