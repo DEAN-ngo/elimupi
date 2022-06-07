@@ -1,4 +1,0 @@
----
-# setup citadel
-- name: install citadel
-  command: /usr/lib/citadel-server/setup

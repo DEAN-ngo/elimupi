@@ -1,0 +1,53 @@
+---
+- name: Configure WPA 
+  ansible.builtin.template:
+    src: templates/wpa_supplicant.conf.j2
+    dest: /etc/wpa_supplicant/wpa_supplicant.conf
+    mode: "0400"
+
+- name: Configure hostapd
+  ansible.builtin.template:
+    src: templates/hostapd.conf.j2
+    dest: /etc/hostapd/hostapd.conf
+
+- name: Register hostapd configuration
+  ansible.builtin.template:
+    src: templates/hostapd-init.j2
+    dest: /etc/default/hostapd
+
+- name: Configure udhcpd
+  ansible.builtin.template:
+    src: templates/udhcpd.conf.j2
+    dest: /etc/udhcpd.conf
+
+- name: Register udhcpd configuration
+  ansible.builtin.template:
+    src: templates/udhcpd-init.j2
+    dest: /etc/default/udhcpd
+
+- name: Enable IP forwarding
+  ansible.posix.sysctl:
+    name: "net.ipv4.ip_forward"
+    value: "1"
+    sysctl_set: yes
+    state: present
+    reload: yes
+
+ # there should be another solution for this.
+- name: Fix udhcpd wasn't starting properly at boot
+  ansible.builtin.copy:
+    src:  rc.local
+    dest: /etc/rc.local
+    owner: root
+    group: root
+    mode: '0755' 
+
+- name: Enable services
+  ansible.builtin.systemd:
+    name: "{{ item }}"
+    enabled: yes
+    daemon_reload: yes
+    masked: no
+  with_items:
+    - udhcpd
+    - hostapd

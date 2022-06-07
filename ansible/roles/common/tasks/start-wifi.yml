@@ -1,0 +1,19 @@
+---
+- name: Unblock Wifi
+  ansible.builtin.shell: 
+    cmd: rfkill unblock 0
+
+- name: wlan0 up
+  ansible.builtin.shell:
+    cmd: ifconfig wlan0 10.11.0.1
+
+- name: Enable and (re-)start services
+  ansible.builtin.systemd:
+    name: "{{ item }}"
+    state: restarted
+    enabled: yes
+    daemon_reload: yes
+    masked: no
+  with_items:
+    - udhcpd
+    - hostapd
