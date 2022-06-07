@@ -14,9 +14,6 @@
 # git clone
 - include_tasks: repo.yml
 
-# firewall - setup firewall
-- include_tasks: firewall.yml
-
 # network - setup network wifi
 - include_tasks: network.yml
 
@@ -34,3 +31,7 @@
 
 # moodle - install moodle
 - include_tasks: moodle.yml
+
+# firewall - setup firewall
+- include_tasks: firewall.yml
+
