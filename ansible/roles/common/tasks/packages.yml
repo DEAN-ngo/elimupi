@@ -1,7 +1,7 @@
 ---
-#- name: Packages | Upgrade OS
-#  apt:
-#    upgrade: dist
+- name: Packages | Upgrade OS
+  apt:
+    upgrade: dist
 
 # TODO update rbp firmware on first boot
 
@@ -36,10 +36,7 @@
     - python3-pip
     - python3-pkg-resources
     - dirmngr
-    #- kolibri
-    #- kolibri-server
     - dnsmasq
-    # - citadel-suite
     - fdroidserver
     - usbmount
     - ntfs-3g
