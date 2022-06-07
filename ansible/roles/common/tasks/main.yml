@@ -29,6 +29,7 @@
 
 # kolibri - install kolibri
 - include_tasks: kolibri.yml
+  when: "'raspberrypi' in inventory_hostname"
 
 # kiwix - install kiwix
 - include_tasks: kiwix.yml
