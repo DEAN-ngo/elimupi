@@ -19,6 +19,7 @@ build {
   }
   
   provisioner "ansible-local" {
+    galaxy_file = "ansible/collections.yml"
     playbook_file = "ansible/playbook-dockerpi.yml"
     inventory_groups = ["dockerpi"]
     extra_arguments = [
