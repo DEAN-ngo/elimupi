@@ -57,5 +57,5 @@ moodle_httpd_owner: www-data
 moodle_httpd_group: www-data
 
 # The URL where to serve content.
-moodle_wwwroot: "http://moodle.local"
+moodle_wwwroot: "http://moodle.elimupi.online"
 
