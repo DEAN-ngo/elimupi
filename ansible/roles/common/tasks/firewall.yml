@@ -1,71 +1,67 @@
 ---
-#Fix 
-# ==> arm-image.elimupi-raspios-buster: iptables/1.8.2 Failed to initialize nft: Protocol family not supported
+- name: Switch to iptables-legacy 
+  ansible.builtin.shell:
+    cmd: update-alternatives --set iptables /usr/sbin/iptables-legacy
+  when: ansible_distribution == 'Debian' and ansible_distribution_version == '10'
 
- - name: Switch to iptables-legacy 
-   ansible.builtin.shell: | 
-     update-alternatives --set iptables /usr/sbin/iptables-legacy
-   when: ansible_distribution == 'Debian' and ansible_distribution_version == '10'
+- name: Reset firewall
+  community.general.ufw:
+    state: reset
 
- - name: Reset firewall
-   community.general.ufw:
-     state: reset
+- name: Enable firewall
+  community.general.ufw:
+    state: enabled
+    policy: deny
 
- - name: Enable firewall
-   community.general.ufw:
-     state: enabled
-     policy: deny
+- name: Allow http
+  community.general.ufw:
+    rule: allow
+    port: '80'
+    proto: tcp
+    src: '{{ item }}'
+  loop:
+    - fe80::/10
+    - 10.0.0.0/8
+    - 172.16.0.0/12
+    - 192.168.0.0/16
 
- - name: Allow http
-   community.general.ufw:
-     rule: allow
-     port: '80'
-     proto: tcp
-     src: '{{ item }}'
-   loop:
-     - fe80::/10
-     - 10.0.0.0/8
-     - 172.16.0.0/12
-     - 192.168.0.0/16
+- name: Allow http kolibri
+  community.general.ufw:
+    rule: allow
+    port: '8080'
+    proto: tcp
+    src: '{{ item }}'
+  loop:
+    - fe80::/10
+    - 10.0.0.0/8
+    - 172.16.0.0/12
+    - 192.168.0.0/16
 
- - name: Allow http kolibri
-   community.general.ufw:
-     rule: allow
-     port: '8080'
-     proto: tcp
-     src: '{{ item }}'
-   loop:
-     - fe80::/10
-     - 10.0.0.0/8
-     - 172.16.0.0/12
-     - 192.168.0.0/16
-
- - name: Allow ssh
-   community.general.ufw:
-     port: '22'
-     proto: tcp
-     rule: allow
-     src: '{{ item }}'
-   loop:
-     - fe80::/10
-     - 10.0.0.0/8
-     - 172.16.0.0/12
-     - 192.168.0.0/16
+- name: Allow ssh
+  community.general.ufw:
+    port: '22'
+    proto: tcp
+    rule: allow
+    src: '{{ item }}'
+  loop:
+    - fe80::/10
+    - 10.0.0.0/8
+    - 172.16.0.0/12
+    - 192.168.0.0/16
       
- - name: Allow dns 
-   community.general.ufw:
-     name: dns
-     rule: allow
-     src: '{{ item }}'
-   loop:
-     - fe80::/10
-     - 10.0.0.0/8
-     - 172.16.0.0/12
-     - 192.168.0.0/16
+- name: Allow dns 
+  community.general.ufw:
+    name: dns
+    rule: allow
+    src: '{{ item }}'
+  loop:
+    - fe80::/10
+    - 10.0.0.0/8
+    - 172.16.0.0/12
+    - 192.168.0.0/16
 
- - name: Allow dhcp
-   community.general.ufw:
-     port: '67'
-     proto: udp
-     rule: allow
-
+- name: Allow dhcp
+  community.general.ufw:
+    port: '67'
+    proto: udp
+    rule: allow

@@ -1,7 +1,7 @@
 Elimupi Ansible playbook
 =============
 Prerequisites:
- - ansible 2.9 > installed.
+ - ansible 2.10 > installed.
  - ssh_askpass installed.
  - local pi.
  - Get ansible vault password from someone :-)

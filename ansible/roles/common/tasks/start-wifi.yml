@@ -1,10 +1,10 @@
 ---
 - name: Unblock Wifi
-  ansible.builtin.shell: 
+  shell: 
     cmd: rfkill unblock 0
 
 - name: wlan0 up
-  ansible.builtin.shell:
+  shell: 
     cmd: ifconfig wlan0 10.11.0.1
 
 - name: Enable and (re-)start services
