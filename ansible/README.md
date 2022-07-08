@@ -1,6 +1,7 @@
 Elimupi Ansible playbook
 =============
 Prerequisites:
+ - 2022-04-04-raspios-bullseye-arm64-lite.img  
  - ansible 2.10 > installed.
  - ssh_askpass installed.
  - local pi.
