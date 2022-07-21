@@ -11,45 +11,26 @@ source "arm-image" "elimupi-raspios-buster" {
 build {
   sources = [ "source.arm-image.elimupi-raspios-buster" ]
 
-  // provisioner "shell" {
-  //   inline = [
-  //     "mkdir /tmp/templates"
-  //   ]
-  // }
-
-  // provisioner "file" {
-  //   source = "ansible/templates"
-  //   destination = "/tmp/templates"
-  // }
-
   provisioner "shell" {
     inline = [
-      # "lsblk",
-      # "df -h",
-      # "ls -lah /",
+      "python3 -m pip install ansible",
       "apt-get update",
-      "apt-get install ansible -y"
     ]
   }
-
-  // provisioner "shell" {
-  //   inline = [
-  //     "ls -lah /tmp",
-  //     "ls -lah /tmp/templates",
-  //     "ls -lah /tmp/templates/*"
-  //   ]
-  // }
-
+  
   provisioner "ansible-local" {
-    playbook_file = "ansible/site.yml"
+    galaxy_file = "ansible/collections.yml"
+    playbook_file = "ansible/playbook-dockerpi.yml"
+    inventory_groups = ["dockerpi"]
     extra_arguments = [
-      "--verbose"
+      "--verbose",
+      "--vault-password-file",
+      "password",
+      "--skip-tags",
+      "reboot"
     ]
     playbook_dir = "ansible" 
-
   }
-
-
 
   post-processor "shell-local" {
     inline = ["wget https://raw.githubusercontent.com/Drewsif/PiShrink/master/pishrink.sh -O pishrink.sh"]

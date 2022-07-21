@@ -1,0 +1,11 @@
+FROM alpine:3.15
+RUN apk add --no-cache qemu-system-aarch64
+VOLUME sd
+EXPOSE 22
+CMD ["-m", "1024", "-M", "raspi3", \
+  "-kernel", "/sd/kernel/kernel8.img", "-dtb", "/sd/kernel/bcm2710-rpi-3-b-plus.dtb", "-sd", "/sd/sdcard.img", \
+  "-append", "console=ttyAMA0 root=/dev/mmcblk0p2 rw rootwait rootfstype=ext4", \
+  "-nographic", \
+  "-device", "usb-net,netdev=net0", "-netdev", "user,id=net0,hostfwd=tcp::22-:22" \
+  ]
+ENTRYPOINT ["qemu-system-aarch64"]

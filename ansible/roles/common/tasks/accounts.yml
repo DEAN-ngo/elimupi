@@ -1,0 +1,28 @@
+---
+- name: Accounts | Create groups
+  ansible.builtin.group:
+    name: "{{ item }}"
+  loop:
+    - admins
+    - teachers
+    - students
+
+- name: Accounts | Change password default user
+  ansible.builtin.user:
+    name: pi
+    password: "{{ elimupi_password }}"
+    group: pi
+    groups:
+    - teachers
+
+- name: Accounts | Create admin account
+  ansible.builtin.user:
+    name: deanadmin
+    password: "{{ admin_password }}"
+    group: admins
+
+- name: Accounts | Create headmaster account
+  ansible.builtin.user:
+    name: headmaster
+    password: "{{ headmaster_password }}"
+    group: teachers

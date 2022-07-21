@@ -1,0 +1,11 @@
+---
+# Install FDROID server components
+# install fdroidserver -> moved to ospackages.yml
+
+# Enable shared folder for client access
+- name: Set fdroid.local
+  ansible.builtin.copy:
+    src: "nginx/fdroid.local"
+    dest: /etc/nginx/sites-available/fdroid.local
+  notify:
+    - Restart Nginx

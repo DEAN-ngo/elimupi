@@ -1,0 +1,19 @@
+---
+# install Kolibri install support python libraries -> moved to ospackages.yml
+#apt install libffi-dev python3-pip python3-pkg-resources dirmngr -y
+
+# install pip3 packages
+- name: Install multi python packages with version specifiers
+  pip:
+    name:
+      - pip
+      - setuptools
+      - cffi
+    executable: pip3
+    
+#Install Kolibri components
+- name: Install applications
+  apt:
+    name:
+    - kolibri
+    - kolibri-server

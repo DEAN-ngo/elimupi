@@ -1,19 +1,20 @@
-- name: Upgrade OS
+---
+- name: Packages | Upgrade OS
   apt:
     upgrade: dist
 
 # TODO update rbp firmware on first boot
 
-- name: Add repo key learningequality
+- name: Packages | Add repo key learningequality
   apt_key:
     keyserver: hkp://keyserver.ubuntu.com:80
     id: DC5BAA93F9E4AE4F0411F97C74F88ADB3194DD81
 
-- name: Add repository learningeqality
+- name: Packages | Add repository learningequality
   apt_repository:
     repo: deb http://ppa.launchpad.net/learningequality/kolibri/ubuntu bionic main
 
-- name: Install applications
+- name: Packages | Install applications
   apt:
     name:
     - ufw
@@ -35,18 +36,16 @@
     - python3-pip
     - python3-pkg-resources
     - dirmngr
-    - kolibri
-    - kolibri-server
     - dnsmasq
-    - citadel-suite
     - fdroidserver
-    - usbmount
     - ntfs-3g
-    - mariadb-server
     - hostapd
     - udhcpd
+    #- usbmount
+    update_cache: yes
+    state: present
 
-- name: Remove dependencies that are no longer required
+- name: Packages | Remove dependencies that are no longer required
   apt:
     autoremove: yes
     autoclean: yes
