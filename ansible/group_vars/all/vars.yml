@@ -1,4 +1,10 @@
 ---
+# Elimupi release version
+elimupi_release: 1.0.0
+
+elimupi_release_file:  "/root/elimupi_release-{{ elimupi_release }}-{{ lookup('pipe', 'date +%Y%m%d-%H%M') }}" 
+
+
 # Kiwix
 #
 # A path where to save the data.
@@ -7,7 +13,7 @@ kiwix_directory_mode: "0755"
 
 kiwix_version: kiwix-tools_linux-armhf-3.2.0-1
 vikidia_version: vikidia_en_all_nopic_2021-03
-wiktionary_version: wiktionary_en_simple_all_nopic_2022-05
+wiktionary_version: wiktionary_en_simple_all_nopic_2022-07
 
 ansible_host_key_checking: false
 
@@ -59,3 +65,37 @@ moodle_httpd_group: www-data
 # The URL where to serve content.
 moodle_wwwroot: "http://moodle.elimupi.online"
 
+# Kolibri config
+
+kolibri_install: True
+kolibri_enabled: True
+
+# Kolibri folder to store its data and configuration files.
+#kolibri_home: "{{ content_base }}/kolibri"
+kolibri_home: "/home/pi/.kolibri"
+
+kolibri_http_port: 8080
+kolibri_url: /kolibri/
+kolibri_path: "{{ iiab_base }}/kolibri"
+kolibri_exec_path: /usr/bin/kolibri 
+
+# Kolibri system user
+#kolibri_user: kolibri
+kolibri_user: pi
+
+# Kolibri setup will be provisioned with default administration account, preset and
+# language. You could turn this to 'False' while reinstalling kolibri.
+kolibri_provision: True
+
+# Kolibri Facility name
+kolibri_facility: 'elimu'
+
+# Kolibri Preset type: formal, nonformal, informal
+kolibri_preset: 'formal'
+
+# Kolibri default language (ar,bn-bd,en,es-es,fa,fr-fr,hi-in,mr,nyn,pt-br,sw-tz,ta,te,ur-pk,yo,zu)
+kolibri_language: 'en'
+
+# Kolibri admin account
+kolibri_admin_user: 'pi'
+kolibri_admin_password: 'elimupi'

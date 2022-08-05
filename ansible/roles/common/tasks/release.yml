@@ -1,0 +1,17 @@
+---
+# creates a elimupi release file in /root/<release version>--date +%Y%m%d-%H%M
+
+- name: create Elimupi release file
+  ansible.builtin.file:
+    path: "{{ elimupi_release_file }}" 
+    state: touch
+
+- name: Record rasbian image file in release file 
+  ansible.builtin.shell: |
+    echo "{{ elimupi_release_file }}" >>  "{{ elimupi_release_file }}"
+    cat /boot/issue.txt >>  "{{ elimupi_release_file }}"
+   
+    apt list --installed >>  "{{ elimupi_release_file }}"
+  args:
+    executable: /bin/bash
+

@@ -2,6 +2,23 @@
 # install Kolibri install support python libraries -> moved to ospackages.yml
 #apt install libffi-dev python3-pip python3-pkg-resources dirmngr -y
 
+- name: Set kolibri.local
+  ansible.builtin.copy:
+    src: "nginx/kolibri.local"
+    dest: /etc/nginx/sites-available/kolibri.local
+  notify:
+    - Restart Nginx
+ 
+- name: Enable kolibri nginx configuration
+  ansible.builtin.file:
+    src: /etc/nginx/sites-available/kolibri.local
+    dest: /etc/nginx/sites-enabled/kolibri.local
+    owner: root
+    group: root
+    state: link
+  notify:
+    - Restart Nginx
+
 # install pip3 packages
 - name: Install multi python packages with version specifiers
   pip:
@@ -17,3 +34,12 @@
     name:
     - kolibri
     - kolibri-server
+
+- name: Create kolibri default facility name, admin account and language.
+  shell: >
+    export KOLIBRI_HOME="{{ kolibri_home }}" &&
+    "{{ kolibri_exec_path }}" manage provisiondevice --facility "{{ kolibri_facility }}"
+    --superusername "{{ kolibri_admin_user }}" --superuserpassword "{{ kolibri_admin_password }}"
+    --preset "{{ kolibri_preset }}" --language_id "{{ kolibri_language }}" --verbosity 0 --noinput
+  ignore_errors: yes
+  when: kolibri_provision

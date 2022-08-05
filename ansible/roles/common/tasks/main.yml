@@ -1,42 +1,5 @@
 ---
 # Main flow of the Ansible tasks
-# setup - basic setup
-- name: Include setup tasks
-  include_tasks: setup.yml
 
-# users - add users and groups
-- name: Include accounts tasks
-  include_tasks: accounts.yml
-
-# ospackages - install OS packages
-- include_tasks: packages.yml
-
-# git clone
-- include_tasks: repo.yml
-
-# setup wifi AP 
-- include_tasks: setup-wifi.yml 
-
-#  start wifi  
-- include_tasks: start-wifi.yml
-  when: "'raspberrypi' in inventory_hostname"
-
-# webserver - install webserver
-- include_tasks: webserver.yml
-
-# fdroid - install fdroid
-- include_tasks: fdroid.yml
-
-# kolibri - install kolibri
-- include_tasks: kolibri.yml
-  when: "'raspberrypi' in inventory_hostname"
-
-# kiwix - install kiwix
-- include_tasks: kiwix.yml
-
-# moodle - install moodle
-- include_tasks: moodle.yml
-
-# firewall - setup firewall
-- include_tasks: firewall.yml
-
+# release file 
+- include_tasks: release.yml

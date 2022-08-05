@@ -41,7 +41,6 @@
     - ntfs-3g
     - hostapd
     - udhcpd
-    #- usbmount
     update_cache: yes
     state: present
 
