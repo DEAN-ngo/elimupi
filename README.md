@@ -16,18 +16,18 @@ This version of the ElimuPi build supports:
 - Secured WiFi access point 
 - Local DHCP, DNS 
 
-## Installation 
-Elimupi Ansible playbook
-=============
-Prerequisites:
- - 2022-04-04-raspios-bullseye-arm64-lite.img  
- - ansible 2.10 > installed.
+# Installation
+
+## Prerequisites:
+ - Download Raspberry Pi Imager https://www.raspberrypi.com/software/
+- Start the Pi Imager and choose the operating system to install. Select ‘RASPBERRY PI OS LITE (64-BIT)’ and select the device to write the image to. Press ‘WRITE’ button. This will start downloading the image and install the software on the SD-card
+ - ansible 2.10 > installed on laptop
  - ssh_askpass installed.
  - local pi.
  - Get ansible vault password from someone :-)
 
 ## How to run
- Run ansible-play book against local raspberry pi:
+Run ansible-play book against local raspberry pi:
 
  - install Ansible collections:
 
@@ -40,6 +40,12 @@ Prerequisites:
 - run playbook
 
 `ansible-playbook -i ./inventory.yml playbook-raspberrypi.yml --ask-vault-pass`
+
+## After installation
+After installing the software, follow the next step to connect to the Pi.
+-	Connect your wifi to the ‘elimu’ network - passcode ‘1234567890’.
+-	Start your browser
+-	Open the website ‘start.elimupi.online
 
 ## How to update something in secrets.yml
 
