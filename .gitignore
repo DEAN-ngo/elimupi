@@ -1,6 +1,4 @@
 images
-packer-builder-arm-image
-packer_cache
 output*
 pishrink.sh
 .DS_Store

@@ -1,4 +1,4 @@
-# elimupi2.0.1
+# elimupi3.0.0
 
 The purpose of this project is to provide a DEAN digital classroom environment for educational project in Tanzania and Kenia. This includes providing full Android tablet support without any direct internet connectivity. 
 
@@ -17,26 +17,35 @@ This version of the ElimuPi build supports:
 - Local DHCP, DNS 
 
 ## Installation 
-1. Install a base RaspBian image on a SD card and create a empty file called 'ssh' in the root of the boot partition. This will enable SSH access to the Raspberry Pi. After you finished previous steps insert the SD card into the Raspberry Pi
+Elimupi Ansible playbook
+=============
+Prerequisites:
+ - 2022-04-04-raspios-bullseye-arm64-lite.img  
+ - ansible 2.10 > installed.
+ - ssh_askpass installed.
+ - local pi.
+ - Get ansible vault password from someone :-)
 
-2. Connect the external Hard Drive to the Raspberry Pi
+## How to run
+ Run ansible-play book against local raspberry pi:
 
-3. Powerup the RaspberryPi and wait for the initial boot process to complete 
+ - install Ansible collections:
 
-4. Connect with the Raspberry pi using SSH (`ssh pi@<ipv4>`; default password: raspberry)
- 
-5. Expand your microSD card partition by running `sudo raspi-config`, choose Advanced Options and there choose Expand Filesystem. Exit the menu (press the escape key a few times) and restart the Raspberry Pi: `sudo reboot`
+` ansible-galaxy collection install -r collections.yml`
 
-6. Type/Paste in the following command after reboot. 
+ - install Ansible roles
 
-`wget https://raw.githubusercontent.com/DEANpeterV/elimupi2.0/master/ElimuPi_installer.py && chmod 700 ElimuPi_installer.py && python3 ElimuPi_installer.py`
+`ansible-galaxy install -r roles.yml`
 
-*Please note that this will change the 'pi' user's password to: elimupi 
+- run playbook
 
-7. After the reboot, connect to the Raspberry Pi through SSH again and continue the installation by running `python3 ElimuPi_installer.py` again. 
+`ansible-playbook -i ./inventory.yml playbook-raspberrypi.yml --ask-vault-pass`
 
-8. After another reboot, the Raspberry Pi is ready for use! 
+## How to update something in secrets.yml
 
+`ansible-vault edit group_vars/all/secrets.yml`  
+
+## Default users
 All default username and passwords will be pi/elimupi unless noted differently. 
 
 The default password for the WiFi 'elimu' is : 1234567890
