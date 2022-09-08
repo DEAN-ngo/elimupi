@@ -1,6 +1,6 @@
 ---
 # Elimupi release version
-elimupi_release: 1.0.0
+elimupi_release: .0.0
 
 elimupi_release_file:  "/root/elimupi_release-{{ elimupi_release }}-{{ lookup('pipe', 'date +%Y%m%d-%H%M') }}" 
 
@@ -72,7 +72,7 @@ kolibri_enabled: True
 
 # Kolibri folder to store its data and configuration files.
 #kolibri_home: "{{ content_base }}/kolibri"
-kolibri_home: "/home/pi/.kolibri"
+kolibri_home: "/mnt/content/kolibri-home"
 
 kolibri_http_port: 8080
 kolibri_url: /kolibri/
@@ -97,5 +97,5 @@ kolibri_preset: 'formal'
 kolibri_language: 'en'
 
 # Kolibri admin account
-kolibri_admin_user: 'pi'
-kolibri_admin_password: 'elimupi'
+kolibri_admin_user: 'admin'
+kolibri_admin_password: ''

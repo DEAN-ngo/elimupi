@@ -1,7 +1,7 @@
 server {
 	listen 80;
 	listen [::]:80;
-	server_name   www.fdroid.local fdroid.local;
+	server_name fdroid.elimupi.online  www.fdroid.local fdroid.local;
 	error_log 		/var/www/log/fdroid-log;
 	location /{
 		autoindex on;
