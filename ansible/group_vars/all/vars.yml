@@ -1,6 +1,6 @@
 ---
 # Elimupi release version
-elimupi_release: .0.0
+elimupi_release: 3.0.0
 
 elimupi_release_file:  "/root/elimupi_release-{{ elimupi_release }}-{{ lookup('pipe', 'date +%Y%m%d-%H%M') }}" 
 
@@ -66,6 +66,7 @@ moodle_httpd_group: www-data
 moodle_wwwroot: "http://moodle.elimupi.online"
 
 # Kolibri config
+# The databases and storage 
 
 kolibri_install: True
 kolibri_enabled: True
@@ -85,10 +86,10 @@ kolibri_user: pi
 
 # Kolibri setup will be provisioned with default administration account, preset and
 # language. You could turn this to 'False' while reinstalling kolibri.
-kolibri_provision: True
+kolibri_provision: False 
 
 # Kolibri Facility name
-kolibri_facility: 'elimu'
+kolibri_facility: 'DEAN - Elimupi'
 
 # Kolibri Preset type: formal, nonformal, informal
 kolibri_preset: 'formal'

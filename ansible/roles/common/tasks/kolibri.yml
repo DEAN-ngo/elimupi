@@ -35,6 +35,16 @@
     - kolibri
     - kolibri-server
 
+- name: Create kolibri default facility name, admin account and language.
+  shell: >
+    export KOLIBRI_HOME="{{ kolibri_home }}" &&
+    "{{ kolibri_exec_path }}" manage provisiondevice --facility "{{ kolibri_facility }}"
+    --superusername "{{ kolibri_admin_user }}" --superuserpassword "{{ kolibri_admin_password }}"
+    --preset "{{ kolibri_preset }}" --language_id "{{ kolibri_language }}" --verbosity 0 --noinput
+  ignore_errors: yes
+  when: kolibri_provision
+
+
 # Configure kolibri to use content disk
 - name: Copy kolibri 099-user.conf  
   ansible.builtin.copy:
@@ -44,6 +54,7 @@
     group: root 
     mode: '0755'
 
+# Configure kolibri to use content disk
 - name: Copy kolibri daemon.conf
   ansible.builtin.copy:
     src: kolibri/daemon.conf

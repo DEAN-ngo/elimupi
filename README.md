@@ -61,11 +61,13 @@ The end users can access the available resources after they are connected to the
 
 The following links are provided to access the resources:
 
-- **Main interface** - www.elimupi.local
-- **Kolibri** - kolibri.elimupi.local
-- **Kiwix** - wiki.elimupi.local
-- **files** - files.elimupi.local
-- **Moodle** - moodle.elimupi.local
+- **Main interface** - start.elimupi.online
+- **Kolibri** - kolibri.elimupi.online
+- **Kiwix** - wiki.elimupi.online
+- **Fdroid** - fdroid.elimupi.online
+- **files** - files.elimupi.online
+- **Moodle** - moodle.elimupi.online
+- **Admin** - admin.elimupi.online
 
 After you finished the installation you need to visit khan.local and create an Admin account. 
 
@@ -81,7 +83,7 @@ Then you need to login with the Admin account and go to Manage --> "Please follo
 
 **NOTE4**: For Kolibri content use Kolibri Studio - https://studio.learningequality.org
 
-Last updated : 2021/08/09 
+Last updated : 2022/09/09 
 
 Applicable Licenses: See licenses file. 
 

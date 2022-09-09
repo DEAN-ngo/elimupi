@@ -3,3 +3,8 @@
   ansible.builtin.service:
     name: nginx
     state: restarted
+
+- name: Restart dnsmasq 
+  ansible.builtin.service:
+    name: dnsmasq 
+    state: restarted

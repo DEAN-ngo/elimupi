@@ -15,6 +15,9 @@
 # git clone
 - include_tasks: repo.yml
 
+#  configure dnsmasq
+- include_tasks: dnsmasq.yml
+
 # setup wifi AP 
 - include_tasks: setup-wifi.yml 
 
