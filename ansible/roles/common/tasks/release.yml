@@ -9,7 +9,6 @@
 - name: Record rasbian image file in release file 
   ansible.builtin.shell: |
    echo  "Release:"  "{{ elimupi_release_file }}" | awk -F "/" '{print $1$3}' >>  "{{ elimupi_release_file }}"   
-   cat /proc/cpuinfo | grep --ignore-case serial  >>  "{{ elimupi_release_file }}"
    echo "Raspberry Pi OS Distribution Release:" |  cat - /boot/issue.txt  >>  "{{ elimupi_release_file }}" 
    echo "Packages installed:"  >>  "{{ elimupi_release_file }}" 
    apt list --installed >>  "{{ elimupi_release_file }}"
