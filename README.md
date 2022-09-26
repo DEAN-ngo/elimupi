@@ -19,43 +19,67 @@ This version of the ElimuPi build supports:
 #  Installation
 
 ## Prerequisites:
- -  A Raspberry Pi model 4 with a wired TCP connection to LAN.
- -  32GB micro SD-card class 10.
+ -  PC or laptop with Linux, Windows with [WSL](https://ubuntu.com/wsl) or MacOS operating system installed.
+ - A Raspberry Pi model 4 with a wired TCP connection to LAN.
+ - A Micro SD-card class 10 > 8GB 
+ - Git installed.
  -  Ansible 2.10 > installed.
- - ssh_askpass installed.
--  [Raspberry Pi Imager](https://www.raspberrypi.com/software/) installed.
- - Insert the SD-card and start the Raspberry Pi Imager and use;  [Raspberry Pi OS Lite 64 bits image , Release date: September 6th 2022.](https://downloads.raspberrypi.org/raspios_lite_arm64/images/raspios_lite_arm64-2022-09-07/2022-09-06-raspios-bullseye-arm64-lite.img.xz) Select ‘RASPBERRY PI OS LITE (64-BIT)’ and select the device to write the image to. 
-Select advanced option in the Raspberry Pi Imager -->vEnable SSH, Use password authentication. Set Username/password to : **pi/elimupi**
- Press ‘WRITE’ button. This will start downloading the image and install the software on the SD-card.
- - When the image has been successfully written insert the SD-card into the Raspberry Pi and boot the Pi.
- -  Find the Pi's assigned IP address on your LAN. 
- - Get the Ansible vault password from DEAN development to start the ElimuPI image provisioning via a Ansible playbook run.
+ - [ssh_askpass](https://packages.ubuntu.com/search?keywords=ssh-askpass) installed.
+ - [Raspberry Pi Imager](https://www.raspberrypi.com/software/)  installed.
+ - [Raspberry Pi OS Lite 64 bits image , Release date: September 6th 2022.](https://downloads.raspberrypi.org/raspios_lite_arm64/images/raspios_lite_arm64-2022-09-07/2022-09-06-raspios-bullseye-arm64-lite.img.xz) 
+ - Ansible vault password ( contact DEAN development)
  
-## How to run
-Run ansible-play book against local raspberry pi:
+## Install Raspberry Pi OS
 
- - install Ansible collections:
+ - Use Raspberry PI Imager to write the downloaded image to the SD-card using instructions at  https://www.raspberrypi.com/documentation/computers/getting-started.html#installing-the-operating-system.
+ - Insert the SD-card.
+ - Start Raspberry PI Imager.
+ - Under **Operating system** select **Choose OS --> Use Custom** and select the downloaded image -   [Raspberry Pi OS Lite 64 bits image , Release date: September 6th 2022.](https://downloads.raspberrypi.org/raspios_lite_arm64/images/raspios_lite_arm64-2022-09-07/2022-09-06-raspios-bullseye-arm64-lite.img.xz)
+ - Under **Storage** and select the SD-card device.
+ - Select **Advanced options** -->  **Enable SSH** --> **Use password authentication**. 
+ - Set **Username** to: **pi** and **Password** to : **elimupi** and select **SAVE**.
+ - Select **WRITE**.
+  
+ When the image has been successfully written insert the SD-card into the Raspberry Pi and boot the device connected to local LAN.
+
+## Build ElimuPi Image
+
+Provision the ElimuPi software by running the ansible-play book against local Raspberry Pi and build Elimupi the image.
+
+-  Find the Pi's assigned IP address on your local LAN. ( via Wifi router or a nmap).
+-  Git clone this repo and cd elimupi/ansible directory of this repo.
+-  Adjust the current IP adresss of key : ansible_host  in file  inventory.yml to your Pi's local assigned IP address. 
+-Increment version release number variable, **elimupi_release**: in file ansible/group_vars/all/vars.yml if needed.
+ - Install Ansible collections:
 
 ` ansible-galaxy collection install -r collections.yml`
 
- - install Ansible roles
+ - Install Ansible roles.
 
 `ansible-galaxy install -r roles.yml`
 
- - adjust ansible_host: to the Pi's assigned IP address on your LAN in inventory.yml.
-
-- run playbook
+- Run playbook
 
 `ansible-playbook -i ./inventory.yml playbook-raspberrypi.yml --ask-vault-pass`
 
-## After installation
-After installing the software, follow the next step to connect to the Pi.
--       Connect your wifi to the ‘elimu’ network - passcode ‘1234567890’.
--      Point your browser to http://start.elimupi.online
+The installation will take approximately 20 minutes to finish and there shouldn't be any errors.
 
-## How to update something in secrets.yml
+## Create ElimuPi image copy 
 
-`ansible-vault edit group_vars/all/secrets.yml`
+ - Create a image copy of the SD-card with the ElimuPi software installed using instructions at https://beebom.com/how-clone-raspberry-pi-sd-card-windows-linux-macos/
+ -  Shrink cloned the image file ( Linux Only) using [PiShrink](https://github.com/Drewsif/PiShrink).
+ - gzip the shrinked image file.
+ - Name the image: **ElimuPi_Image_2022-09-06-raspios-bullseye-arm64_lite_Release_<-Version->.img.gz** e.g
+
+This should produce a 2.8GB gzipped compressed Elimupi image file.
+
+The image file can than be directly written to other SD-cards using Raspberry Pi Imager selecting the image with Use Custom Operation System option. 
+
+# Connecting to Elimupi
+
+-  Disconnect the Raspberry PI's TCP wired connection.
+-  Connect your device via WiFi to SSID:  **elimu** using passcode: **1234567890**
+-  Point your browser to http://start.elimupi.online
 
 ## Default users
 All default username and passwords will be **pi/elimupi** unless noted differently.
@@ -79,9 +103,3 @@ After you finished the installation you need to visit [admin.elimupi.online](htt
 
 ## Notes
 **NOTE1**: This install is tested to work with [Raspberry Pi OS Lite 64 bits image , Release date: September 6th 2022.](https://downloads.raspberrypi.org/raspios_lite_arm64/images/raspios_lite_arm64-2022-09-07/2022-09-06-raspios-bullseye-arm64-lite.img.xz) on a Raspberry Pi model 4.
-
-**NOTE2**: For Kolibri content use Kolibri Studio - https://studio.learningequality.org
-
-Last updated : 2022/09/12
-
-Applicable Licenses: See [licenses file](https://github.com/DEAN-ngo/elimupi/blob/main/LICENSE).
