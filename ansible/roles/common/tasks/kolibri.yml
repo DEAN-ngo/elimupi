@@ -44,16 +44,6 @@
   ignore_errors: yes
   when: kolibri_provision
 
-
-# Configure kolibri to use content disk
-- name: Copy kolibri 099-user.conf  
-  ansible.builtin.copy:
-    src: kolibri/099-user.conf
-    dest: /etc/kolibri/nginx.d/099-user.conf 
-    owner: root 
-    group: root 
-    mode: '0755'
-
 # Configure kolibri to use content disk
 - name: Copy kolibri daemon.conf
   ansible.builtin.copy:
