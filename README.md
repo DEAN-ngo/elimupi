@@ -4,7 +4,7 @@ The purpose of this project is to provide a DEAN digital classroom environment f
 
 Please visit https://www.dean.ngo/solutions/elimupi/  for more information.
 
-## Introduction
+## Introduction 
 
 This version of the ElimuPi build supports:
 
@@ -19,11 +19,11 @@ This version of the ElimuPi build supports:
 #  Installation
 
 ## Prerequisites:
- -  PC or laptop with Linux, Windows with [WSL](https://ubuntu.com/wsl) or MacOS operating system installed.
+ - PC or laptop with Linux, Windows with [WSL](https://ubuntu.com/wsl) or MacOS operating system installed.
  - A Raspberry Pi model 4 with a wired TCP connection to LAN.
  - A Micro SD-card class 10 > 8GB 
  - Git installed.
- -  Ansible 2.10 > installed.
+ - Ansible 2.10 > installed.
  - [ssh_askpass](https://packages.ubuntu.com/search?keywords=ssh-askpass) installed.
  - [Raspberry Pi Imager](https://www.raspberrypi.com/software/)  installed.
  - [Raspberry Pi OS Lite 64 bits image , Release date: September 6th 2022.](https://downloads.raspberrypi.org/raspios_lite_arm64/images/raspios_lite_arm64-2022-09-07/2022-09-06-raspios-bullseye-arm64-lite.img.xz) 
@@ -46,19 +46,19 @@ This version of the ElimuPi build supports:
 
 Provision the ElimuPi software by running the ansible-play book against local Raspberry Pi and build Elimupi the image.
 
--  Find the Pi's assigned IP address on your local LAN. ( via Wifi router or a nmap).
--  Git clone this repo and cd elimupi/ansible directory of this repo.
--  Adjust the current IP adresss of key : ansible_host  in file  inventory.yml to your Pi's local assigned IP address. 
--Increment version release number variable, **elimupi_release**: in file ansible/group_vars/all/vars.yml if needed.
+ - Find the Pi's assigned IP address on your local LAN. ( via Wifi router or a nmap).
+ - Git clone this repo and cd elimupi/ansible directory of this repo.
+ - Adjust the current IP adresss of key : ansible_host  in file  inventory.yml to your Pi's local assigned IP address. 
+ - Increment version release number variable, **elimupi_release**: in file ansible/group_vars/all/vars.yml if needed.
  - Install Ansible collections:
 
-` ansible-galaxy collection install -r collections.yml`
+`ansible-galaxy collection install -r collections.yml`
 
  - Install Ansible roles.
 
 `ansible-galaxy install -r roles.yml`
 
-- Run playbook
+ - Run playbook
 
 `ansible-playbook -i ./inventory.yml playbook-raspberrypi.yml --ask-vault-pass`
 
