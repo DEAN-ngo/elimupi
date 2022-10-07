@@ -1,0 +1,27 @@
+server {
+    listen 80;
+    listen [::]:80;
+    server_name admin.local www.admin.local admin.elimupi.online local.elimupi.online;
+    index index.php index.html index.htm;
+        error_log               /var/www/log/admin-log;
+
+    location / {
+        autoindex on;
+        # try_files $uri $uri/ =404;
+        root /var/www/html;
+        # fastcgi_split_path_info ^(.+\.php)(/.+)$;
+        # fastcgi_index index.php;
+        # include fastcgi_params;
+        return 301 http://start.elimupi.online/admin/?lang=;
+    }
+
+    # pass the PHP scripts to FastCGI server
+    location ~ \.php$ {
+        # fastcgi_pass backend;
+        root /var/www/html;
+        include snippets/fastcgi-php.conf;
+        fastcgi_pass unix:/run/php/php7.4-fpm.sock;
+        # fastcgi_param  SCRIPT_FILENAME  $document_root$fastcgi_script_name;
+                fastcgi_param  PHP_VALUE  "include_path=$document_root/php/includes";
+   }
+}

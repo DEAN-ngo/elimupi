@@ -1,0 +1,13 @@
+[Unit]
+Description=kiwix
+After=network.target
+
+[Service]
+ExecStart=/bin/sh -c '/var/kiwix/bin/kiwix-serve --port 81 /mnt/content/wiki/*.zim'
+StandardOutput=inherit
+StandardError=inherit
+Restart=always
+User=root
+
+[Install]
+WantedBy=multi-user.target

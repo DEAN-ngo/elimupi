@@ -1,0 +1,6 @@
+images
+output*
+pishrink.sh
+.DS_Store
+ansible/roles/common/files/ElimuPi-Web-Interface
+ansible/inventory.yml

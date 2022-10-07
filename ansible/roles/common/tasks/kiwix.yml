@@ -1,0 +1,139 @@
+---
+# Installation KIWIX
+
+# Get the version number of the latest release -> for now solved with variable in site.yml
+
+    # Get release rss data from mirror
+    #display_log("Install KIWIX components...")
+    #display_log("Get KIWIX versions...", col_log_ok)
+    #file = urllib.request.urlopen('https://ftp.nluug.nl/pub/kiwix/release/kiwix-tools/feed.xml')
+    #data = file.read()
+    #file.close()
+    ## Parse XML
+    #root = ET.fromstring(data)
+    ## get latest version for linux-armhf of kiwix-tools (first in XML)
+    #latest_release = 'none'
+    #for links in root.findall('channel/item/link'):
+    #        if( links.text.find('kiwix-tools_linux-armhf') > -1):
+    #                latest_release = links.text
+    #                break
+    #latest_release_name = latest_release[47:-7]
+    #display_log("Latest KIWIX release : " + latest_release_name, col_log_ok) "
+
+    #kiwix-tools_linux-armhf-3.2.0-1.tar.gz 
+    
+# get release for Linux-armhf from mirror
+- name: Download kiwix
+  ansible.builtin.get_url:
+    url: https://ftp.nluug.nl/pub/kiwix/release/kiwix-tools/{{ kiwix_version }}.tar.gz
+    dest: /home/pi
+    mode: '0440'
+
+- name: Extract kiwixo
+  ansible.builtin.unarchive:
+    src: /home/pi/{{ kiwix_version }}.tar.gz
+    dest: /home/pi
+    remote_src: yes
+
+# Make kiwix application folder
+- name: Create  directory /var/kiwix/bin
+  ansible.builtin.file:
+    path: /var/kiwix/bin
+    state: directory
+    mode: '0755'
+
+# Copy files we need from the toolset
+- name: Copy some files to /var/kiwix/bin/
+  ansible.builtin.copy:
+    src: "{{ item }}"
+    dest: /var/kiwix/bin/
+    owner: pi
+    group: pi
+    mode: '0764'
+    remote_src: yes
+  loop:
+    - /home/pi/{{ kiwix_version }}/kiwix-manage
+    - /home/pi/{{ kiwix_version }}/kiwix-read
+    - /home/pi/{{ kiwix_version }}/kiwix-search
+    - /home/pi/{{ kiwix_version }}/kiwix-serve
+
+# Copy config files
+- name: Copy file kiwix-start.pl
+  ansible.builtin.copy:
+    src: kiwix/kiwix-start.pl
+    dest: /var/kiwix/bin/kiwix-start.pl
+    owner: pi
+    group: pi
+    mode: '0755'
+
+- name: Copy file kiwix-service
+  ansible.builtin.copy:
+    src: kiwix/kiwix-service
+    dest: /etc/init.d/kiwix
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: Copy file kiwix-service2
+  ansible.builtin.copy:
+    src: kiwix/kiwix.service
+    dest: /etc/systemd/system/kiwix.service
+    owner: root
+    group: root
+    mode: '0644'    
+
+
+# Get latest version of zim package:  -> for now solved with variable in site.yml
+   # def latest_zim_package(url, package):
+   #     with urllib.request.urlopen(url) as response:
+   #         html = response.read().decode('utf-8')
+   #         versions = re.findall(package + "\d{4}-\d{2}.zim", html)
+   #         versions.sort()
+   #         #the last entry is the newest version
+   #         return versions[-1]
+  
+- name: Create kiwix data directory
+  ansible.builtin.file:
+    path: "{{ kiwix_data_directory }}"
+    state: directory
+    mode: "{{ kiwix_directory_mode }}"
+
+#download two sample wikis
+- name: Download vikidia
+  ansible.builtin.get_url:
+    url: https://ftp.nluug.nl/pub/kiwix/zim/vikidia/{{ vikidia_version }}.zim
+    dest: "{{ kiwix_data_directory }}"
+    #mode: '0440'
+
+- name: Download wiktionary
+  ansible.builtin.get_url:
+    url: https://ftp.nluug.nl/pub/kiwix/zim/wiktionary/{{ wiktionary_version }}.zim
+    dest: "{{ kiwix_data_directory }}"
+    #mode: '0440'
+
+# Create service
+- name: create service kiwix
+  ansible.builtin.systemd:
+    state: started
+    enabled: yes
+    daemon_reload: yes
+    name: kiwix    
+
+# setup NGINX site
+- name: Set wiki.local
+  ansible.builtin.copy:
+    src: "nginx/wiki.local"
+    dest: /etc/nginx/sites-available/wiki.local
+  notify:
+    - Restart Nginx
+    
+# Enable site
+- name: Create a symbolic link wiki.local
+  ansible.builtin.file:
+    src: /etc/nginx/sites-available/wiki.local
+    dest: /etc/nginx/sites-enabled/wiki.local
+    owner: pi
+    group: pi
+    state: link
+  notify:
+    - Restart Nginx

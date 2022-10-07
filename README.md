@@ -1,73 +1,105 @@
-# elimupi2.0.1
+## ElimuPi
 
-The purpose of this project is to provide a DEAN digital classroom environment for educational project in Tanzania and Kenia. This includes providing full Android tablet support without any direct internet connectivity. 
+The purpose of this project is to provide a DEAN digital classroom environment for educational project in Tanzania and Kenya. This includes providing full Android tablet support without any direct internet connectivity.
 
-Please visit https://www.dean.ngo/ict4e/digital-classroom-box-elimupi/ for more information 
+Please visit https://www.dean.ngo/solutions/elimupi/  for more information.
 
 ## Introduction 
 
-This version of the ElimuPi build supports: 
+This version of the ElimuPi build supports:
 
-- FDROID Android application store 
-- Web pages for management of the sytem and content management (WordPress) 
-- WiKiPedia alike functions (KiWix) 
-- Kolibri learning system
-- Dynamic content addition through USB storage 
-- Secured WiFi access point 
-- Local DHCP, DNS 
+- [F-Droid](https://f-droid.org/) an Android application store.
+- Web pages for management of the system and content management (WordPress).
+- WiKiPedia alike functions based on [Kiwix](https://www.kiwix.org/en/about/).
+- [Kolibri](https://learningequality.org/kolibri/) learning system.
+- Dynamic content addition through USB storage.
+- Secured WiFi Access Point.
+- Local DHCP, DNS.
 
-## Installation 
-1. Install a base RaspBian image on a SD card and create a empty file called 'ssh' in the root of the boot partition. This will enable SSH access to the Raspberry Pi. After you finished previous steps insert the SD card into the Raspberry Pi
+#  Installation
 
-2. Connect the external Hard Drive to the Raspberry Pi
-
-3. Powerup the RaspberryPi and wait for the initial boot process to complete 
-
-4. Connect with the Raspberry pi using SSH (`ssh pi@<ipv4>`; default password: raspberry)
+## Prerequisites:
+ - PC or laptop with Linux, Windows with [WSL](https://ubuntu.com/wsl) or MacOS operating system installed.
+ - A Raspberry Pi model 4 with a wired TCP connection to LAN.
+ - A Micro SD-card class 10 > 8GB 
+ - Git installed.
+ - Ansible 2.10 > installed.
+ - [ssh_askpass](https://packages.ubuntu.com/search?keywords=ssh-askpass) installed.
+ - [Raspberry Pi Imager](https://www.raspberrypi.com/software/)  installed.
+ - [Raspberry Pi OS Lite 64 bits image , Release date: September 6th 2022.](https://downloads.raspberrypi.org/raspios_lite_arm64/images/raspios_lite_arm64-2022-09-07/2022-09-06-raspios-bullseye-arm64-lite.img.xz) 
+ - Ansible vault password ( contact DEAN development)
  
-5. Expand your microSD card partition by running `sudo raspi-config`, choose Advanced Options and there choose Expand Filesystem. Exit the menu (press the escape key a few times) and restart the Raspberry Pi: `sudo reboot`
+## Install Raspberry Pi OS
 
-6. Type/Paste in the following command after reboot. 
+ - Use Raspberry PI Imager to write the downloaded image to the SD-card using instructions at  https://www.raspberrypi.com/documentation/computers/getting-started.html#installing-the-operating-system.
+ - Insert the SD-card.
+ - Start Raspberry PI Imager.
+ - Under **Operating system** select **Choose OS --> Use Custom** and select the downloaded image -   [Raspberry Pi OS Lite 64 bits image , Release date: September 6th 2022.](https://downloads.raspberrypi.org/raspios_lite_arm64/images/raspios_lite_arm64-2022-09-07/2022-09-06-raspios-bullseye-arm64-lite.img.xz)
+ - Under **Storage** and select the SD-card device.
+ - Select **Advanced options** -->  **Enable SSH** --> **Use password authentication**. 
+ - Set **Username** to: **pi** and **Password** to : **elimupi** and select **SAVE**.
+ - Select **WRITE**.
+  
+ When the image has been successfully written insert the SD-card into the Raspberry Pi and boot the device connected to local LAN.
 
-`wget https://raw.githubusercontent.com/DEANpeterV/elimupi2.0/master/ElimuPi_installer.py && chmod 700 ElimuPi_installer.py && python3 ElimuPi_installer.py`
+## Build ElimuPi Image
 
-*Please note that this will change the 'pi' user's password to: elimupi 
+Provision the ElimuPi software by running the ansible-play book against local Raspberry Pi and build Elimupi the image.
 
-7. After the reboot, connect to the Raspberry Pi through SSH again and continue the installation by running `python3 ElimuPi_installer.py` again. 
+ - Find the Pi's assigned IP address on your local LAN. ( via Wifi router or a nmap).
+ - Git clone this repo and cd elimupi/ansible directory of this repo.
+ - Adjust the current IP adresss of key : ansible_host  in file  inventory.yml to your Pi's local assigned IP address. 
+ - Increment version release number variable, **elimupi_release**: in file ansible/group_vars/all/vars.yml if needed.
+ - Install Ansible collections:
 
-8. After another reboot, the Raspberry Pi is ready for use! 
+`ansible-galaxy collection install -r collections.yml`
 
-All default username and passwords will be pi/elimupi unless noted differently. 
+ - Install Ansible roles.
 
-The default password for the WiFi 'elimu' is : 1234567890
+`ansible-galaxy install -r roles.yml`
+
+ - Run playbook
+
+`ansible-playbook -i ./inventory.yml playbook-raspberrypi.yml --ask-vault-pass`
+
+The installation will take approximately 20 minutes to finish and there shouldn't be any errors.
+
+## Create ElimuPi image copy 
+
+ - Create a image copy of the SD-card with the ElimuPi software installed using instructions at https://beebom.com/how-clone-raspberry-pi-sd-card-windows-linux-macos/
+ -  Shrink cloned the image file ( Linux Only) using [PiShrink](https://github.com/Drewsif/PiShrink).
+ - gzip the shrinked image file.
+ - Name the image: **ElimuPi_Image_2022-09-06-raspios-bullseye-arm64_lite_Release_<-Version->.img.gz** e.g
+
+This should produce a 2.8GB gzipped compressed Elimupi image file.
+
+The image file can than be directly written to other SD-cards using Raspberry Pi Imager selecting the image with Use Custom Operation System option. 
+
+# Connecting to Elimupi
+
+-  Disconnect the Raspberry PI's TCP wired connection.
+-  Connect your device via WiFi to SSID:  **elimu** using passcode: **1234567890**
+-  Point your browser to http://start.elimupi.online
+
+## Default users
+All default username and passwords will be **pi/elimupi** unless noted differently.
+
+The default password for the Wifi AP with SSID: 'elimu' is : 1234567890
 
 ## User access
 The end users can access the available resources after they are connected to the Wifi network.
 
 The following links are provided to access the resources:
 
-- **Main interface** - www.elimupi.online
-- **Kolibri** - kolibri.elimupi.online
-- **Kiwix** - wiki.elimupi.online
-- **files** - files.elimupi.online
-- **Moodle** - moodle.elimupi.online
+- **Main interface** - [start.elimupi.online](http://start.elimupi.online)
+- **Kolibri** - [kolibri.elimupi.online](http://kolibri.elimupi.online)
+- **Kiwix** - [wiki.elimupi.online](http://wiki.elimupi.online)
+- **Fdroid** - [fdroid.elimupi.online](http://fdroid.elimupi.online)
+- **Files** - [files.elimupi.online](http://files.elimupi.online)
+- **Moodle** - [moodle.elimupi.online](http://moodle.elimupi.online)
+- **Admin** - [admin.elimupi.online](http://admin.elimupi.online)
 
-After you finished the installation you need to visit khan.elimupi.online and create an Admin account. 
-
-Then you need to login with the Admin account and go to Manage --> "Please follow the directions to register your device, so that it can synchronize with the central server."
-
+After you finished the installation you need to visit [admin.elimupi.online](http://admin.elimupi.online) login with the Admin account and go to Manage --> "Please follow the directions to register your device, so that it can synchronize with the central server."
 
 ## Notes
-**NOTE1**: This install is tested to work with Raspbian OS #1414 SMP Fri Apr 30 13:20:47 BST 2021
-
-**NOTE2**: for WIFI to work on the RaspberryPi 2 unit, you must have the WIFI USB dongle inserted during installation so that the install script can configure it properly. RaspberryPi 3 models have on board WiFi and don't need a WIFI USB dongle. 
-
-**NOTE3**: If using  PUTTY set the setting 'window'->'translation'->'Remote Character Set' to 'use font encoding' to display the lines correctly.
-
-**NOTE4**: For Kolibri content use Kolibri Studio - https://studio.learningequality.org
-
-Last updated : 2021/08/09 
-
-Applicable Licenses: See licenses file. 
-
-Original source : https://github.com/rachelproject/rachelpios 
+**NOTE1**: This install is tested to work with [Raspberry Pi OS Lite 64 bits image , Release date: September 6th 2022.](https://downloads.raspberrypi.org/raspios_lite_arm64/images/raspios_lite_arm64-2022-09-07/2022-09-06-raspios-bullseye-arm64-lite.img.xz) on a Raspberry Pi model 4.

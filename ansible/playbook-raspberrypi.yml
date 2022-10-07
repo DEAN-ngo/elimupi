@@ -1,0 +1,8 @@
+---
+- name: 'Provision Image'
+  hosts: raspberrypi
+  become: yes
+
+  vars:
+  roles:
+    - common

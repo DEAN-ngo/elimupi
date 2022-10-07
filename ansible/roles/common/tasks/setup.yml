@@ -1,0 +1,64 @@
+---
+# Put empty ssh file on the boot partition (mounted under /boot on a Raspberry Pi)
+- name: Setup | Enable ssh
+  ansible.builtin.systemd:
+    state: started
+    enabled: yes
+    name: ssh
+
+- name: Setup | Make .ssh dir for root user
+  ansible.builtin.file:
+    name: /root/.ssh
+    state: directory
+    mode: 0700
+
+- name: "Setup | Add github key"
+  copy:
+    dest: "/root/.ssh/github_key"
+    content: "{{ github_key }}"
+    mode: 0600
+
+- name: Setup | Copy ssh config for root user
+  ansible.builtin.copy:
+    src: "ssh_config"
+    dest: "/root/.ssh/config"
+
+- name: Setup | Set hostname
+  ansible.builtin.hostname:
+    name: elimupi
+
+- name: Setup | Set hostsfile
+  ansible.builtin.copy:
+    src: "hosts"
+    dest: /etc/hosts
+
+- name: Setup | Make content mount dir
+  ansible.builtin.file:
+    name: /mnt/content
+    state: directory
+
+- name: Setup | Add /mnt/content to fstab
+  ansible.builtin.lineinfile:
+    path: /etc/fstab
+    regexp: '^LABEL=Content'
+    line: 'LABEL=Content /mnt/content ntfs defaults,noatime,nofail 0 0'
+
+- name: Setup | Check if file /root/.resized exists
+  ansible.builtin.stat:
+    path: /root/.resized
+  register: resized
+
+- name: Setup | Resize root partition to maximum size
+  block:
+  - name: Setup | Change partition table
+    ansible.builtin.shell:
+      cmd: raspi-config nonint do_expand_rootfs >> /root/.resized
+      creates: /root/.resized
+
+  - name: Setup | Reboot after resizing root partition
+    ansible.builtin.reboot:
+      reboot_timeout: 1200
+      post_reboot_delay: 60
+    tags:
+      - reboot
+  when: not resized.stat.exists
