@@ -39,6 +39,9 @@
 # moodle - install moodle
 - include_tasks: moodle.yml
 
+# ldap - install openldap 
+- include_tasks: ldap.yml
+
 # firewall - setup firewall
 - include_tasks: firewall.yml
 

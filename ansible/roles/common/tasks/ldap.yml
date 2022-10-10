@@ -1,0 +1,14 @@
+---
+- name: Install OpenLDAP 
+  include_role:
+    name: veselahouba.openldap 
+
+- name: Copy Elimupi ldif 
+  ansible.builtin.template:
+    src: "elimu.ldif.j2"
+    dest: "/root/elimu.ldif"
+    mode: "0755"
+
+- name: Adding Elimupi schema to LDAP tree
+  ansible.builtin.command: ldapadd -c -f /root/elimu.ldif -x -D "{{ openldap_server_rootdn }}" -w "{{ elimupi_ldap_password }}"  
+  ignore_errors: yes

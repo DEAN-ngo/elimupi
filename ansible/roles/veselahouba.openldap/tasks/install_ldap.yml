@@ -1,0 +1,24 @@
+---
+- name: Install the openldap and required packages
+  apt:
+    name:
+      - slapd
+      - ldap-utils
+      - openssl
+      - db-util
+      - "{{ 'python3-ldap' if ansible_python_version is version('3','>=') else 'python-ldap' }}"
+    update_cache: true
+
+- name: Install the openldap and required packages for legacy distros
+  apt:
+    name:
+      - python-selinux
+  when:
+    - ansible_distribution == 'Ubuntu'
+    - ansible_distribution_major_version|int < 20
+
+- name: Add openldap user to root group (ssl keys access)
+  user:
+    name: openldap
+    append: true
+    groups: root

@@ -25,7 +25,7 @@
 
 - name: Setup | Set hostname
   ansible.builtin.hostname:
-    name: elimupi
+    name: elimupi.local
 
 - name: Setup | Set hostsfile
   ansible.builtin.copy:
