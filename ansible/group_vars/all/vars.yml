@@ -4,6 +4,40 @@ elimupi_release: 3.0.1
 
 elimupi_release_file:  "/root/elimupi_release-{{ elimupi_release }}-{{ lookup('pipe', 'date +%Y%m%d-%H%M') }}" 
 
+system_locales:  
+  - nl_NL.UTF-8
+  - en_GB.UTF-8
+  - sw_KE
+  - sw_TZ
+  - am_ET
+
+software_packages:
+  - ufw
+  - git
+  - nginx
+  - php
+  - php-fpm
+  - php-curl
+  - php-xml
+  - php-mbstring
+  - php-zip
+  - php-gd
+  - php-intl
+  - php-xmlrpc
+  - php-soap
+  - php-mysql
+  - php-ldap
+  - iptables
+  - libffi-dev
+  - python3-pip
+  - python3-pkg-resources
+  - dirmngr
+  - dnsmasq
+  - fdroidserver
+  - ntfs-3g
+  - hostapd
+  - udhcpd
+
 # OpenLDAP
 openldap_server_domain: elimupi.local
 
@@ -81,29 +115,53 @@ mysql_packages:
 
 # Moodle config
 
-# The version of moodle to install.
-moodle_version: 310
+moodle_data_directory: /var/moodledata
 
-# A path where to save the data.
-moodle_data_directory: /mnt/content/moodledata
 
 # The permissions of the created directories.
 moodle_directory_mode: "0750"
 
 # Details to connect to the database.
-moodle_database_type: mariadb
 moodle_database_hostname: localhost
-moodle_database_name: moodle
 moodle_database_username: elimu
-moodle_database_password: elimu
 moodle_database_prefix: ""
 
 moodle_httpd_data_directory: /var
 moodle_httpd_owner: www-data
 moodle_httpd_group: www-data
 
-# The URL where to serve content.
+moodle_root_path: /var/moodle
+moodle_dataroot_path: /var/moodledata
+
+moodle_version: '4.00'
+
+moodle_root_user: root
+moodle_root_group: root
+moodle_root_permissions: '0755'
+
+moodle_dataroot_user: www-data
+moodle_dataroot_group: www-data
+moodle_dataroot_permissions: '0777'
+
+moodle_fullname: DEAN Moodle
+moodle_shortname: deanmoodle
+
 moodle_wwwroot: "http://moodle.elimupi.online"
+
+moodle_database_type: mariadb
+
+moodle_database_name: moodle
+moodle_database_user: elimu
+moodle_database_password: elimu
+
+moodle_database_host: 'localhost'
+moodle_database_port: '3306'
+
+moodle_admin_username: admin
+moodle_admin_password: elimupi
+moodle_admin_email: admin@elimup.online
+
+moodle_enable_debug: false
 
 # Kolibri config
 # The databases and storage 

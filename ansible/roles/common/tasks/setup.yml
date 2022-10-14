@@ -32,6 +32,17 @@
     src: "hosts"
     dest: /etc/hosts
 
+- name: Install locales
+  community.general.locale_gen:
+    name: "{{ item }}"
+    state: present
+  loop: "{{ system_locales }}"
+
+#     - en_GB.UTF-8
+#     - sw_KE 
+#     - sw_TZ 
+#     - am_ET
+
 - name: Setup | Make content mount dir
   ansible.builtin.file:
     name: /mnt/content
