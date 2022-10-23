@@ -87,7 +87,7 @@ kiwix_directory_mode: "0755"
 
 kiwix_version: kiwix-tools_linux-armhf-3.2.0-1
 vikidia_version: vikidia_en_all_nopic_2021-03
-wiktionary_version: wiktionary_en_simple_all_nopic_2022-07
+wiktionary_version: wiktionary_en_simple_all_nopic_2022-09
 
 ansible_host_key_checking: false
 
