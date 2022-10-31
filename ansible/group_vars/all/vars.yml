@@ -1,6 +1,6 @@
 ---
 # Elimupi release version
-elimupi_release: 3.0.1
+elimupi_release: 3.1.0
 
 elimupi_release_file:  "/root/elimupi_release-{{ elimupi_release }}-{{ lookup('pipe', 'date +%Y%m%d-%H%M') }}" 
 
