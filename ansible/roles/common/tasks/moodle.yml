@@ -1,9 +1,4 @@
 ---
-# Installation moodle
-    # quick install guide: https://docs.moodle.org/400/en/Installation_quick_guide
-    # full install guide: https://docs.moodle.org/400/en/Installing_Moodle
-    # Install PHP extensions -> moved to ospackages.yml
-
 - name: Create and configure moodle database
   include_role:
     name: geerlingguy.mysql
@@ -45,9 +40,9 @@
 
 - name: Change owner and persmissions of directory /var/moodle
   ansible.builtin.file:
-    path: /var/moodle
+    path: "{{ moodle_root_path }}" 
     state: directory
-    owner: root
+    owner: "{{ moodle_httpd_owner }}" 
     mode: '0755'
     recurse: yes
 
@@ -59,11 +54,58 @@
     group: "{{ moodle_httpd_group }}"
     mode: "{{ moodle_directory_mode }}"
 
-- name: Configure moodle
+- name: Copy Moodle ldap configuration
   ansible.builtin.template:
-    src: config.php.j2
-    dest: "{{ moodle_httpd_data_directory }}/moodle/config.php"
+    src: auth_ldap_config.xml.j2
+    dest: /var/www/html/admin/files/auth_ldap_config.xml
     mode: "0755"
+
+- name: Execute installation script
+  become: yes
+  become_user: "{{ moodle_httpd_owner }}"
+  command: |
+    /usr/bin/php admin/cli/install.php
+    --wwwroot={{ moodle_wwwroot }}
+    --dataroot={{ moodle_data_directory }}
+    --dbtype=mariadb
+    --dbhost=localhost
+    --dbname={{ moodle_database_name }}
+    --dbuser={{ moodle_database_username }}
+    --dbpass={{ moodle_database_password }}
+    --fullname="DEAN Moodle"
+    --shortname=Moodle
+    --summary=Moodle
+    --adminuser={{ moodle_admin_username }}
+    --adminpass={{ moodle_admin_password }}
+    --adminemail={{ moodle_admin_email }}
+    --lang=en
+    --non-interactive
+    --agree-license
+  args:
+    creates: /var/moodle/config.php
+    chdir: "{{ moodle_root_path }}"
+
+- name: Enable moodle ldap plugin 
+  become: yes
+  become_user: "{{ moodle_httpd_owner }}" 
+  command: |
+     moosh -p {{ moodle_root_path }} -n auth-manage enable ldap 
+  args:
+
+- name: Configure Moodle ldap 
+  become: yes
+  become_user: "{{ moodle_httpd_owner }}" 
+  command: |
+    moosh -p {{ moodle_root_path }} config-plugin-import auth_ldap_config.xml  
+  args:
+    chdir: /var/www/html/admin/files/
+
+- name: Clear Moodle cache
+  become: yes
+  become_user: "{{ moodle_httpd_owner }}"
+  command: |
+     moosh -p {{ moodle_root_path }} cache-clear
+  args:
 
 - name: Copy moodle nginx configuration
   ansible.builtin.copy:

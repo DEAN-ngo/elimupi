@@ -1,0 +1,3 @@
+---
+openldap_server_enable_tls: true
+openldap_server_generate_cert: true

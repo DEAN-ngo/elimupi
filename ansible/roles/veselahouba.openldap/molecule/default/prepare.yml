@@ -1,0 +1,17 @@
+---
+- name: Prepare
+  hosts: all
+  tasks:
+    - name: Install packages which are usually present
+      apt:
+        update_cache: true
+        name:
+          - locales
+          - tzdata
+          - apt-transport-https
+
+    - name: Create dirs missing in docker image
+      file:
+        path: /run/lock/
+        state: directory
+        mode: 0755

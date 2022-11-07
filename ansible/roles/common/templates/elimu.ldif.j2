@@ -1,0 +1,37 @@
+dn: {{ _basedn }} 
+dc: elimupi
+objectClass: dcObject
+objectClass: organizationalUnit
+ou: ElimuPi
+
+dn: o=school,{{ _basedn }}
+o: school
+dc: elimupi
+description: School 1
+objectClass: dcObject
+objectClass: top
+objectClass: organization
+
+dn: ou=it,o=school,{{ _basedn }}
+description: IT staff
+objectClass: organizationalUnit
+ou: it
+
+dn: ou=teachers,o=school,{{ _basedn }}
+description: Teachers
+objectClass: organizationalUnit
+ou: teachers
+
+dn: ou=students,o=school,{{ _basedn }}
+description: Students
+objectClass: organizationalUnit
+ou: students
+
+# user: pi passwd: elimupi
+dn: cn=pi,ou=it,o=school,{{ _basedn }}
+objectClass: person
+objectClass: inetorgperson
+cn: pi
+sn: Elimu
+userPassword: {SSHA}qv4BGoBhku6AfD+Nla19ov0Tg0iRKUHT
+mail: pi@elimupi.local
