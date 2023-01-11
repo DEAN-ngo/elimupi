@@ -14,4 +14,3 @@
    apt list --installed >>  "{{ elimupi_release_file }}"
   args:
     executable: /bin/bash
-

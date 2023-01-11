@@ -56,7 +56,7 @@ Provision the ElimuPi software by running the ansible-play book against local Ra
 
  - Install Ansible roles.
 
-`ansible-galaxy install -r roles.yml`
+`ansible-galaxy install -p ./roles  -r roles.yml`
 
  - Run playbook
 

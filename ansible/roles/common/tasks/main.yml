@@ -13,7 +13,7 @@
 - include_tasks: packages.yml
 
 # git clone
-- include_tasks: repo.yml
+# - include_tasks: repo.yml
 
 #  configure dnsmasq
 - include_tasks: dnsmasq.yml
