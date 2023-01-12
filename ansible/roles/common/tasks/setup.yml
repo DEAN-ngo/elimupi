@@ -49,6 +49,22 @@
     regexp: '^LABEL=Content'
     line: 'LABEL=Content /mnt/content ntfs defaults,noatime,nofail 0 0'
 
+- name: Setup | Install devmon.service systemd unit file
+  ansible.builtin.template:
+    src: devmon.service.j2
+    dest: /etc/systemd/system/devmon.service
+    owner: root
+
+- name: Setup | Enable devmon.service
+  ansible.builtin.systemd:
+    name: devmon.service
+    state: started
+    enabled: yes
+
+- name:  Setup | Force systemd to reread configs
+  ansible.builtin.systemd: 
+    daemon_reload: yes
+
 - name: Setup | Check if file /root/.resized exists
   ansible.builtin.stat:
     path: /root/.resized
@@ -68,3 +84,4 @@
     tags:
       - reboot
   when: not resized.stat.exists
+  

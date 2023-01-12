@@ -1,0 +1,12 @@
+[Unit]
+Description=Automounting usb drives.
+After=network.target
+
+[Service]
+Type=simple
+User=pi
+Restart=on-abort
+ExecStart=/usr/bin/devmon
+
+[Install]
+WantedBy=multi-user.target
