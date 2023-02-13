@@ -53,7 +53,6 @@
     remote_src: yes
   loop:
     - /home/pi/{{ kiwix_version }}/kiwix-manage
-    - /home/pi/{{ kiwix_version }}/kiwix-read
     - /home/pi/{{ kiwix_version }}/kiwix-search
     - /home/pi/{{ kiwix_version }}/kiwix-serve
 

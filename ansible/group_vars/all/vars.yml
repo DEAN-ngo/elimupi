@@ -1,6 +1,6 @@
 ---
 # Elimupi release version
-elimupi_release: 3.1.0
+elimupi_release: 3.2.0
 
 elimupi_release_file:  "/root/elimupi_release-{{ elimupi_release }}-{{ lookup('pipe', 'date +%Y%m%d-%H%M') }}" 
 
@@ -37,6 +37,7 @@ software_packages:
   - ntfs-3g
   - hostapd
   - udhcpd
+  - udevil
 
 # OpenLDAP
 openldap_server_domain: elimupi.local
@@ -85,9 +86,9 @@ _basedn: "dc={{ openldap_server_domain.split('.')[0] }},dc={{ openldap_server_do
 kiwix_data_directory: /mnt/content/wiki
 kiwix_directory_mode: "0755"
 
-kiwix_version: kiwix-tools_linux-armhf-3.2.0-1
+kiwix_version: kiwix-tools_linux-armhf-3.4.0
 vikidia_version: vikidia_en_all_nopic_2021-03
-wiktionary_version: wiktionary_en_simple_all_nopic_2022-09
+wiktionary_version: wiktionary_en_simple_all_nopic_2022-12
 
 ansible_host_key_checking: false
 
@@ -159,7 +160,7 @@ moodle_database_port: '3306'
 
 moodle_admin_username: admin
 moodle_admin_password: elimupi
-moodle_admin_email: admin@elimup.online
+moodle_admin_email: admin@elimupi.online
 
 moodle_enable_debug: false
 

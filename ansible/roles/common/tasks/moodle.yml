@@ -19,14 +19,14 @@
   ansible.builtin.git:
     repo: https://github.com/moodle/moodle.git
     dest: /var/moodle
-    version: MOODLE_400_STABLE
+    version: MOODLE_401_STABLE
     force: yes
     depth: 1
     accept_hostkey: true
 
 - name: Download moosh | Moodle Shell
   ansible.builtin.unarchive:
-    src: https://moodle.org/plugins/download.php/26308/moosh_moodle40_2022040300.zip
+    src: https://moodle.org/plugins/download.php/28292/moosh_moodle41_2023010400.zip
     dest: /var
     remote_src: yes
 
@@ -96,9 +96,7 @@
   become: yes
   become_user: "{{ moodle_httpd_owner }}" 
   command: |
-    moosh -p {{ moodle_root_path }} config-plugin-import auth_ldap_config.xml  
-  args:
-    chdir: /var/www/html/admin/files/
+    moosh -p {{ moodle_root_path }} config-plugin-import /var/www/html/admin/files/auth_ldap_config.xml  
 
 - name: Clear Moodle cache
   become: yes
