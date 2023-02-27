@@ -85,3 +85,8 @@
       - reboot
   when: not resized.stat.exists
   
+# https://github.com/RPi-Distro/firmware-nonfree/blob/bullseye/debian/config/brcm80211/cypress/README.txt#L11-L13
+- name: Setup | Install alternative firmware to maximise the number of clients in AP mode
+  community.general.alternatives:
+    name: cyfmac43455-sdio.bin
+    path: /lib/firmware/cypress/cyfmac43455-sdio-minimal.bin
