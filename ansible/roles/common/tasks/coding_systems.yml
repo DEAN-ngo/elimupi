@@ -1,0 +1,46 @@
+- name: "Add nodejs apt key"
+  apt_key:
+    url: https://deb.nodesource.com/gpgkey/nodesource.gpg.key
+    state: present
+
+- name: "Add nodejs 16.x ppa for apt repo"
+  apt_repository:
+    repo: deb https://deb.nodesource.com/node_16.x bionic main
+    update_cache: yes
+
+- name: "Install nodejs"
+  apt:
+    update_cache: yes
+    name: nodejs
+    state: present
+
+- name: "Clone Scratch GUI repository"
+  git:
+    repo: "https://github.com/LLK/scratch-gui.git"
+    dest: "/opt/scratch-gui"
+
+- name: "Install Scratch GUI dependencies"
+  npm:
+    path: "/opt/scratch-gui"
+    state: present
+
+- name: "Build Scratch GUI"
+  command: npm install
+  args:
+    chdir: "/opt/scratch-gui"
+
+- name: "Copy Scratch GUI service file"
+  ansible.builtin.template:
+    src: "scratch-gui.service.j2"
+    dest: "/etc/systemd/system/scratch-gui.service"
+    mode: "0755"
+
+- name: Reload systemd daemon
+  systemd:
+    daemon-reload: yes
+
+- name: Enable and start scratch-gui service
+  systemd:
+    name: scratch-gui
+    state: started
+    enabled: yes
