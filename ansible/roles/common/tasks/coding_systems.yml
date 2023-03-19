@@ -8,16 +8,20 @@
     repo: deb https://deb.nodesource.com/node_16.x bionic main
     update_cache: yes
 
-- name: "Install nodejs"
+- name: "Install nodejs and other dependencies"
   apt:
     update_cache: yes
-    name: nodejs
+    name:
+      - nodejs
+      - jq
+      - ffmpeg
     state: present
 
 - name: "Clone Scratch GUI repository"
   git:
     repo: "https://github.com/LLK/scratch-gui.git"
     dest: "/opt/scratch-gui"
+    force: true
 
 - name: "Install Scratch GUI dependencies"
   npm:
@@ -44,3 +48,35 @@
     name: scratch-gui
     state: started
     enabled: yes
+
+- name: Set scratch.local
+  ansible.builtin.copy:
+    src: "nginx/scratch.local"
+    dest: /etc/nginx/sites-available/scratch.local
+  notify:
+    - Restart Nginx
+
+- name: Enable scratch nginx configuration
+  ansible.builtin.file:
+    src: /etc/nginx/sites-available/scratch.local
+    dest: /etc/nginx/sites-enabled/scratch.local
+    owner: root
+    group: root
+    state: link
+  notify:
+    - Restart Nginx
+
+- name: Copy tutorial videos list
+  ansible.builtin.copy:
+    src: "roles/common/files/scratch_gui/videos.json"
+    dest: /tmp/
+
+- name: Download all the Tutorial Videos, this can take a while...
+  ansible.builtin.script: roles/common/files/scratch_gui/download_tutorial_videos.sh /tmp/videos.json
+  args:
+    creates: /tmp/videos_downloaded
+
+- name: Path Scratch GUI to play the tutorial videos from local
+  ansible.builtin.copy:
+    src: "roles/common/files/scratch_gui/cards.jsx"
+    dest: /opt/scratch-gui/src/components/cards/cards.jsx
