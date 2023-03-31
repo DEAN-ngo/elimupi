@@ -87,8 +87,8 @@ kiwix_data_directory: /mnt/content/wiki
 kiwix_directory_mode: "0755"
 
 kiwix_version: kiwix-tools_linux-armhf-3.4.0
-vikidia_version: vikidia_en_all_nopic_2021-03
-wiktionary_version: wiktionary_en_simple_all_nopic_2022-12
+vikidia_version: vikidia_en_all_nopic_2023-03
+wiktionary_version: wiktionary_en_simple_all_nopic_2023-03
 
 ansible_host_key_checking: false
 
