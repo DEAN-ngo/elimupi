@@ -1,16 +1,19 @@
-## ElimuPi Connect
+## ElimuPi
 
-The purpose of this project is to provide a DEAN communication environment for educational project in Tanzania and Kenya. This includes providing internet connectivity and software defined networks.
+The purpose of this project is to provide a DEAN digital classroom environment for educational project in Tanzania and Kenya. This includes providing full Android tablet support without any direct internet connectivity.
 
-Please visit https://www.dean.ngo/solutions/elimupi/  for more information.
+Please visit https://www.dean.ngo/solutions/elimupi/ for more information.
 
 ## Introduction 
+This version of the ElimuPi build supports:
 
-This version of the ElimuPi-Connect build supports:
-
-- Web pages for management of the system and content management (WordPress).
-- Secured WiFi Access Point.
-- Local DHCP, DNS.
+-  F-Droid an Android application store.
+-  Web pages for management of the system and content management (WordPress).
+-  WiKiPedia alike functions based on Kiwix.
+-  Kolibri learning system.
+-  Dynamic content addition through USB storage.
+-  Secured WiFi Access Point.
+-  Local DHCP, DNS.
 
 #  Installation
 
