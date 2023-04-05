@@ -1,18 +1,14 @@
-## ElimuPi
+## ElimuPi Connect
 
-The purpose of this project is to provide a DEAN digital classroom environment for educational project in Tanzania and Kenya. This includes providing full Android tablet support without any direct internet connectivity.
+The purpose of this project is to provide a DEAN communication environment for educational project in Tanzania and Kenya. This includes providing internet connectivity and software defined networks.
 
 Please visit https://www.dean.ngo/solutions/elimupi/  for more information.
 
 ## Introduction 
 
-This version of the ElimuPi build supports:
+This version of the ElimuPi-Connect build supports:
 
-- [F-Droid](https://f-droid.org/) an Android application store.
 - Web pages for management of the system and content management (WordPress).
-- WiKiPedia alike functions based on [Kiwix](https://www.kiwix.org/en/about/).
-- [Kolibri](https://learningequality.org/kolibri/) learning system.
-- Dynamic content addition through USB storage.
 - Secured WiFi Access Point.
 - Local DHCP, DNS.
 
@@ -69,7 +65,7 @@ The installation will take approximately 20 minutes to finish and there shouldn'
  - Create a image copy of the SD-card with the ElimuPi software installed using instructions at https://beebom.com/how-clone-raspberry-pi-sd-card-windows-linux-macos/
  -  Shrink cloned the image file ( Linux Only) using [PiShrink](https://github.com/Drewsif/PiShrink).
  - gzip the shrinked image file.
- - Name the image: **ElimuPi_Image_2022-09-06-raspios-bullseye-arm64_lite_Release_<-Version->.img.gz** e.g
+ - Name the image: **ElimuPi_Connect_Image_2022-09-06-raspios-bullseye-arm64_lite_Release_<-Version->.img.gz** e.g
 
 This should produce a 2.8GB gzipped compressed Elimupi image file.
 
@@ -78,8 +74,8 @@ The image file can than be directly written to other SD-cards using Raspberry Pi
 # Connecting to Elimupi
 
 -  Disconnect the Raspberry PI's TCP wired connection.
--  Connect your device via WiFi to SSID:  **elimu** using passcode: **1234567890**
--  Point your browser to http://start.elimupi.online
+-  Connect your device via WiFi to SSID:  **elimuconnect** using passcode: **1234567890**
+-  Point your browser to http://connect.elimupi.online
 
 ## Default users
 All default username and passwords will be **pi/elimupi** unless noted differently.
@@ -87,19 +83,13 @@ All default username and passwords will be **pi/elimupi** unless noted different
 The default password for the Wifi AP with SSID: 'elimu' is : 1234567890
 
 ## User access
-The end users can access the available resources after they are connected to the Wifi network.
+No end users can access the ElimuPi Connect.
 
 The following links are provided to access the resources:
 
-- **Main interface** - [start.elimupi.online](http://start.elimupi.online)
-- **Kolibri** - [kolibri.elimupi.online](http://kolibri.elimupi.online)
-- **Kiwix** - [wiki.elimupi.online](http://wiki.elimupi.online)
-- **Fdroid** - [fdroid.elimupi.online](http://fdroid.elimupi.online)
-- **Files** - [files.elimupi.online](http://files.elimupi.online)
-- **Moodle** - [moodle.elimupi.online](http://moodle.elimupi.online)
-- **Admin** - [admin.elimupi.online](http://admin.elimupi.online)
+- **Main interface** - [connect.elimupi.online](http://connect.elimupi.online)
 
-After you finished the installation you need to visit [admin.elimupi.online](http://admin.elimupi.online) login with the Admin account and go to Manage --> "Please follow the directions to register your device, so that it can synchronize with the central server."
+After you finished the installation you need to visit [connect.elimupi.online](http://connect.elimupi.online) login with the Admin account and go to Manage --> "Please follow the directions to register your device, so that it can synchronize with the central server."
 
 ## Notes
 **NOTE1**: This install is tested to work with [Raspberry Pi OS Lite 64 bits image , Release date: September 6th 2022.](https://downloads.raspberrypi.org/raspios_lite_arm64/images/raspios_lite_arm64-2022-09-07/2022-09-06-raspios-bullseye-arm64-lite.img.xz) on a Raspberry Pi model 4.
