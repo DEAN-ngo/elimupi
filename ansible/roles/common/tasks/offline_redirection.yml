@@ -1,0 +1,12 @@
+- name: Copy the internet connection check script
+  ansible.builtin.copy:
+    src: "check_internet_connection.sh"
+    dest: "/usr/local/bin/check_internet.sh"
+    mode: "u+x"
+
+- name: Add cron task to check internet connection
+  ansible.builtin.cron:
+    name: "check_internet"
+    minute: "*"
+    job: "/usr/local/bin/check_internet.sh"
+    user: "root"
