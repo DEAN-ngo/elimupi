@@ -1,0 +1,10 @@
+[Unit]
+Description=Start X server for Firefox
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/startx -- /usr/bin/X :1 -logfile /var/log/xorg.log
+Restart=always
+
+[Install]
+WantedBy=default.target

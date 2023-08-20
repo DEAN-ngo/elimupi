@@ -1,0 +1,43 @@
+# Used to install all the necessary packages and prepare the system to launch X
+# Server + Firefox everytime an HDMI decive is connected
+#
+- name: "Install X server and FireFox"
+  apt:
+    update_cache: yes
+    name:
+      - xorg
+      - openbox
+      - firefox-esr
+    state: present
+
+- name: "Copy service file to start the X"
+  ansible.builtin.template:
+    src: "start-xserver.service.j2"
+    dest: "/etc/systemd/system/start-xserver.service"
+    mode: "0755"
+
+- name: Reload systemd daemon
+  systemd:
+    daemon-reload: yes
+
+- name: Copy Script to launch the X when the HDMI is detected
+  ansible.builtin.copy:
+    src: "roles/common/files/x_server/hdmi_connect_script.sh"
+    dest: /usr/local/bin/
+    mode: "+x"
+
+- name: Copy the autostart file to launch FireFox when the X are started
+  ansible.builtin.copy:
+    src: "roles/common/files/x_server/firefox-autostart.desktop"
+    dest: /etc/xdg/autostart/
+
+- name: Add udev rule
+  lineinfile:
+    path: /etc/udev/rules.d/99-hdmi.rules
+    line: 'SUBSYSTEM=="drm", ACTION=="change", ENV{HOTPLUG}=="1", RUN+="/usr/local/bin/hdmi_connect_script.sh"'
+    create: true
+
+- name: Reload udev
+  systemd:
+    name: systemd-udevd
+    state: restarted

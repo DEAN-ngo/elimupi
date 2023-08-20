@@ -27,6 +27,9 @@
 # webserver - install offline coding systems
 - include_tasks: coding_systems.yml
 
+# X Server
+- include_tasks: desktop.yml
+
 # fdroid - install fdroid
 - include_tasks: fdroid.yml
 
