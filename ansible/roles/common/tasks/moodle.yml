@@ -23,6 +23,7 @@
     force: yes
     depth: 1
     accept_hostkey: true
+  become: true
 
 - name: Download moosh | Moodle Shell
   ansible.builtin.unarchive:
