@@ -45,5 +45,8 @@
 # firewall - setup firewall
 - include_tasks: firewall.yml
 
+# offline_redirection - setup offline redirections
+- include_tasks: offline_redirection.yml
+
 # release file 
 - include_tasks: release.yml
