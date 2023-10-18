@@ -18,12 +18,16 @@
 - name: Clone moodle
   ansible.builtin.git:
     repo: https://github.com/moodle/moodle.git
-    dest: /var/moodle
+    dest: "{{ moodle_root_path }}"
     version: MOODLE_401_STABLE
     force: yes
     depth: 1
     accept_hostkey: true
   become: true
+
+- name: Gitconfig save /var/moodle
+  shell: git config --global --add safe.directory "{{ moodle_root_path }}"
+  become: true 
 
 - name: Download moosh | Moodle Shell
   ansible.builtin.unarchive:

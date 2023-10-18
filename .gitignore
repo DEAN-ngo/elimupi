@@ -64,3 +64,4 @@ ansible/roles/veselahouba.openldap/tasks/generate_cert.yml
 ansible/roles/veselahouba.openldap/tasks/install_ldap.yml
 ansible/roles/veselahouba.openldap/tasks/main.yml
 ansible/roles/veselahouba.openldap/templates/slapd.j2
+.vault_pass
