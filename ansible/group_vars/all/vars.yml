@@ -59,10 +59,10 @@ openldap_server_ssl_key: "{{ openldap_server_app_path }}/certs/my.key"
 openldap_server_generate_cert: false
 # The self signed ssl parameters
 openldap_server_ssl:
-  country: CZ
-  state: Central Bohemia
-  location: Prague
-  organization: m-cloud.cz
+  country: NL
+  state: Noord-Holland
+  location: Hilversum
+  organization: DEAN
 
 # ACLs - Do not touch unless you know what you're doing
 openldap_olcAccess:
@@ -87,8 +87,8 @@ kiwix_data_directory: /mnt/content/wiki
 kiwix_directory_mode: "0755"
 
 kiwix_version: kiwix-tools_linux-armhf-3.4.0
-vikidia_version: vikidia_en_all_nopic_2023-03
-wiktionary_version: wiktionary_en_simple_all_nopic_2023-07
+vikidia_version: "vikidia_en_all_nopic_{{ lookup('pipe','date -d \"last month\" +%Y-%m') }}"
+wiktionary_version: "wiktionary_en_simple_all_nopic_{{ lookup('pipe','date -d \"last month\" +%Y-%m') }}"
 
 ansible_host_key_checking: false
 
@@ -106,7 +106,7 @@ mysql_databases:
 mysql_users:
   - name: elimu
     host: "localhost"
-    password: elimu
+    password: "{{ moodle_database_passwd }}"
     priv: "moodle.*:SELECT,INSERT,UPDATE,DELETE,CREATE,CREATE TEMPORARY TABLES,DROP,INDEX,ALTER"
 
 mysql_packages:
@@ -115,6 +115,8 @@ mysql_packages:
   - python3-mysqldb
 
 # Moodle config
+
+
 
 moodle_data_directory: /var/moodledata
 
@@ -134,7 +136,10 @@ moodle_httpd_group: www-data
 moodle_root_path: /var/moodle
 moodle_dataroot_path: /var/moodledata
 
-moodle_version: '4.00'
+#moodle_version: '4.00'
+moodle_repo_url: "https://github.com/moodle/moodle.git"
+moodle_version: "MOODLE_401_STABLE"
+moodle_shell_url_src: "https://moodle.org/plugins/download.php/28292/moosh_moodle41_2023010400.zip"
 
 moodle_root_user: root
 moodle_root_group: root
@@ -153,13 +158,13 @@ moodle_database_type: mariadb
 
 moodle_database_name: moodle
 moodle_database_user: elimu
-moodle_database_password: elimu
+moodle_database_password: "{{ moodle_database_passwd }}"
 
 moodle_database_host: 'localhost'
 moodle_database_port: '3306'
 
 moodle_admin_username: admin
-moodle_admin_password: elimupi
+moodle_admin_password: "{{ moodle_admin_passwd }}"
 moodle_admin_email: admin@elimupi.online
 
 moodle_enable_debug: false
