@@ -31,7 +31,7 @@
 
 - name: Download moosh | Moodle Shell
   ansible.builtin.unarchive:
-    src: "{{ oodle_shell_url_src }}"
+    src: "{{ moodle_shell_url_src }}"
     dest: /var
     remote_src: yes
 
