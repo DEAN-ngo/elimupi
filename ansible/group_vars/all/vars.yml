@@ -164,7 +164,7 @@ moodle_database_host: 'localhost'
 moodle_database_port: '3306'
 
 moodle_admin_username: admin
-moodle_admin_password: "{{ elimupi_admin_passwd }}"
+moodle_admin_password: "{{ moodle_admin_passwd }}"
 moodle_admin_email: admin@elimupi.online
 
 moodle_enable_debug: false
