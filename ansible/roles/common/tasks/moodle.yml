@@ -17,9 +17,9 @@
 
 - name: Clone moodle
   ansible.builtin.git:
-    repo: https://github.com/moodle/moodle.git
+    repo: "{{ moodle_repo_url }}"
     dest: "{{ moodle_root_path }}"
-    version: MOODLE_401_STABLE
+    version: "{{ moodle_version }}"
     force: yes
     depth: 1
     accept_hostkey: true
@@ -31,7 +31,7 @@
 
 - name: Download moosh | Moodle Shell
   ansible.builtin.unarchive:
-    src: https://moodle.org/plugins/download.php/28292/moosh_moodle41_2023010400.zip
+    src: "{{ oodle_shell_url_src }}"
     dest: /var
     remote_src: yes
 
