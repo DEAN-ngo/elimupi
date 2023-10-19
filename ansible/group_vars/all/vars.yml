@@ -8,7 +8,7 @@ system_locales:
   - nl_NL.UTF-8
   - en_GB.UTF-8
   - sw_KE
-  - sw_TZs
+  - sw_TZ
   - am_ET
 
 software_packages:
