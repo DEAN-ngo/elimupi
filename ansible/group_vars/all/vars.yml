@@ -1,8 +1,37 @@
 ---
 # Elimupi release version
-elimupi_release: 3.2.1
+elimupi_release: 3.3.1
+elimupi_release_file: "/root/elimupi_release-{{ elimupi_release }}-{{ lookup('pipe', 'date +%Y%m%d-%H%M') }}" 
 
-elimupi_release_file:  "/root/elimupi_release-{{ elimupi_release }}-{{ lookup('pipe', 'date +%Y%m%d-%H%M') }}" 
+host_ipv4_ipaddress: 10.11.0.50
+
+# defaults file for hosts
+hosts_ipv4_loopback_hosts:
+  address: 127.0.0.1
+  hostnames:
+    - elimupi.online
+    - localhost
+    - elimupi
+
+hosts_default_ipv4_hosts:
+  address: "{{ host_ipv4_ipaddress }}"
+  hostnames:
+    - "{{ inventory_hostname }}"
+    - "{{inventory_hostname_short }}"
+
+    - start.elimupi.online 
+    - local.elimupi.online
+    - kolibri.elimupi.online 
+    - fdroid.elimupi.online 
+    - moodle.elimupi.online 
+    - files.elimupi.online 
+    - wiki.elimupi.online 
+    - admin.elimupi.online 
+    - scratch.elimupi.online
+
+
+lan_adapter: eth0
+wifi_adapter: wlan0
 
 system_locales:  
   - nl_NL.UTF-8
@@ -36,7 +65,7 @@ software_packages:
   - fdroidserver
   - ntfs-3g
   - hostapd
-  - udhcpd
+  - dhcpcd5
   - udevil
 
 # OpenLDAP

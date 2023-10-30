@@ -23,15 +23,6 @@
     src: "ssh_config"
     dest: "/root/.ssh/config"
 
-- name: Setup | Set hostname
-  ansible.builtin.hostname:
-    name: elimupi.local
-
-- name: Setup | Set hostsfile
-  ansible.builtin.copy:
-    src: "hosts"
-    dest: /etc/hosts
-
 - name: Install locales
   community.general.locale_gen:
     name: "{{ item }}"

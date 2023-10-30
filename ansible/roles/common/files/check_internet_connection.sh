@@ -10,7 +10,7 @@ if [ $? -ne 0 ]; then
     # When the internet connection is down, forward everything to the elimupi address
     if [ ! -e /etc/dnsmasq.d/custom-dns.conf ]; then
       echo "Adding local forward"
-      echo -e "address=/#/10.11.0.1\nlocal-ttl=5" > /etc/dnsmasq.d/custom-dns.conf
+      echo -e "address=/#/{{ host_ipv4_ipaddress }}\nlocal-ttl=5" > /etc/dnsmasq.d/custom-dns.conf
       systemctl restart dnsmasq
       systemctl restart systemd-resolved
     fi

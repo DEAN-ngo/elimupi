@@ -1,0 +1,5 @@
+#!/bin/bash
+# {{ ansible_managed }}
+iptables -t nat -A POSTROUTING -o {{ lan_adapter }} -j MASQUERADE
+iptables -A FORWARD -i {{ lan_adapter }} -o {{ wifi_adapter }} -m state --state RELATED,ESTABLISHED -j ACCEPT
+iptables -A FORWARD -i {{ wifi_adapter }} -o {{ lan_adapter }} -j ACCEPT

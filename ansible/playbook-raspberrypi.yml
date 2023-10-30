@@ -1,8 +1,8 @@
 ---
-- name: 'Provision Image'
-  hosts: raspberrypi
+- hosts: elimupi
   become: yes
 
   vars:
   roles:
+    - ajsalminen.hosts
     - common

@@ -1,7 +1,7 @@
 ---
 all:
   hosts:
-    raspberrypi:
+    elimupi:
       ansible_user: pi
       ansible_ssh_pass: elimupi
       ansible_host: elimupi
