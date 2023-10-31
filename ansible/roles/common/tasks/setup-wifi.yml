@@ -18,18 +18,8 @@
 - name: Configure dhcpcd
   ansible.builtin.template:
     src: templates/dhcpcd.conf.j2
-    dest: /etc/dhcpcd.conf  
-
-# - name: Configure dhcpd
-#   ansible.builtin.template:
-#     src: templates/udhcpd.conf.j2
-#     dest: /etc/udhcpd.conf
-
-# - name: Register udhcpd configuration
-#   ansible.builtin.template:
-#     src: templates/udhcpd-init.j2
-#     dest: /etc/default/udhcpd
-
+    dest: /etc/dhcpcd.conf
+    
 - name: Enable IP forwarding
   ansible.posix.sysctl:
     name: net.ipv4.ip_forward

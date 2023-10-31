@@ -4,7 +4,7 @@
 # connection, using Dnsmasq we resolve all the domains to the Elimupi address
 
 # Check against the google DNS
-ping -c 1 8.8.8.8 > /dev/null 2>&1
+ping -c 1 {{ dns_server }} > /dev/null 2>&1
 
 if [ $? -ne 0 ]; then
     # When the internet connection is down, forward everything to the elimupi address

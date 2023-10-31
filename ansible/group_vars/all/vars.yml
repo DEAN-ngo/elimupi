@@ -32,6 +32,7 @@ hosts_default_ipv4_hosts:
 
 lan_adapter: eth0
 wifi_adapter: wlan0
+dns_server: 8.8.8.8
 
 system_locales:  
   - nl_NL.UTF-8
@@ -61,12 +62,45 @@ software_packages:
   - python3-pip
   - python3-pkg-resources
   - dirmngr
-  - dnsmasq
   - fdroidserver
   - ntfs-3g
   - hostapd
   - dhcpcd5
   - udevil
+
+# local groups and users accounts
+users:
+  - username: pi
+    name: Pi
+    password: "{{ elimupi_password }}"
+    group: pi
+    groups: ['teachers']
+  - username: deanadmin
+    name: Admin
+    password: "{{ admin_password }}"
+    group: admins
+  - username: headmaster
+    name: Headmaster
+    password: "{{ headmaster_password }}"
+    groups: ['teachers']
+groups_to_create:
+  - name: admins
+    gid: 1001
+  - name: teachers 
+    gid: 1002
+  - name: students 
+    gid: 1003
+
+# Dnsmasq
+
+dnsmasq_dnsmasq_conf:
+  - |
+    interface={{ wifi_adapter }}
+    bind-dynamic
+    domain-needed
+    bogus-priv
+    server={{ dns_server }}
+    dhcp-range=10.11.0.51,10.11.0.250,255.255.255.0,12h
 
 # OpenLDAP
 openldap_server_domain: elimupi.local
