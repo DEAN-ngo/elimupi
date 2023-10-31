@@ -92,7 +92,6 @@ groups_to_create:
     gid: 1003
 
 # Dnsmasq
-
 dnsmasq_dnsmasq_conf:
   - |
     interface={{ wifi_adapter }}
@@ -101,6 +100,17 @@ dnsmasq_dnsmasq_conf:
     bogus-priv
     server={{ dns_server }}
     dhcp-range=10.11.0.51,10.11.0.250,255.255.255.0,12h
+
+
+# Access point
+wireless_lan_iface: "{{ wifi_adapter }}"
+host_ssid: elimu
+hostapd_password: 1234567890
+host_channel: 8
+host_wifi_mode: g
+driver_name: nl80211
+host_country_code: KE   
+host_wireless_n: False
 
 # OpenLDAP
 openldap_server_domain: elimupi.local
