@@ -1,33 +1,7 @@
 ---
 # Main flow of the Ansible tasks
 
-# setup - basic setup
-- name: Include setup tasks
-  include_tasks: setup.yml
 
-# ospackages - install OS packages
-- include_tasks: packages.yml
-
-# setup wifi AP 
-- include_tasks: setup-wifi.yml 
-
-#  start wifi  
-- include_tasks: start-wifi.yml
-
-# webserver - install webserver
-- include_tasks: webserver.yml
-
-# webserver - install offline coding systems
-- include_tasks: coding_systems.yml
-
-# X Server
-- include_tasks: desktop.yml
-
-# fdroid - install fdroid
-- include_tasks: fdroid.yml
-
-# kolibri - install kolibri
-- include_tasks: kolibri.yml
 
 # kiwix - install kiwix
 - include_tasks: kiwix.yml
