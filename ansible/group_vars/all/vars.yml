@@ -17,7 +17,7 @@ hosts_default_ipv4_hosts:
   address: "{{ host_ipv4_ipaddress }}"
   hostnames:
     - "{{ inventory_hostname }}"
-    - "{{inventory_hostname_short }}"
+    - "{{ inventory_hostname_short }}"
 
     - start.elimupi.online 
     - local.elimupi.online
@@ -71,16 +71,16 @@ software_packages:
 # local groups and users accounts
 users:
   - username: pi
-    name: Pi
+    name: DEAN Pi
     password: "{{ elimupi_password }}"
     group: pi
     groups: ['teachers']
   - username: deanadmin
-    name: Admin
+    name: DEAN Admin
     password: "{{ admin_password }}"
     group: admins
   - username: headmaster
-    name: Headmaster
+    name: DEAN Headmaster
     password: "{{ headmaster_password }}"
     groups: ['teachers']
 groups_to_create:
@@ -150,8 +150,11 @@ kiwix_data_directory: /mnt/content/wiki
 kiwix_directory_mode: "0755"
 
 kiwix_version: kiwix-tools_linux-armhf-3.4.0
-vikidia_version: "vikidia_en_all_nopic_{{ lookup('pipe','date -d \"last month\" +%Y-%m') }}"
-wiktionary_version: "wiktionary_en_simple_all_nopic_{{ lookup('pipe','date -d \"last month\" +%Y-%m') }}"
+#vikidia_version: "vikidia_en_all_nopic_{{ lookup('pipe','date --date="$(date +%Y-%m-15) -1 month\" '+%Y-%m') }}"
+vikidia_version: "vikidia_en_all_nopic_2023-09"
+#wiktionary_version: "wiktionary_en_simple_all_nopic_{{ lookup('pipe','date -d \"last month\" +%Y-%m') }}"
+wiktionary_version: "wiktionary_en_simple_all_nopic_2023-09"
+
 
 ansible_host_key_checking: false
 
