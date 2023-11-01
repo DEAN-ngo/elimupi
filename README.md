@@ -101,4 +101,4 @@ The following links are provided to access the resources:
 After you finished the installation you need to visit [admin.elimupi.online](http://admin.elimupi.online) login with the Admin account and go to Manage --> "Please follow the directions to register your device, so that it can synchronize with the central server."
 
 ## Notes
-**NOTE1**: This install is tested to work with [Raspberry Pi OS Lite 64 bits image , Release date: September 6th 2022.](https://downloads.raspberrypi.org/raspios_lite_arm64/images/raspios_lite_arm64-2023-05-03/2023-05-03-raspios-bullseye-arm64-lite.img.xz) on a Raspberry Pi model 4.
+**NOTE1**: This install is tested to work with [Raspberry Pi OS Lite 64 bits image , Release date: May 3rd 2023.](https://downloads.raspberrypi.org/raspios_lite_arm64/images/raspios_lite_arm64-2023-05-03/2023-05-03-raspios-bullseye-arm64-lite.img.xz) on a Raspberry Pi model 4.
