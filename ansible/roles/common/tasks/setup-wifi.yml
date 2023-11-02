@@ -42,7 +42,7 @@
   ansible.builtin.template:
     src: "hs-iptables.service.j2"
     dest: "/etc/systemd/system/hs-iptables.service"
-    mode: "0755"
+    mode: "0744"
 
 - name: Reload systemd daemon
   systemd:
