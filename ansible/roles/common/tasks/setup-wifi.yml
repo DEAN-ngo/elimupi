@@ -15,16 +15,11 @@
     src: templates/hostapd-init.j2
     dest: /etc/default/hostapd
 
-- name: Configure udhcpd
+- name: Configure dhcpcd
   ansible.builtin.template:
-    src: templates/udhcpd.conf.j2
-    dest: /etc/udhcpd.conf
-
-- name: Register udhcpd configuration
-  ansible.builtin.template:
-    src: templates/udhcpd-init.j2
-    dest: /etc/default/udhcpd
-
+    src: templates/dhcpcd.conf.j2
+    dest: /etc/dhcpcd.conf
+    
 - name: Enable IP forwarding
   ansible.posix.sysctl:
     name: net.ipv4.ip_forward
@@ -33,14 +28,31 @@
     state: present
     reload: yes
 
- # there should be another solution for this.
-- name: Fix udhcpd wasn't starting properly at boot
-  ansible.builtin.copy:
-    src:  rc.local
-    dest: /etc/rc.local
+- name: Install iptables rules
+  template:
+    src: templates/rules.{{ item }}.j2
+    dest: /etc/iptables-rules.{{ item }}
     owner: root
     group: root
-    mode: '0755' 
+    mode: '0744'
+  with_items:
+    - v4
+
+- name: "Copy hs-iptables.service file"
+  ansible.builtin.template:
+    src: "hs-iptables.service.j2"
+    dest: "/etc/systemd/system/hs-iptables.service"
+    mode: "0744"
+
+- name: Reload systemd daemon
+  systemd:
+    daemon-reload: yes
+
+- name: Enable and start hs-iptables.service
+  systemd:
+    name: hs-iptables
+    state: started
+    enabled: yes
 
 - name: Enable services
   ansible.builtin.systemd:
@@ -49,5 +61,5 @@
     daemon_reload: yes
     masked: no
   with_items:
-    - udhcpd
+    - dhcpcd
     - hostapd

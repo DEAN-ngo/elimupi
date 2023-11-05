@@ -1,8 +1,38 @@
 ---
 # Elimupi release version
-elimupi_release: 3.2.1
+elimupi_release: 3.4.0
+elimupi_release_file: "/root/elimupi_release-{{ elimupi_release }}-{{ lookup('pipe', 'date +%Y%m%d-%H%M') }}" 
 
-elimupi_release_file:  "/root/elimupi_release-{{ elimupi_release }}-{{ lookup('pipe', 'date +%Y%m%d-%H%M') }}" 
+host_ipv4_ipaddress: 10.11.0.50
+
+# defaults file for hosts
+hosts_ipv4_loopback_hosts:
+  address: 127.0.0.1
+  hostnames:
+    - elimupi.online
+    - localhost
+    - elimupi
+
+hosts_default_ipv4_hosts:
+  address: "{{ host_ipv4_ipaddress }}"
+  hostnames:
+    - "{{ inventory_hostname }}"
+    - "{{ inventory_hostname_short }}"
+
+    - start.elimupi.online 
+    - local.elimupi.online
+    - kolibri.elimupi.online 
+    - fdroid.elimupi.online 
+    - moodle.elimupi.online 
+    - files.elimupi.online 
+    - wiki.elimupi.online 
+    - admin.elimupi.online 
+    - scratch.elimupi.online
+
+
+lan_adapter: eth0
+wifi_adapter: wlan0
+dns_server: 8.8.8.8
 
 system_locales:  
   - nl_NL.UTF-8
@@ -32,12 +62,55 @@ software_packages:
   - python3-pip
   - python3-pkg-resources
   - dirmngr
-  - dnsmasq
   - fdroidserver
   - ntfs-3g
   - hostapd
-  - udhcpd
+  - dhcpcd5
   - udevil
+
+# local groups and users accounts
+users:
+  - username: pi
+    name: DEAN Pi
+    password: "{{ elimupi_password }}"
+    group: pi
+    groups: ['teachers']
+  - username: deanadmin
+    name: DEAN Admin
+    password: "{{ admin_password }}"
+    group: admins
+  - username: headmaster
+    name: DEAN Headmaster
+    password: "{{ headmaster_password }}"
+    groups: ['teachers']
+groups_to_create:
+  - name: admins
+    gid: 1001
+  - name: teachers 
+    gid: 1002
+  - name: students 
+    gid: 1003
+
+# Dnsmasq
+dnsmasq_dnsmasq_conf:
+  - |
+    interface={{ wifi_adapter }}
+    bind-dynamic
+    domain-needed
+    bogus-priv
+    server={{ dns_server }}
+    dhcp-range=10.11.0.51,10.11.0.250,255.255.255.0,12h
+
+
+# Access point
+wireless_lan_iface: "{{ wifi_adapter }}"
+host_ssid: elimu
+hostapd_password: 1234567890
+host_channel: 8
+host_wifi_mode: g
+driver_name: nl80211
+host_country_code: KE   
+host_wireless_n: False
 
 # OpenLDAP
 openldap_server_domain: elimupi.local
@@ -87,8 +160,10 @@ kiwix_data_directory: /mnt/content/wiki
 kiwix_directory_mode: "0755"
 
 kiwix_version: kiwix-tools_linux-armhf-3.4.0
+# below doens't yet work correct as on day 31 you get the day 1 of that month
 vikidia_version: "vikidia_en_all_nopic_{{ lookup('pipe','date -d \"last month\" +%Y-%m') }}"
 wiktionary_version: "wiktionary_en_simple_all_nopic_{{ lookup('pipe','date -d \"last month\" +%Y-%m') }}"
+
 
 ansible_host_key_checking: false
 

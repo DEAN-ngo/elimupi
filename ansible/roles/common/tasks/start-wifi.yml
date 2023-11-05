@@ -3,9 +3,9 @@
   shell: 
     cmd: rfkill unblock 0
 
-- name: wlan0 up
+- name: Wifi adapter up
   shell: 
-    cmd: ifconfig wlan0 10.11.0.1
+    cmd: ifconfig "{{ wifi_adapter}}" "{{ host_ipv4_ipaddress }}"
 
 - name: Enable and (re-)start services
   ansible.builtin.systemd:
@@ -15,5 +15,6 @@
     daemon_reload: yes
     masked: no
   with_items:
-    - udhcpd
+    - dhcpcd
     - hostapd
+    

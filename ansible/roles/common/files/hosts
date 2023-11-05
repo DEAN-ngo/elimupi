@@ -1,5 +1,0 @@
-# Only for local access
-127.0.0.1 elimupi.online localhost elimupi
-
-# Remote access/shared 
-10.11.0.1 start.elimupi.online local.elimupi.online kolibri.elimupi.online fdroid.elimupi.online moodle.elimupi.online files.elimupi.online wiki.elimupi.online admin.elimupi.online scratch.elimupi.online

@@ -1,48 +1,32 @@
 # {{ ansible_managed }}
-# --------------------------------------------------------
-# ElimuPi base network setup secured
-# --------------------------------------------------------
-# 
+# Basic configuration
 
-# --------------------------------------------------------
-# Interface settings
-# --------------------------------------------------------
-# The interface to listen on
-interface=wlan0
-# The driver that is being used by the WiFi adapter, this could be different for everyone
-driver=nl80211
-# These 2 are just parameters so that the hostap daemon runs.
+interface={{ wireless_lan_iface }}
 ctrl_interface=/var/run/hostapd
-ctrl_interface_group=1
-# First up, the SSID or Network name. This is what other devices will see when they try to connect.
-ssid=elimu
-# Wireless G mode. A, B, and G are available here.
-hw_mode=g
-# This is setting the channel that the WiFi is on, valid channels are from 1-11, or 1-14 depending on location.
-channel=8
+ctrl_interface_group=0
 
-# --------------------------------------------------------
-# Wifi Security Settings
-# --------------------------------------------------------
-# This sets the security settings to WPA2
-wpa=2 
-#wpa_psk=d1e4e62402c2b9dedbc1c4c80bc77ba8e703d901a73351f64889fa6611bea2c7
-# The line above sets the wpa passphrase to "1234567890", this is obtained via the wpa_passphrase command.
-# However, you can also set a passphrase like the line below.
-wpa_passphrase=1234567890
+ssid={{ host_ssid }}
+channel={{ host_channel }}
+
+# Hardware configuration
+driver={{ driver_name }}
+{%if host_wireless_n %}
+ieee80211n=1
+{% endif %}
+country_code={{ host_country_code }}
+# limit emissions to what is legal in country
+ieee80211d=1
+hw_mode={{ host_wifi_mode }}
+
+# Use WPA authentication
+auth_algs=1
+# Use WPA2
+wpa=2
+# Use a pre-shared key
 wpa_key_mgmt=WPA-PSK
-wpa_pairwise=CCMP
+# The network passphrase
+wpa_passphrase={{ hostapd_password }}
+# Use AES, instead of TKIP
 rsn_pairwise=CCMP
-# I've set these to WPA-PSK to indicate that we are using a Pre-Shared Key with CCMP encryption.
-# Otherwise, hostapd also has a built in RADIUS server that we can use for authentcation
-# But I'll leave that to another post.
-
-# --------------------------------------------------------
-# Other settings
-# --------------------------------------------------------
-# This sets how often the WiFi will send a beacon out.
-beacon_int=100 
-auth_algs=3
 wmm_enabled=1
-max_num_sta=255
-
+wpa_pairwise=CCMP
