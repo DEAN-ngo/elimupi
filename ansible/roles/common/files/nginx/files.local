@@ -1,5 +1,5 @@
 server {
-	listen        	80;    
+	listen 10.11.2.50:80;    
 	server_name		www.files.local files.local;
 	error_log 		/var/www/log/files-log;
 	location /{

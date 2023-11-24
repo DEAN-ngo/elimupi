@@ -13,6 +13,12 @@
     state: enabled
     policy: deny
 
+- name: Allow forwarded traffic
+  community.general.ufw:
+    direction: routed 
+    default: allow 
+    route: yes
+
 - name: Allow http
   community.general.ufw:
     rule: allow

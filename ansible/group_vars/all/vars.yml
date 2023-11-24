@@ -1,13 +1,14 @@
 ---
 # Elimupi release version
-elimupi_release: 3.4.0
+elimupi_release: 3.5.0
 elimupi_release_file: "/root/elimupi_release-{{ elimupi_release }}-{{ lookup('pipe', 'date +%Y%m%d-%H%M') }}" 
 
-host_ipv4_ipaddress: 10.11.0.50
+host_ipv4_ipaddress: '10.11.2.50'
+ap_subnet: '10.11.2.0/24'
 
 # defaults file for hosts
 hosts_ipv4_loopback_hosts:
-  address: 127.0.0.1
+  address: '127.0.0.1'
   hostnames:
     - elimupi.online
     - localhost
@@ -31,7 +32,8 @@ hosts_default_ipv4_hosts:
 
 
 lan_adapter: eth0
-wifi_adapter: wlan0
+ap_adapter: uap0
+sta_adapter: wlan0
 dns_server: 8.8.8.8
 
 system_locales:  
@@ -94,16 +96,17 @@ groups_to_create:
 # Dnsmasq
 dnsmasq_dnsmasq_conf:
   - |
-    interface={{ wifi_adapter }}
-    bind-dynamic
-    domain-needed
+    no-dhcp-interface=lo,{{ sta_adapter }}
+    interface=lo,{{ ap_adapter }}
+    bind-interfaces
     bogus-priv
     server={{ dns_server }}
-    dhcp-range=10.11.0.51,10.11.0.250,255.255.255.0,12h
+    #domain-needed
+    dhcp-range=10.11.2.51,10.11.2.250,255.255.255.0,12h
 
 
 # Access point
-wireless_lan_iface: "{{ wifi_adapter }}"
+wireless_lan_iface: "{{ ap_adapter }}"
 host_ssid: elimu
 hostapd_password: 1234567890
 host_channel: 8
@@ -111,6 +114,14 @@ host_wifi_mode: g
 driver_name: nl80211
 host_country_code: KE   
 host_wireless_n: False
+
+# Wifi Client settings
+wifi_country: KE
+ssid1: elimuconnect
+psk_ssid1: "{{ ssid1_passphrase }}"
+ssid2: dean4g
+psk_ssid2: "{{ ssid2_passphrase }}"
+
 
 # OpenLDAP
 openldap_server_domain: elimupi.local

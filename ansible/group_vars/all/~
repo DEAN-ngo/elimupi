@@ -1,0 +1,25 @@
+# passwords:
+elimupi_password: "$6$b3gxvKWPUcs2g3t0$5XgHJvkpolByOwgowa3FZLF7Mp3g1u3fj7x/eoGlBRZ0IoauLx7Icik/lnaRcn7hJMnlwrdZwXNTZnUb.bXPN1" # elimupi
+admin_password: "$6$8nyRab3gxvKWPUcs$tEoTxWLx8G6EusYnd0oldZrg9hcQj6YR4qjD.Alwr9B8HmyT23r1ERw4SyI6S./zhtcPcD2X8J.2slvVUsNHi." # topsecret
+headmaster_password: "$6$JUefhA0qvD7b5LSh$6L5Pne1tpXvqL/VBu4U/pQh0K2XYuP6ip7I3XI0No.Q8AXLT1DY74F4gaAJ6vZ90jfg1O5IGA3jgaP.GyWqC8." # headmaster
+
+elimupi_ldap_password: "elimupi"
+moodle_admin_passwd: "elimupi"
+moodle_database_passwd: "elimu"
+
+wpa_passphrase: "1234567890"
+ssid1_passphrase: "1234567890"
+ssid2_passphrase: "Mobil3internetbyDEAN"
+  
+
+# Github sshkey for download elimuPi webinterface
+github_key: |
+  -----BEGIN OPENSSH PRIVATE KEY-----
+  b3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAAAMwAAAAtzc2gtZW
+  QyNTUxOQAAACCe+72szBpoNmUd9ihVJ5AGYfSB1E4h+XbZ8rj0z4uxZQAAAJBnU24uZ1Nu
+  LgAAAAtzc2gtZWQyNTUxOQAAACCe+72szBpoNmUd9ihVJ5AGYfSB1E4h+XbZ8rj0z4uxZQ
+  AAAEAIcbS7fSrjvDa9FtLMK1P0VMSFQDf7vlvGveIUP659oJ77vazMGmg2ZR32KFUnkAZh
+  9IHUTiH5dtnyuPTPi7FlAAAADWluZm9AZGVhbi5uZ28=
+  -----END OPENSSH PRIVATE KEY-----
+
+

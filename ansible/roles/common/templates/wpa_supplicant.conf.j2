@@ -1,3 +1,14 @@
 ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev
 update_config=1
-country=KE
+country={{ wifi_country }}
+
+network={
+    ssid="{{ ssid1 }}"
+    psk="{{ psk_ssid1 }}"
+    priority=1
+}
+network={
+   ssid=="{{ ssid2 }}"
+   psk="{{ psk_ssid2 }}"
+   priority=2
+}
