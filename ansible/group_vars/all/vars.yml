@@ -103,7 +103,10 @@ dnsmasq_dnsmasq_conf:
     server={{ dns_server }}
     #domain-needed
     dhcp-range=10.11.2.51,10.11.2.250,255.255.255.0,12h
-
+    
+# we don't want to start as startwifi.sh will do this and create virtual uap01
+dnsmasq_service_state: stopped
+dnsmasq_service_enabled: false
 
 # Access point
 wireless_lan_iface: "{{ ap_adapter }}"

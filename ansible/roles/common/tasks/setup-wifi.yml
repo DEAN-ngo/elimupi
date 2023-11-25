@@ -28,7 +28,7 @@
     state: present
     reload: yes
 
- - name: Disable IPv6 with sysctl
+- name: Disable IPv6 with sysctl
   ansible.posix.sysctl:
     name: "{{ item }}"
     value: "1"
@@ -47,7 +47,7 @@
     group: root
     mode: '0755'
    
- - name: Copy Wifi start script
+- name: Copy Wifi start script
   ansible.builtin.template:
     src: templates/wifistart.sh.j2
     dest: /usr/local/bin/wifistart.sh
