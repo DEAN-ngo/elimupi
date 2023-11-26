@@ -121,9 +121,9 @@ host_wireless_n: False
 
 # Wifi Client settings
 wifi_country: KE
-ssid1: elimuconnect
+ssid1: elimu-connect
 psk_ssid1: "{{ ssid1_passphrase }}"
-ssid2: dean4g
+ssid2: dean-4g
 psk_ssid2: "{{ ssid2_passphrase }}"
 
 
