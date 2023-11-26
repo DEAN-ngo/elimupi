@@ -46,3 +46,6 @@
 
 # release file 
 - include_tasks: release.yml
+
+# reboot 
+- include_tasks: reboot.yml

@@ -1,5 +1,5 @@
 server {
-	listen 10.11.2.50:80;
+	listen 80;
 	server_name fdroid.elimupi.online  www.fdroid.local fdroid.local;
 	error_log 		/var/www/log/fdroid-log;
 	location /{

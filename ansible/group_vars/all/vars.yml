@@ -96,6 +96,7 @@ groups_to_create:
 # Dnsmasq
 dnsmasq_dnsmasq_conf:
   - |
+    except-interface={{ lan_adapter }}
     no-dhcp-interface=lo,{{ sta_adapter }}
     interface=lo,{{ ap_adapter }}
     bind-interfaces
@@ -103,7 +104,7 @@ dnsmasq_dnsmasq_conf:
     server={{ dns_server }}
     #domain-needed
     dhcp-range=10.11.2.51,10.11.2.250,255.255.255.0,12h
-    
+
 # we don't want to start as startwifi.sh will do this and create virtual uap01
 dnsmasq_service_state: stopped
 dnsmasq_service_enabled: false
@@ -175,9 +176,11 @@ kiwix_directory_mode: "0755"
 
 kiwix_version: kiwix-tools_linux-armhf-3.4.0
 # below doens't yet work correct as on day 31 you get the day 1 of that month
-vikidia_version: "vikidia_en_all_nopic_{{ lookup('pipe','date -d \"last month\" +%Y-%m') }}"
-wiktionary_version: "wiktionary_en_simple_all_nopic_{{ lookup('pipe','date -d \"last month\" +%Y-%m') }}"
+#vikidia_version: "vikidia_en_all_nopic_{{ lookup('pipe','date -d \"last month\" +%Y-%m') }}"
+vikidia_version: "vikidia_en_all_nopic_2023-09"
 
+#wiktionary_version: "wiktionary_en_simple_all_nopic_{{ lookup('pipe','date -d \"last month\" +%Y-%m') }}"
+wiktionary_version: "wiktionary_en_simple_all_nopic_2023-10"
 
 ansible_host_key_checking: false
 
@@ -205,10 +208,7 @@ mysql_packages:
 
 # Moodle config
 
-
-
 moodle_data_directory: /var/moodledata
-
 
 # The permissions of the created directories.
 moodle_directory_mode: "0750"
