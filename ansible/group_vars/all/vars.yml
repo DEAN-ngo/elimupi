@@ -176,11 +176,8 @@ kiwix_directory_mode: "0755"
 
 kiwix_version: kiwix-tools_linux-armhf-3.4.0
 # below doens't yet work correct as on day 31 you get the day 1 of that month
-#vikidia_version: "vikidia_en_all_nopic_{{ lookup('pipe','date -d \"last month\" +%Y-%m') }}"
-vikidia_version: "vikidia_en_all_nopic_2023-09"
-
-#wiktionary_version: "wiktionary_en_simple_all_nopic_{{ lookup('pipe','date -d \"last month\" +%Y-%m') }}"
-wiktionary_version: "wiktionary_en_simple_all_nopic_2023-10"
+vikidia_version: "vikidia_en_all_nopic_{{ lookup('pipe','date -d \"$(date +%Y-%m-2) -2 month\" +%Y-%m') }}"
+wiktionary_version: "wiktionary_en_simple_all_nopic_{{ lookup('pipe','date -d \"$(date +%Y-%m-2) -2 month\" +%Y-%m') }}"
 
 ansible_host_key_checking: false
 
