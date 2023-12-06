@@ -120,13 +120,13 @@ host_country_code: KE
 host_wireless_n: False
 
 # Wifi Client settings
-wifi_country: KE
-ssid1: elimu-connect
-psk_ssid1: "{{ ssid1_passphrase }}"
-ssid2: dean-4g
-psk_ssid2: "{{ ssid2_passphrase }}"
-
-
+wifi_settings:
+  wifi_country: KE
+  wifi_networks:
+   - ssid: elimu-connect
+     psk: "{{ ssid1_passphrase }}"
+   - ssid: dean-4g
+     psk: "{{ ssid2_passphrase }}"
 # OpenLDAP
 openldap_server_domain: elimupi.local
 
