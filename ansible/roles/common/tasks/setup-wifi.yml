@@ -69,39 +69,3 @@
     name: rc-local
     state: started
     enabled: yes
-
-# - name: Install iptables rules
-#   template:
-#     src: templates/rules.{{ item }}.j2
-#     dest: /etc/iptables-rules.{{ item }}
-#     owner: root
-#     group: root
-#     mode: '0744'
-#   with_items:
-#     - v4
-
-# #- name: "Copy hs-iptables.service file"
-#   ansible.builtin.template:
-#     src: "hs-iptables.service.j2"
-#     dest: "/etc/systemd/system/hs-iptables.service"
-#     mode: "0744"
-
-# - name: Reload systemd daemon
-#   systemd:
-#     daemon-reload: yes
-
-# - name: Enable and start hs-iptables.service
-#   systemd:
-#     name: hs-iptables
-#     state: started
-#     enabled: yes
-
-# - name: Enable services
-#   ansible.builtin.systemd:
-#     name: "{{ item }}"
-#     enabled: yes
-#     daemon_reload: yes
-#     masked: no
-#   with_items:
-#     - dhcpcd
-#     - hostapd
