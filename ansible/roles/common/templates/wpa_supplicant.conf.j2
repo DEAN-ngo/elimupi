@@ -1,6 +1,6 @@
 ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev
 update_config=1
-country={{ wifi_country }}
+country={{ wifi_settings.wifi_country }}
 
 {% for network in wifi_settings.wifi_networks %}
 network={
