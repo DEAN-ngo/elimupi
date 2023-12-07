@@ -55,8 +55,6 @@ slaac private
 #fallback static_eth0
 
 #Static Hotspot with Network
-interface {{ wifi_adapter }}
+interface {{ ap_adapter }}
 nohook wpa_supplicant
-static ip_address={{ host_ipv4_ipaddress }}/24
-static routers=10.11.0.1
-static domain_name_servers=8.8.8.8
+static ip_address={{ host_ipv4_ipaddress }}

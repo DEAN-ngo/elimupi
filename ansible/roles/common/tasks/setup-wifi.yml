@@ -15,6 +15,11 @@
     src: templates/hostapd-init.j2
     dest: /etc/default/hostapd
 
+- name: Unmask hostapd service
+  systemd:
+    name: hostapd
+    masked: no   
+
 - name: Configure dhcpcd
   ansible.builtin.template:
     src: templates/dhcpcd.conf.j2
@@ -28,38 +33,39 @@
     state: present
     reload: yes
 
-- name: Install iptables rules
-  template:
-    src: templates/rules.{{ item }}.j2
-    dest: /etc/iptables-rules.{{ item }}
+- name: Disable IPv6 with sysctl
+  ansible.posix.sysctl:
+    name: "{{ item }}"
+    value: "1"
+    state: "present"
+    reload: "yes"
+  with_items:
+    - net.ipv6.conf.all.disable_ipv6
+    - net.ipv6.conf.default.disable_ipv6
+    - net.ipv6.conf.lo.disable_ipv6
+
+- name: Copy rc.local
+  ansible.builtin.copy:
+    src: roles/common/files/rc.local
+    dest: /etc/rc.local
     owner: root
     group: root
-    mode: '0744'
-  with_items:
-    - v4
-
-- name: "Copy hs-iptables.service file"
+    mode: '0755'
+   
+- name: Copy Wifi start script
   ansible.builtin.template:
-    src: "hs-iptables.service.j2"
-    dest: "/etc/systemd/system/hs-iptables.service"
-    mode: "0744"
+    src: templates/wifistart.sh.j2
+    dest: /usr/local/bin/wifistart.sh
+    owner: root
+    group: root
+    mode: '0744'   
 
 - name: Reload systemd daemon
   systemd:
     daemon-reload: yes
 
-- name: Enable and start hs-iptables.service
+- name: Enable and start rc-local.service
   systemd:
-    name: hs-iptables
+    name: rc-local
     state: started
     enabled: yes
-
-- name: Enable services
-  ansible.builtin.systemd:
-    name: "{{ item }}"
-    enabled: yes
-    daemon_reload: yes
-    masked: no
-  with_items:
-    - dhcpcd
-    - hostapd

@@ -1,7 +1,5 @@
 server {
-    listen 80;
-    listen [::]:80;
-
+   listen 80;
     server_name scratch.local www.scratch.local scratch.elimupi.online;
 
     location / {

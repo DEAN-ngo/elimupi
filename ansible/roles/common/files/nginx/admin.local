@@ -1,6 +1,5 @@
 server {
     listen 80;
-    listen [::]:80;
     server_name admin.local www.admin.local admin.elimupi.online local.elimupi.online;
     index index.php index.html index.htm;
         error_log               /var/www/log/admin-log;
