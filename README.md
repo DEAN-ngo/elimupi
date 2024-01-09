@@ -29,7 +29,8 @@ This version of the ElimuPi build supports:
  - Ansible 2.10 > installed.
  - [ssh_askpass](https://packages.ubuntu.com/search?keywords=ssh-askpass) installed.
  - [Raspberry Pi Imager](https://www.raspberrypi.com/software/)  installed.
- - [Raspberry Pi OS Lite 64 bits image , Release date: December 5th 2023.](hhttps://downloads.raspberrypi.com/raspios_oldstable_lite_armhf/images/raspios_oldstable_lite_armhf-2023-12-06/2023-12-05-raspios-bullseye-armhf-lite.img.xz) 
+ - [Raspberry Pi OS Lite 64 bits image , Release date: December 5th 2023.](https://downloads.raspberrypi.com/raspios_oldstable_lite_armhf/images/raspios_oldstable_lite_armhf-2023-12-06/2023-12-05-raspios-bullseye-armhf-lite.img.xz) 
+
  - Ansible vault password ( contact DEAN development)
  
 ## Install Raspberry Pi OS
