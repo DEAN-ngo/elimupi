@@ -14,19 +14,23 @@ This version of the ElimuPi build supports:
 - [Kolibri](https://learningequality.org/kolibri/) learning system.
 - Dynamic content addition through USB storage.
 - Secured WiFi Access Point.
+- Wifi client support that defaults connects to AP's: elimupi-connect or dean-4g.
 - Local DHCP, DNS.
+- [Scratch](https://scratch.mit.edu/about), a high-level block-based visual programming language.
+- Beamer support via onboard micro HDMI
 
 #  Installation
 
 ## Prerequisites:
  - PC or laptop with Linux, Windows with [WSL](https://ubuntu.com/wsl) or MacOS operating system installed.
  - A Raspberry Pi model 4 with a wired TCP connection to LAN.
- - A Micro SD-card class 10 > 8GB 
+ - A Micro SD-card class 10 > 8GB.
  - Git installed.
  - Ansible 2.10 > installed.
  - [ssh_askpass](https://packages.ubuntu.com/search?keywords=ssh-askpass) installed.
  - [Raspberry Pi Imager](https://www.raspberrypi.com/software/)  installed.
- - [Raspberry Pi OS Lite 64 bits image , Release date: September 6th 2022.](https://downloads.raspberrypi.org/raspios_lite_arm64/images/raspios_lite_arm64-2022-09-07/2022-09-06-raspios-bullseye-arm64-lite.img.xz) 
+ - [Raspberry Pi OS Lite 64 bits image , Release date: December 5th 2023.](https://downloads.raspberrypi.com/raspios_oldstable_lite_armhf/images/raspios_oldstable_lite_armhf-2023-12-06/2023-12-05-raspios-bullseye-armhf-lite.img.xz) 
+
  - Ansible vault password ( contact DEAN development)
  
 ## Install Raspberry Pi OS
@@ -34,7 +38,8 @@ This version of the ElimuPi build supports:
  - Use Raspberry PI Imager to write the downloaded image to the SD-card using instructions at  https://www.raspberrypi.com/documentation/computers/getting-started.html#installing-the-operating-system.
  - Insert the SD-card.
  - Start Raspberry PI Imager.
- - Under **Operating system** select **Choose OS --> Use Custom** and select the downloaded image -   [Raspberry Pi OS Lite 64 bits image , Release date: May 3rd 2023.](https://downloads.raspberrypi.org/raspios_lite_arm64/images/raspios_lite_arm64-2023-05-03/2023-05-03-raspios-bullseye-arm64-lite.img.xz)
+ - Under **Raspberry Pi Device** select **Raspberry Pi 4**. 
+ - Under **Operating system** select **Choose OS --> Use Custom** and select the downloaded image - [Raspberry Pi OS Lite 64 bits image , Release date: December 5th 2023.](https://downloads.raspberrypi.com/raspios_oldstable_lite_armhf/images/raspios_oldstable_lite_armhf-2023-12-06/2023-12-05-raspios-bullseye-armhf-lite.img.xz)
  - Under **Storage** and select the SD-card device.
  - Select **Advanced options** -->  **Enable SSH** --> **Use password authentication**. 
  - Set **Username** to: **pi** and **Password** to : **elimupi** and select **SAVE**.
@@ -67,8 +72,8 @@ The installation will take approximately 20 minutes to finish and there shouldn'
 ## Create ElimuPi image copy 
 
  - Create a image copy of the SD-card with the ElimuPi software installed using instructions at https://beebom.com/how-clone-raspberry-pi-sd-card-windows-linux-macos/
- -  Shrink cloned the image file ( Linux Only) using [PiShrink](https://github.com/Drewsif/PiShrink) and the compression option -Za 
- - Name the image: **ElimuPi_Image_2023-05-03-raspios-bullseye-arm64_lite_Release_<-Version->.img.xz** e.g
+ - Shrink cloned the image file (Linux Only) using [PiShrink](https://github.com/Drewsif/PiShrink) and the compression option -Za 
+ - Name the image: **ElimuPi_Image_<YYYY-MM-DD>-raspios-bullseye-arm64_lite_Release_<-Version->.img.xz** e.g.
 
 This should produce a xz compressed Elimupi image file.
 
@@ -97,8 +102,9 @@ The following links are provided to access the resources:
 - **Files** - [files.elimupi.online](http://files.elimupi.online)
 - **Moodle** - [moodle.elimupi.online](http://moodle.elimupi.online)
 - **Admin** - [admin.elimupi.online](http://admin.elimupi.online)
+- **Scratch** - [scratch.elimupi.online](http://scratch.elimupi.online)
 
 After you finished the installation you need to visit [admin.elimupi.online](http://admin.elimupi.online) login with the Admin account and go to Manage --> "Please follow the directions to register your device, so that it can synchronize with the central server."
 
 ## Notes
-**NOTE1**: This install is tested to work with [Raspberry Pi OS Lite 64 bits image , Release date: May 3rd 2023.](https://downloads.raspberrypi.org/raspios_lite_arm64/images/raspios_lite_arm64-2023-05-03/2023-05-03-raspios-bullseye-arm64-lite.img.xz) on a Raspberry Pi model 4.
+**NOTE1**: This install is tested to work with [Raspberry Pi OS Lite 64 bits image , Release date: December 5th 2023.](https://downloads.raspberrypi.com/raspios_oldstable_lite_armhf/images/raspios_oldstable_lite_armhf-2023-12-06/2023-12-05-raspios-bullseye-armhf-lite.img.xz) on a Raspberry Pi model 4.
