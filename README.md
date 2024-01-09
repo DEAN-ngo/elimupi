@@ -24,7 +24,7 @@ This version of the ElimuPi build supports:
 ## Prerequisites:
  - PC or laptop with Linux, Windows with [WSL](https://ubuntu.com/wsl) or MacOS operating system installed.
  - A Raspberry Pi model 4 with a wired TCP connection to LAN.
- - A Micro SD-card class 10 > 8GB ls -
+ - A Micro SD-card class 10 > 8GB.
  - Git installed.
  - Ansible 2.10 > installed.
  - [ssh_askpass](https://packages.ubuntu.com/search?keywords=ssh-askpass) installed.
@@ -72,8 +72,8 @@ The installation will take approximately 20 minutes to finish and there shouldn'
 ## Create ElimuPi image copy 
 
  - Create a image copy of the SD-card with the ElimuPi software installed using instructions at https://beebom.com/how-clone-raspberry-pi-sd-card-windows-linux-macos/
- -  Shrink cloned the image file (Linux Only) using [PiShrink](https://github.com/Drewsif/PiShrink) and the compression option -Za 
- - Name the image: **ElimuPi_Image_<YYYY-MM-DD>-raspios-bullseye-arm64_lite_Release_<-Version->.img.xz** e.g
+ - Shrink cloned the image file (Linux Only) using [PiShrink](https://github.com/Drewsif/PiShrink) and the compression option -Za 
+ - Name the image: **ElimuPi_Image_<YYYY-MM-DD>-raspios-bullseye-arm64_lite_Release_<-Version->.img.xz** e.g.
 
 This should produce a xz compressed Elimupi image file.
 
@@ -102,7 +102,7 @@ The following links are provided to access the resources:
 - **Files** - [files.elimupi.online](http://files.elimupi.online)
 - **Moodle** - [moodle.elimupi.online](http://moodle.elimupi.online)
 - **Admin** - [admin.elimupi.online](http://admin.elimupi.online)
-- **Scratch** - scratch.elimupi.online/](http://scratch.elimupi.online)
+- **Scratch** - [scratch.elimupi.online](http://scratch.elimupi.online)
 
 After you finished the installation you need to visit [admin.elimupi.online](http://admin.elimupi.online) login with the Admin account and go to Manage --> "Please follow the directions to register your device, so that it can synchronize with the central server."
 
