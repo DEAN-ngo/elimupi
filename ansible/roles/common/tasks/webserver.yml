@@ -28,12 +28,6 @@
     path: /etc/nginx/sites-enabled/default
     state: absent
 
-- name: Webserver | Create  directory /var/www/log
-  ansible.builtin.file:
-    path: /var/www/log
-    state: directory
-    mode: '0755'
-
 - name: Webserver | Enable services
   ansible.builtin.service:
     name: "{{ item }}"
@@ -95,6 +89,18 @@
     path: /etc/nginx/nginx.conf
     regex: '^\s*#? *server_names_hash_bucket_size 64;'
     line: server_names_hash_bucket_size 64;
+
+- name: Webserver | set access_log to the mounted device
+  ansible.builtin.lineinfile:
+    path: /etc/nginx/nginx.conf
+    regexp: 'access_log\s+/var/log/nginx/access.log;$'
+    line: 'access_log /mnt/content/www_log/access.log;'
+
+- name: Webserver | set error_log to the mounted device
+  ansible.builtin.lineinfile:
+    path: /etc/nginx/nginx.conf
+    regexp: 'error_log /var/log/nginx/error.log;$'
+    line: 'error_log /mnt/content/www_log/error.log;'
 
 # Add Webinterface sudo settings
 - name: Webserver | Set sudo file 020_elimupi

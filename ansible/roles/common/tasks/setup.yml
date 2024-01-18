@@ -40,6 +40,12 @@
     regexp: '^LABEL=Content'
     line: 'LABEL=Content /mnt/content ntfs defaults,noatime,nofail 0 0'
 
+- name: Setup | Add the logs image to fstab
+  ansible.builtin.lineinfile:
+    path: /etc/fstab
+    regexp: 'www_log'
+    line: '/mnt/content/www_log.img /mnt/content/www_log ext4 defaults,noatime,nofail 0 0'
+
 - name: Setup | Install devmon.service systemd unit file
   ansible.builtin.template:
     src: devmon.service.j2
