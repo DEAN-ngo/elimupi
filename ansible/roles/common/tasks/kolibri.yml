@@ -19,19 +19,13 @@
   notify:
     - Restart Nginx
 
-# install pip3 packages
-- name: Install multi python packages with version specifiers
-  pip:
-    name:
-      - pip
-      - setuptools
-      - cffi
-    executable: pip3
-    
 #Install Kolibri components
 - name: Install applications
   apt:
     name:
+    - python3-pip
+    - python3-setuptools
+    - python3-cffi
     - kolibri
     - kolibri-server
 

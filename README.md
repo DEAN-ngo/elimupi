@@ -23,13 +23,13 @@ This version of the ElimuPi build supports:
 
 ## Prerequisites:
  - PC or laptop with Linux, Windows with [WSL](https://ubuntu.com/wsl) or MacOS operating system installed.
- - A Raspberry Pi model 4 with a wired TCP connection to LAN.
+ - A Raspberry Pi model 5 with a wired TCP connection to LAN.
  - A Micro SD-card class 10 > 8GB.
  - Git installed.
  - Ansible 2.10 > installed.
  - [ssh_askpass](https://packages.ubuntu.com/search?keywords=ssh-askpass) installed.
  - [Raspberry Pi Imager](https://www.raspberrypi.com/software/)  installed.
- - [Raspberry Pi OS Lite 64 bits image , Release date: December 5th 2023.](https://downloads.raspberrypi.com/raspios_oldstable_lite_armhf/images/raspios_oldstable_lite_armhf-2023-12-06/2023-12-05-raspios-bullseye-armhf-lite.img.xz) 
+ - [Raspberry Pi OS Lite 64 bits image , Release date: March 15th 2024.](https://downloads.raspberrypi.com/raspios_lite_arm64/images/raspios_lite_arm64-2024-03-15/2024-03-15-raspios-bookworm-arm64-lite.img.xz?_gl=1*1q9l249*_ga*NjU5MDEzODA2LjE3MTgzOTMxNTQ.*_ga_22FD70LWDS*MTcxODQ0OTM0MS4zLjAuMTcxODQ0OTM0MS4wLjAuMA..)
 
  - Ansible vault password ( contact DEAN development)
  
@@ -107,4 +107,4 @@ The following links are provided to access the resources:
 After you finished the installation you need to visit [admin.elimupi.online](http://admin.elimupi.online) login with the Admin account and go to Manage --> "Please follow the directions to register your device, so that it can synchronize with the central server."
 
 ## Notes
-**NOTE1**: This install is tested to work with [Raspberry Pi OS Lite 64 bits image , Release date: December 5th 2023.](https://downloads.raspberrypi.com/raspios_oldstable_lite_armhf/images/raspios_oldstable_lite_armhf-2023-12-06/2023-12-05-raspios-bullseye-armhf-lite.img.xz) on a Raspberry Pi model 4.
+**NOTE1**: This install is tested to work with [Raspberry Pi OS Lite 64 bits image , Release date: March 15th 2024.](https://downloads.raspberrypi.com/raspios_lite_arm64/images/raspios_lite_arm64-2024-03-15/2024-03-15-raspios-bookworm-arm64-lite.img.xz?_gl=1*1q9l249*_ga*NjU5MDEzODA2LjE3MTgzOTMxNTQ.*_ga_22FD70LWDS*MTcxODQ0OTM0MS4zLjAuMTcxODQ0OTM0MS4wLjAuMA..) on a Raspberry Pi model 5.

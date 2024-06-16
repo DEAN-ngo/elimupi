@@ -43,14 +43,14 @@
 
 - name: Set PHP upload_max_filesize 
   community.general.ini_file:
-    path: /etc/php/7.4/cli/php.ini 
+    path: "/etc/php/{{php_version}}/cli/php.ini"
     section: PHP
     option: upload_max_filesize
     value: 2G
 
 - name: Set PHP FMP upload_max_filesize 
   community.general.ini_file:
-    path: /etc/php/7.4/fpm/php.ini 
+    path: "/etc/php/{{php_version}}/cli/php.ini"
     section: PHP
     option: upload_max_filesize
     value: 2G

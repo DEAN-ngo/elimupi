@@ -1,9 +1,23 @@
 ---
-- name: Configure WPA 
-  ansible.builtin.template:
-    src: templates/wpa_supplicant.conf.j2
-    dest: /etc/wpa_supplicant/wpa_supplicant.conf
-    mode: "0400"
+- name: Debug passphrase variables
+  debug:
+    var: wifi_settings.wifi_networks
+
+- name: Configure WiFi network
+  nmcli:
+    conn_name: "{{ item.name }}"
+    state: present
+    type: wifi
+    ssid: "{{ item.ssid }}"
+    ifname: "{{ item.interface }}"
+    wifi_sec:
+      key-mgmt: wpa-psk
+      psk: "{{ item.psk }}"
+  with_items: "{{ wifi_settings.wifi_networks }}"
+
+- name: Set priority for elimu-connect connection
+  ansible.builtin.shell:
+    cmd: nmcli connection modify "elimu-connect" connection.autoconnect-priority 110
 
 - name: Configure hostapd
   ansible.builtin.template:

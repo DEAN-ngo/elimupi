@@ -65,6 +65,13 @@
     dest: /var/www/html/admin/files/auth_ldap_config.xml
     mode: "0755"
 
+- name: Set PHP max_input_vars to 5000 as per Moodle requirements 
+  community.general.ini_file:
+    path: "/etc/php/{{php_version}}/cli/php.ini"
+    section: PHP
+    option: max_input_vars
+    value: 5000
+
 - name: Execute installation script
   become: yes
   become_user: "{{ moodle_httpd_owner }}"

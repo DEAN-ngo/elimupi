@@ -18,6 +18,13 @@
     update_cache: yes
     state: present
 
+# PHP is bringing apache2 as dependency and we only need NGINX
+- name: Packages | Remove unnecesary dependencies
+  apt:
+    name: "{{ unnecesary_dependencies }}" 
+    update_cache: yes
+    state: absent
+
 - name: Packages | Remove dependencies that are no longer required
   apt:
     autoremove: yes
