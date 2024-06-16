@@ -4,7 +4,4 @@
 
   vars:
   roles:
-    - singleplatform-eng.users
-    - ajsalminen.hosts
-    - Oefenweb.dnsmasq
     - common
