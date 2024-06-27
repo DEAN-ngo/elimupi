@@ -15,6 +15,7 @@
       - nodejs
       - jq
       - ffmpeg
+      - npm
     state: present
 
 - name: "Clone Scratch GUI repository"

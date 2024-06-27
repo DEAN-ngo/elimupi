@@ -58,7 +58,7 @@
 - name: Allow http Scratch GUI
   community.general.ufw:
     rule: allow
-    port: '8601'
+    port: '8602'
     proto: tcp
     src: '{{ item }}'
   loop:

@@ -70,6 +70,11 @@ software_packages:
   - dhcpcd5
   - udevil
 
+unnecesary_dependencies:
+  # We use NGINX instead of Apache, but the package PHP has marked Apache2 as
+  # dependency, so we remove it
+  - apache2
+
 # local groups and users accounts
 users:
   - username: pi
@@ -121,11 +126,14 @@ host_wireless_n: False
 
 # Wifi Client settings
 wifi_settings:
-  wifi_country: KE
   wifi_networks:
-   - ssid: elimu-connect
+   - name: "elimu-connect"
+     ssid: "elimu-connect"
+     interface: "wlan0"
      psk: "{{ ssid1_passphrase }}"
-   - ssid: dean-4g
+   - name: "dean-4g"
+     ssid: "dean-4g"
+     interface: "wlan0"
      psk: "{{ ssid2_passphrase }}"
 # OpenLDAP
 openldap_server_domain: elimupi.local
@@ -175,9 +183,13 @@ kiwix_data_directory: /mnt/content/wiki
 kiwix_directory_mode: "0755"
 
 kiwix_version: kiwix-tools_linux-armhf-3.4.0
-# below doens't yet work correct as on day 31 you get the day 1 of that month
-vikidia_version: "vikidia_en_all_nopic_{{ lookup('pipe','date -d \"$(date +%Y-%m-4) -4 month\" +%Y-%m') }}"
-wiktionary_version: "wiktionary_en_simple_all_nopic_{{ lookup('pipe','date -d \"$(date +%Y-%m-2) -2 month\" +%Y-%m') }}"
+# It seems that the versions are not really updated monthly with a delay of 4
+# months, if that would became the case again, uncomment these lines and
+# remove the two below them
+#vikidia_version: "vikidia_en_all_nopic_{{ lookup('pipe','date -d \"$(date +%Y-%m-4) -4 month\" +%Y-%m || date -v -4m +%Y-%m') }}"
+#wiktionary_version: "wiktionary_en_simple_all_nopic_{{ lookup('pipe','date -d \"$(date +%Y-%m-2) -2 month\" +%Y-%m || date -v -4m +%Y-%m') }}"
+vikidia_version: "vikidia_en_all_nopic_2023-08"
+wiktionary_version: "wiktionary_en_simple_all_nopic_2024-06"
 
 ansible_host_key_checking: false
 
@@ -203,6 +215,8 @@ mysql_packages:
   - mariadb-server
   - python3-mysqldb
 
+php_version: "8.2"
+
 # Moodle config
 
 moodle_data_directory: /var/moodledata
@@ -224,7 +238,7 @@ moodle_dataroot_path: /var/moodledata
 
 #moodle_version: '4.00'
 moodle_repo_url: "https://github.com/moodle/moodle.git"
-moodle_version: "MOODLE_401_STABLE"
+moodle_version: "MOODLE_403_STABLE"
 moodle_shell_url_src: "https://moodle.org/plugins/download.php/28292/moosh_moodle41_2023010400.zip"
 
 moodle_root_user: root
