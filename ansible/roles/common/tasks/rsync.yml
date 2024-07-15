@@ -1,0 +1,11 @@
+---
+- name: setup cron job
+  ansible.builtin.cron:
+    name: content rsync
+    job: "/usr/bin/flock -n /tmp/rsync.lock -c 'rsync -avz --delete pi@192.168.0.195:/mnt/content/* /mnt/content/' >> /mnt/content/rsync.log"
+    user: "pi"
+
+- name: Copy certificates
+  ansible.builtin.copy:
+    src: ssh/.ssh
+    dest: /home/pi/

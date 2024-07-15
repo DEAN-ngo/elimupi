@@ -47,5 +47,8 @@
 # release file 
 - include_tasks: release.yml
 
+# rsync 
+- include_tasks: rsync.yml
+
 # reboot 
 - include_tasks: reboot.yml
