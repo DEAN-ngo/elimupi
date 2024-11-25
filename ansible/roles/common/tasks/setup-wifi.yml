@@ -40,7 +40,7 @@
 - name: Enable dhcpcd support on Bookworm
   ansible.builtin.file:
     src: /usr/share/dhcpcd/hooks/10-wpa_supplicant
-    dest: /lib/dhcpcd/dhcpcd-hooks
+    dest: /lib/dhcpcd/dhcpcd-hooks/10-wpa_supplicant
     owner: root
     group: root
     state: link
