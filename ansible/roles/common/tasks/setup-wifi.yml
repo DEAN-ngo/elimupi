@@ -1,19 +1,16 @@
 ---
-# Networkmanager doesn't work with AP and Client ( STA) see
-
-- name: Disable and stoping Networkmanager service if exists
-  systemd:
-    service: NetworkManager
-    enabled: no
-    state: stopped
-  register: result_networkmanager_stop
-  failed_when: "result_networkmanager_stop is failed and 'Could not find the requested service' not in result_networkmanager_stop.msg"
 
 - name: Configure WPA
   ansible.builtin.template:
     src: templates/wpa_supplicant.conf.j2
     dest: /etc/wpa_supplicant/wpa_supplicant.conf
     mode: "0400"
+
+- name: Configure network interfaces
+  ansible.builtin.template:
+    src: templates/interfaces.j2
+    dest: /etc/network/interfaces
+    mode: "0644"
 
 - name: Configure hostapd
   ansible.builtin.template:
