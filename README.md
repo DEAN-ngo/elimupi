@@ -17,6 +17,7 @@ This version of the ElimuPi build supports:
 - Wifi client support that defaults connects to AP's: elimupi-connect or dean-4g.
 - Local DHCP, DNS.
 - [Scratch](https://scratch.mit.edu/about), a high-level block-based visual programming language.
+- [Moodle](https://moodle.org/), 
 - Beamer support via onboard micro HDMI
 
 #  Installation
