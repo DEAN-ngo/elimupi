@@ -41,16 +41,16 @@
   loop:
     - nginx
 
-- name: Set PHP upload_max_filesize 
+- name: Set PHP upload_max_filesize
   community.general.ini_file:
     path: "/etc/php/{{php_version}}/cli/php.ini"
     section: PHP
     option: upload_max_filesize
     value: 2G
 
-- name: Set PHP FMP upload_max_filesize 
+- name: Set PHP FMP upload_max_filesize
   community.general.ini_file:
-    path: "/etc/php/{{php_version}}/cli/php.ini"
+    path: "/etc/php/{{php_version}}/fpm/php.ini"
     section: PHP
     option: upload_max_filesize
     value: 2G
@@ -100,4 +100,4 @@
 - name: Webserver | Set sudo file 020_elimupi
   ansible.builtin.copy:
     src: sudoers.d/020_elimupi
-    dest: /etc/sudoers.d/020_elimupi   
+    dest: /etc/sudoers.d/020_elimupi

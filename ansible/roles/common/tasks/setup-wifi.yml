@@ -1,23 +1,16 @@
 ---
-- name: Debug passphrase variables
-  debug:
-    var: wifi_settings.wifi_networks
 
-- name: Configure WiFi network
-  nmcli:
-    conn_name: "{{ item.name }}"
-    state: present
-    type: wifi
-    ssid: "{{ item.ssid }}"
-    ifname: "{{ item.interface }}"
-    wifi_sec:
-      key-mgmt: wpa-psk
-      psk: "{{ item.psk }}"
-  with_items: "{{ wifi_settings.wifi_networks }}"
+- name: Configure WPA
+  ansible.builtin.template:
+    src: templates/wpa_supplicant.conf.j2
+    dest: /etc/wpa_supplicant/wpa_supplicant.conf
+    mode: "0400"
 
-- name: Set priority for elimu-connect connection
-  ansible.builtin.shell:
-    cmd: nmcli connection modify "elimu-connect" connection.autoconnect-priority 110
+- name: Configure network interfaces
+  ansible.builtin.template:
+    src: templates/interfaces.j2
+    dest: /etc/network/interfaces
+    mode: "0644"
 
 - name: Configure hostapd
   ansible.builtin.template:
@@ -32,13 +25,23 @@
 - name: Unmask hostapd service
   systemd:
     name: hostapd
-    masked: no   
+    masked: no
 
 - name: Configure dhcpcd
   ansible.builtin.template:
     src: templates/dhcpcd.conf.j2
     dest: /etc/dhcpcd.conf
-    
+
+
+#  https://forums.raspberrypi.com/viewtopic.php?t=360586
+- name: Enable dhcpcd support on Bookworm
+  ansible.builtin.file:
+    src: /usr/share/dhcpcd/hooks/10-wpa_supplicant
+    dest: /lib/dhcpcd/dhcpcd-hooks/10-wpa_supplicant
+    owner: root
+    group: root
+    state: link
+
 - name: Enable IP forwarding
   ansible.posix.sysctl:
     name: net.ipv4.ip_forward
@@ -65,14 +68,14 @@
     owner: root
     group: root
     mode: '0755'
-   
+
 - name: Copy Wifi start script
   ansible.builtin.template:
     src: templates/wifistart.sh.j2
     dest: /usr/local/bin/wifistart.sh
     owner: root
     group: root
-    mode: '0744'   
+    mode: '0744'
 
 - name: Reload systemd daemon
   systemd:
