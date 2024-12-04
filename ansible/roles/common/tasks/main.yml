@@ -1,4 +1,5 @@
 ---
+---
 # Main flow of the Ansible tasks
 
 # setup - basic setup
@@ -38,14 +39,17 @@
 # ldap - install openldap
 - include_tasks: ldap.yml
 
-# firewall - setup firewall
-- include_tasks: firewall.yml
-
 # offline_redirection - setup offline redirections
 - include_tasks: offline_redirection.yml
 
 # release file
 - include_tasks: release.yml
+
+# reboot
+- include_tasks: reboot.yml
+
+# firewall - setup firewall
+- include_tasks: iptables.yml
 
 # reboot
 - include_tasks: reboot.yml

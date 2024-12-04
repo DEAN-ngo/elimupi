@@ -1,8 +1,0 @@
----
-- name: 'Provision Image'
-  hosts: dockerpi
-  become: true
-
-  vars:
-  roles:
-    - common

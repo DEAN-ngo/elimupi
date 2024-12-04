@@ -1,0 +1,29 @@
+#!/bin/bash
+
+if test $# -eq 1
+    then
+        #echo -e "# School related \n127.0.0.1 elimupiconnect-$1" | sudo tee -a /etc/hosts > /dev/null
+        #sudo /usr/bin/hostnamectl set-hostname elimupiconnect-"$1"
+        sudo /usr/bin/curl -L --request POST "{{ dean_api_url }}/register?school_code=$1"
+        sudo /usr/bin/curl -L --request POST "{{ dean_api_url }}/config/ovpn?school_code=$1" -o /etc/openvpn/client.ovpn
+        sudo /usr/bin/curl -L --request POST "{{ dean_api_url }}/config/dnsmasq?school_code=$1" -o /etc/dnsmasq.conf
+elif test $# -gt 1
+    then
+       if test $1 -eq 1
+       then
+            #Reregister the school again
+            sudo /usr/bin/curl -L --request POST "{{ dean_api_url }}/register?school_code=$2"
+        elif test $1 -eq 2
+        then
+            #Download new ovpn config
+            sudo /usr/bin/curl -L --request POST "{{ dean_api_url }}/config/ovpn?school_code=$2" -o /etc/openvpn/client.ovpn
+        elif test $1 -eq 3
+        then
+            #Download new dnsmasq config
+            sudo /usr/bin/curl -L --request POST"{{ dean_api_url }}/config/dnsmasq?school_code=$2" -o /etc/dnsmasq.conf
+        elif test $1 -eq 4
+        then
+            #Deregister the connect
+            sudo /usr/bin/curl -L --request POST "{{ dean_api_url }}/unregister?school_code=$2"
+        fi
+fi

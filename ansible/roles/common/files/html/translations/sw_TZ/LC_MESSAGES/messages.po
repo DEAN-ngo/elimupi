@@ -1,0 +1,558 @@
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: sw_KE\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 2.4.2\n"
+
+#, php-format
+msgid "%1$s has been converted to %2$s. Account created succesfully."
+msgstr "%1$s imebadilishwa  kuwa %2$s. Akaunti imeundwa  "
+
+#, php-format
+msgid "(Max %1$s)"
+msgstr "(Upeo %1$s)"
+
+#, php-format
+msgid "Account for %1$s already exists."
+msgstr ""
+"Akaunti ya %1$s tayari ipo\n"
+"."
+
+#, php-format
+msgid "Account for %1$s has been created successfully."
+msgstr "Akaunti ya %1$s imeundwa."
+
+msgid "Add a user"
+msgstr "Ongeza mtumiaji"
+
+msgid "Add user"
+msgstr "Ongeza mtumiaji"
+
+msgid "Add users"
+msgstr "Ongeza watumiaji"
+
+msgid "Added:"
+msgstr "Ameongezwa:"
+
+msgid "Admin"
+msgstr "Msimamizi"
+
+msgid "An offline educational server solution"
+msgstr "Suluhisho la seva ya elimu ya nje ya mtandao"
+
+msgid "Android Apps"
+msgstr "Programu za Android"
+
+msgid "Backup accounts"
+msgstr "Akaunti ya chelezo"
+
+msgid "Bandwidth rates apply when connecting to an online resource."
+msgstr "Viwango vya kipimo data hutumika wakati wa kuuanganisha kwa rasilimali ya mtandaoni."
+
+msgid "Change password"
+msgstr "Badilisha nywila"
+
+msgid "Click <em>+ new repository</em>"
+msgstr "Bofya <em>+ hazina mpya</em>"
+
+msgid "Coming soon: electronic learning environment for teachers"
+msgstr "Inakuja hivi karibuni: mazingira ya kielektroniki ya kujifunzia kwa walimu"
+
+msgid "Content"
+msgstr "Nyenzo"
+
+msgid "Copied :"
+msgstr "Kunakiliwa :"
+
+msgid "Copy packages"
+msgstr "Nakala vifurushi"
+
+msgid "Copy packages to secondary disk"
+msgstr "Nakili vifurushi kwenye diski ya sekondari"
+
+msgid "Copying packages."
+msgstr "Kuiga vifurushi."
+
+msgid "Create Content Disk"
+msgstr "Tengeneza diski ya yaliyomo"
+
+msgid "Create and delete pupils with a text file"
+msgstr "Unda na ufute wanafunzi kwa faili ya maandishi"
+
+msgid "Curriculum content"
+msgstr "Nyenzo za mtaala"
+
+msgid "DEAN - ElimuPi"
+msgstr "DEAN - ElimuPi"
+
+msgid "DEAN - ElimuPi - Elimu Online"
+msgstr "DEAN - ElimuPi Mtandaoni"
+
+msgid "DEAN - ElimuPi - Khan Academy"
+msgstr "DEAN - ElimuPi - Khan Academy"
+
+msgid "DEAN - ElimuPi - Wikipedia"
+msgstr "DEAN - ElimuPi - Wikipedia"
+
+msgid "Disk usage :"
+msgstr "Matumizi ya diski :"
+
+msgid "Docs"
+msgstr ""
+
+msgid "Documents"
+msgstr "Waraka"
+
+msgid "Done updating."
+msgstr "Kumaliza kusasisha."
+
+msgid "Download"
+msgstr "Pakua"
+
+msgid "Download fdroid.apk to your device."
+msgstr "Pakua fdroid.apk kwenye kifaa chako."
+
+msgid "Download log files"
+msgstr "Pakua faili za kumbukumbu"
+
+msgid "Educational Materials"
+msgstr "Nyenzo za Elimu"
+
+msgid "Educational documents"
+msgstr "Nyaraka za elimu"
+
+msgid "Eject"
+msgstr "Toa"
+
+#, fuzzy
+#| msgid "ElimuPi Online"
+msgid "Elimu Online"
+msgstr "ElimuPi Mtandaoni"
+
+#, fuzzy
+#| msgid "ElimuPi Online"
+msgid "Elimu.online"
+msgstr "ElimuPi Mtandaoni"
+
+msgid "ElimuGo app"
+msgstr "Programu ya ElimuGo"
+
+#, fuzzy
+#| msgid "ElimuPi Online"
+msgid "ElimuOnline"
+msgstr "ElimuPi Mtandaoni"
+
+msgid "ElimuOnline is a Learn Management System (LMS) where we share educational content for the Kenyan national curriculum."
+msgstr "Elimu Mtandaoni ni Mfumo wa Usimamizi wa Kujifunza (LMS) ambapo tunashiriki nyenzo za elimu kwa mtaala wa kitaifa wa Kenya."
+
+msgid "ElimuPi Online"
+msgstr "ElimuPi Mtandaoni"
+
+msgid "ElimuPi disk not available."
+msgstr "Diski ya ElimuPi haipatikani."
+
+msgid "Elimupi Admin"
+msgstr "Msimamizi wa ElimuPi  "
+
+msgid "Email"
+msgstr "Barua pepe"
+
+msgid "Enter <strong>http://fdroid.local</strong> and <i>add</i>"
+msgstr "Ingiza <strong>http://fdroid.local</strong> and <i>add</i>"
+
+msgid "Fetch all"
+msgstr "Leta zote"
+
+msgid "Fetching packages info."
+msgstr "Kuleta habari za vifurushi."
+
+msgid "Find information in this vast encyclopedia"
+msgstr "Tafuta habari katika ensaiklopidia hii kubwa"
+
+msgid "Generate"
+msgstr "Tengeneza"
+
+msgid "Go Back and click on <em>categories</em> to view the available apps"
+msgstr "Rudi nyuma na ubofye <em>kategoria</em> kutazama programu zinazopatikana"
+
+msgid "Go to <em>Repositories</em>"
+msgstr "Enda kwa<em>hazina</em>"
+
+msgid "Go to <em>settings</em>"
+msgstr "Enda Kwa <em>mipangilio</em>"
+
+msgid "Good to know"
+msgstr "Vizuri kujua"
+
+msgid "Home"
+msgstr "Nyumbani"
+
+msgid "How to distribute Android apps?"
+msgstr "Jinsi ya kusambaza programu za Android?"
+
+msgid "In case you get a warning about \"unknown sources\", allow the installation from unknow sources."
+msgstr "Ikiwa utapata onyo kuhusu \"vyanzo visivyojulikana\", ruhusu usakinishaji kutoka kwa vyanzo visivyojulikana."
+
+#, php-format
+msgid ""
+"In the Admin interface a text file can be selected to synchronize the accounts of all pupils. The text file should contain a username on each line and can be a CSV file \n"
+"\t\t\t\t\t\t\t\t\t\t\tin which the lines end with one or more commas. All spaces will be removed. If the username doesn't exist yet it is created. If the username doesn't exist in the file and if the account \n"
+"\t\t\t\t\t\t\t\t\t\t\thas been created before it is deleted. The synchronize functionality doesn't start when 25% or more of all accounts would be deleted by the action."
+msgstr ""
+"Katika kiolesura cha Admin, faili ya maandishi inaweza kuchaguliwa ili kusawazisha akaunti za wanafunzi wote. Faili ya maandishi inapaswa kuwa na jina la mtumiaji kwenye kila mstari na inaweza kuwa faili ya CSV.\n"
+"  ambamo mistari inaisha kwa koma moja au zaidi. Nafasi zote zitaondolewa. Ikiwa jina la mtumiaji halipo bado limeundwa. Ikiwa jina la mtumiaji halipo kwenye faili na ikiwa akauntiimeundwa kabla ya kufutwa. Utendaji wa kusawazisha hauanzi wakati 25% au zaidi ya akaunti zote zitafutwa na kitendo."
+
+msgid "Initial password"
+msgstr "Nywila ya awali"
+
+msgid "Install again"
+msgstr "Sakinisha tena"
+
+msgid ""
+"Install fdroid.apk from your download folder by clicking it in a file manager on your device.\n"
+"                                                    (opening it direct from the download folder results in a \"cannot open file\". Use a file manager instead.)"
+msgstr ""
+"Sakinisha fdroid.apk kutoka kwa folda yako ya upakuaji kwa kubofya kwenye kidhibiti faili kwenye kifaa chako.\n"
+"\n"
+"(kuifungua moja kwa moja kutoka kwa folda ya upakuaji husababisha \"faili haiwezi kufungua\". Tumia kidhibiti faili badala yake.)"
+
+msgid "Install password plugin"
+msgstr "Sakinisha programu-jalizi ya nenosiri"
+
+msgid "Installed :"
+msgstr "Imesakinishwa:"
+
+msgid "Installed versions"
+msgstr "Matoleo yaliyosakinishwa"
+
+msgid "Installing :"
+msgstr "Kusakinisha:"
+
+msgid "Installing packages"
+msgstr "Kusakinisha vifurushi"
+
+msgid "Interactive educational resources per curriculum subject"
+msgstr "Nyenzo shirikishi za elimu kwa kila somo la mtaala"
+
+msgid "Internal storage :"
+msgstr "Uhifadhi wa ndani:"
+
+msgid "Khan Academy"
+msgstr "Chuo cha Khan"
+
+msgid "List users"
+msgstr "Orodha ya watumiaji"
+
+msgid "Local package"
+msgstr "Kifurushi cha ndani"
+
+msgid "Local packages list is not readable."
+msgstr "Orodha ya vifurushi vya ndani haisomeki."
+
+msgid "Log off"
+msgstr "Ondoka"
+
+msgid "Login"
+msgstr "Ingia"
+
+msgid "Login form"
+msgstr "Fomu ya kuingia"
+
+msgid "Login not correct. Try again."
+msgstr "Kuingia sio sahihi. Jaribu tena."
+
+msgid "Looking for sources"
+msgstr "Kutafuta vyanzo"
+
+msgid "Lost a password"
+msgstr "Umepoteza nenosiri"
+
+msgid "Material"
+msgstr "Nyenzo"
+
+msgid "Moodle password plugin"
+msgstr "Programu-jalizi ya nenosiri la Moodle"
+
+# I do not understand the context here
+#, fuzzy
+#| msgid "account"
+msgid "Mount"
+msgstr "akaunti"
+
+msgid "New :"
+msgstr "Mpya :"
+
+msgid "New password"
+msgstr "Nywila mpya"
+
+msgid "No local packages found"
+msgstr "Hakuna vifurushi vya ndani vilivyopatikana"
+
+msgid "No removal done."
+msgstr "Hakuna uondoaji uliofanyika."
+
+msgid "Nothing added."
+msgstr "Hakuna kilichoongezwa."
+
+msgid "Nothing found."
+msgstr "Hakuna kilichopatikana."
+
+msgid "OK"
+msgstr "Sawa"
+
+msgid "Password is like the old one."
+msgstr "Nywila ni kama ile ya zamani."
+
+msgid "Password is the same."
+msgstr "Nywila inafanana."
+
+msgid "Password is too short."
+msgstr "Nywila ni fupi sana."
+
+msgid "Password is too similar."
+msgstr "Nywila inafanana sana."
+
+msgid "Password is unchanged."
+msgstr "Nywila haijabadilishwa."
+
+msgid "Password updated successfully."
+msgstr "Nywila imesasishwa kwa mafanikio."
+
+msgid "Read"
+msgstr "Soma"
+
+msgid "Refresh"
+msgstr "Onyesha upya"
+
+msgid "Remove students not in the file :"
+msgstr "Ondoa wanafunzi wasio kwenye faili :"
+
+msgid "Removed :"
+msgstr "Ondolewa :"
+
+#, fuzzy
+#| msgid "Removed :"
+msgid "Removed:"
+msgstr "Ondolewa :"
+
+msgid "Restart"
+msgstr "Anzisha tena"
+
+msgid "Search package"
+msgstr "Tafuta kifurushi"
+
+#, fuzzy
+#| msgid "Secondary Disk"
+msgid "Secondary Content disk"
+msgstr "Diski ya Sekondari"
+
+msgid "Secondary Disk"
+msgstr "Diski ya Sekondari"
+
+msgid "Share"
+msgstr "Shiriki"
+
+msgid "Something went wrong."
+msgstr "Hitilafu fulani imetokea."
+
+msgid "Start Fdroid, an empty screen will appear"
+msgstr "Anzisha Fdroid, skrini tupu itaonekana"
+
+msgid "Start adding students."
+msgstr "Anza kuongeza wanafunzi."
+
+msgid "Start syncing students."
+msgstr "Anza kusawazisha wanafunzi."
+
+msgid "Storage"
+msgstr "Hifadhi"
+
+msgid "Student"
+msgstr "Mwanafunzi"
+
+msgid "Stuff"
+msgstr "Vitu"
+
+msgid "Submit"
+msgstr "Wasilisha"
+
+msgid "Support"
+msgstr "Msaada"
+
+msgid "Sync"
+msgstr "Kusawazisha"
+
+msgid "Teacher"
+msgstr "Mwalimu"
+
+msgid "Telephone"
+msgstr "Simu"
+
+msgid "The ElimuPi"
+msgstr "Elimupi"
+
+msgid ""
+"The ElimuPi contains a range of educational Android apps. These apps can be installed on Android devices (tablets/phones) without the need of an\n"
+"                                                internet connection."
+msgstr "ElimuPi ina programu mbalimbali za Android za elimu. Programu hizi zinaweza kusakinishwa kwenye vifaa vya Android (kompyuta kibao/simu) bila kuhitaji la mtandao wa intaneti."
+
+msgid ""
+"The ElimuPi containts a wide range of educational resources. These resources are made available\n"
+"                                            by creating a wireless access point. Since you are reading this, you were able to connect to the\n"
+"                                            elimu Wi-Fi network."
+msgstr "ElimuPi ina nyenzo nyingi za elimu. Nyenzo hizi zinapatikana kwa kuunda sehemu ya kufikia bila waya. Kwa kuwa unasoma hii, uliweza kuunganisha kwenye mtandao wa elimu Wi-Fi."
+
+msgid ""
+"The ElimuPi is developed by Digital Education Africa Network (DEAN).\n"
+"                                            In case you need support, have wishes for additional functionality,\n"
+"                                            or want to report a bug. Please feel free to contact us."
+msgstr ""
+"ElimuPi imetengenezwa na Digital Education Africa Network (DEAN)\n"
+"Ikiwa unahitaji usaidizi, kuwa na matakwa ya utendaji wa ziada,\n"
+"au unataka kuripoti kosa. Tafadhali jisikie huru kuwasiliana nasi."
+
+msgid ""
+"The curriculum content on the elimuPi comes from different educational publishers. We have organised this content by the national curriculum subjects of Kenya.\n"
+"                                            Each subject contains different sources on different levels which complement and enrich the existing teaching methods."
+msgstr ""
+"Nyenzo za mtaala kwenye elimuPi yanatoka kwa wachapishaji tofauti wa elimu. Tumepanga nyenzo hizi kulingana na masomo ya mtaala wa kitaifa wa Kenya.\n"
+"Kila somo lina vyanzo tofauti katika viwango tofauti ambavyo vinakamilisha na kuboresha mbinu zilizopo za ufundishaji."
+
+msgid "The new password is too simple."
+msgstr "Nywila mpya ni rahisi sana."
+
+msgid "Title"
+msgstr "Kichwa"
+
+msgid "Total used of"
+msgstr "Jumla ya iliyotumiwa"
+
+msgid "Try again."
+msgstr "Jaribu tena."
+
+msgid "Turn off"
+msgstr "Zima"
+
+#, fuzzy
+#| msgid "Updates :"
+msgid "Update"
+msgstr "Sasisho :"
+
+msgid "Updates :"
+msgstr "Sasisho :"
+
+msgid "Upload content"
+msgstr "Pakia nyenzo"
+
+msgid "Upload students"
+msgstr "Pakia wanafunzi"
+
+msgid "Users"
+msgstr "Watumiaji"
+
+msgid "Verified :"
+msgstr "Imethibitishwa :"
+
+msgid "Verifying packages."
+msgstr "Thibitisha vifurushi."
+
+msgid "View account"
+msgstr "Tazama akaunti"
+
+msgid "Website"
+msgstr "Tovuti"
+
+msgid "Welcome to the ElimuPi; the largest offline resource for education."
+msgstr "Karibu katika ElimuPi; rasilimali kubwa zaidi ya nje ya mtandao kwa elimu."
+
+msgid "What are the requirements of the file?"
+msgstr "Mahitaji ya faili ni nini?"
+
+msgid "Wiki"
+msgstr "Wiki"
+
+msgid "WikiPedia"
+msgstr "Wikipedia"
+
+msgid "Wikipedia"
+msgstr "Wikipedia"
+
+msgid ""
+"Wikipedia is a free, open content online encyclopedia created through the collaborative effort of a community of users. The version on the ElimuPi is\n"
+"                                            accessible without the need of having internet access."
+msgstr "Wikipedia ni ensaiklopidia isiyolipishwa nyenzo za mtandaoni iliyoundwa kupitia juhudi za ushirikiano za jumuiya ya watumiaji. Toleo la ElimuPi inaweza kupatikana bila kuhitaji  kuwa na ufikiaji wa mtandao."
+
+msgid "account"
+msgstr "akaunti"
+
+msgid "day ago"
+msgstr "siku iliyopita"
+
+msgid "days ago"
+msgstr "siku zilizopita"
+
+msgid "enter password"
+msgstr "ingiza nywila"
+
+msgid "enter password again"
+msgstr "ingiza nywila tena"
+
+msgid "month ago"
+msgstr "mwezi uliopita"
+
+msgid "months ago"
+msgstr "miezi iliyopita"
+
+msgid "name"
+msgstr "jina"
+
+msgid "new password"
+msgstr "nywila mpya"
+
+msgid "new password again"
+msgstr "nywila mpya tena"
+
+msgid "password"
+msgstr "nywila"
+
+msgid "search"
+msgstr "tafuta"
+
+msgid "today"
+msgstr "leo"
+
+msgid "turn off"
+msgstr "zima"
+
+msgid "turn off ElimuPi"
+msgstr "Zima ElimuPi."
+
+msgid "week ago"
+msgstr "wiki iliyopita"
+
+msgid "weeks ago"
+msgstr "wiki zilizopita"
+
+msgid "wifi"
+msgstr "Wifi."
+
+msgid "year ago"
+msgstr "mwaka uliopita"
+
+msgid "years ago"
+msgstr "miaka iliyopita"
+
+#~ msgid "Actions"
+#~ msgstr "Vitendo"
+
+#, fuzzy
+#~ msgid "Install"
+#~ msgstr "Imewekwa :"

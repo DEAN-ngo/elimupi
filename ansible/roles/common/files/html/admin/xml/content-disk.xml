@@ -1,0 +1,10 @@
+<?xml version="1.0" ?>
+<volume label='content-1'>
+    <folder name='Content'>
+        <folder name='Packages'></folder>
+    </folder>
+    <folder name='fdroid'>
+        <file src='files/fdroid/config.py'/>
+    </folder>
+    <folder name='www_log'></folder>
+</volume>
