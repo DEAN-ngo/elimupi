@@ -66,22 +66,37 @@
   ansible.builtin.iptables:
     chain: INPUT
     protocol: tcp
-    destination_port: '81'
+    destination_port: '8080'
+    source: '{{ item }}'
     jump: ACCEPT
+  loop:
+    - 10.0.0.0/8
+    - 172.16.0.0/12
+    - 192.168.0.0/16
 
-- name: Allow Kolibri
+- name: Allow Kolibri zip content
   ansible.builtin.iptables:
     chain: INPUT
     protocol: tcp
     destination_port: '8081'
+    source: '{{ item }}'
     jump: ACCEPT
+  loop:
+    - 10.0.0.0/8
+    - 172.16.0.0/12
+    - 192.168.0.0/16
 
 - name: Allow Scratch
   ansible.builtin.iptables:
     chain: INPUT
     protocol: tcp
-    destination_port: '8068'
+    destination_port: '8601'
+    source: '{{ item }}'
     jump: ACCEPT
+  loop:
+    - 10.0.0.0/8
+    - 172.16.0.0/12
+    - 192.168.0.0/16
 
 - name: Allow dns
   ansible.builtin.iptables:
