@@ -21,7 +21,7 @@ This document highlights the steps required to setup ElimuPi-Connect and offers 
 
 **Steps for setting up the product in a school setting.**
 
- 1. Plug in the 4G dongle to a power source adapter. Ensure the dongle has  SIM card with internet capabilities before plugging it.
+ 1. Plug in the 4G dongle to a power source adapter. Ensure the dongle has SIM card with internet capabilities before plugging it.
  2. Power on the ElimuPi-Connec device. It will automatically connect to the Wi-Fi provided by the 4G dongle. It also offers Wi-Fi access point with the name *elimu-connect*.
  3. Power on the ElimuPi, it automatically connects to the elimuconnect WIFI and still offers the “elimupi” Wi-Fi network
  4. Finally connect your devices to elimupi network.

@@ -1,5 +1,4 @@
 ---
----
 # Main flow of the Ansible tasks
 
 # setup - basic setup
@@ -42,11 +41,20 @@
 # offline_redirection - setup offline redirections
 - include_tasks: offline_redirection.yml
 
+# install OpenVPN
+- include_tasks: openvpn.yml
+
+# configure OneDrive
+- include_tasks: onedrive.yml
+
+# install Squid proxy
+- include_tasks: proxy.yml
+
+#SETUP DEAN SCRIPT
+- include_tasks: ddnsclient.yml
+
 # release file
 - include_tasks: release.yml
-
-# reboot
-- include_tasks: reboot.yml
 
 # firewall - setup firewall
 - include_tasks: iptables.yml

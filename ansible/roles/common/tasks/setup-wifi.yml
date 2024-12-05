@@ -1,5 +1,12 @@
 ---
 
+# NetworkManager conflicts with dnsmasq,dhcpcd , hostapd.
+- name: Stop and disable NetworkManager service
+  ansible.builtin.service:
+    name: NetworkManager
+    state: stopped
+    enabled: no
+
 - name: Configure WPA
   ansible.builtin.template:
     src: templates/wpa_supplicant.conf.j2

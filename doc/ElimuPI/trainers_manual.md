@@ -56,7 +56,7 @@ The following is a breakdown of the ElimuPi-Connect project components:
 
   **Network Configuration**
 
- ![ElimuPI-Connect project](ElimuPi-Connect-project.png)
+ ![ElimuPI-Connect project](ElimuPI.png)
 
 The following is a description of the ElimuPi-Connect project as demonstrated above.
 
