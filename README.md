@@ -17,8 +17,10 @@ This version of the ElimuPi build supports:
 - Wifi client support that defaults connects to AP's: elimupi-connect or dean-4g.
 - Local DHCP, DNS.
 - [Scratch](https://scratch.mit.edu/about), a high-level block-based visual programming language.
-- [Moodle](https://moodle.org/), 
+- [Moodle](https://moodle.org/).
 - Beamer support via onboard micro HDMI
+- OpenVPN connection for content updates.
+- Transparent Proxy,
 
 #  Installation
 
@@ -104,8 +106,9 @@ The following links are provided to access the resources:
 - **Moodle** - [moodle.elimupi.online](http://moodle.elimupi.online)
 - **Admin** - [admin.elimupi.online](http://admin.elimupi.online)
 - **Scratch** - [scratch.elimupi.online](http://scratch.elimupi.online)
+- **Connect Registration dashboard**[registration.elimupi.online](http://registration.elimupi.online)
 
-After you finished the installation you need to visit [admin.elimupi.online](http://admin.elimupi.online) login with the Admin account and go to Manage --> "Please follow the directions to register your device, so that it can synchronize with the central server."
+After you finished the installation you need to visit [registration.elimupi.online](http://registration.elimupi.online) login with an admin account to register your device, so that it can synchronize with the central server."
 
 ## Notes
 **NOTE1**: This install is tested to work with [Raspberry Pi OS Lite 64 bits image , Release date: November 19th 2024.](https://downloads.raspberrypi.com/raspios_lite_arm64/images/raspios_lite_arm64-2024-11-19/2024-11-19-raspios-bookworm-arm64-lite.img.xz) on a Raspberry Pi model 4 and 5.

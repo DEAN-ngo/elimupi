@@ -1,0 +1,41 @@
+<?php return array(
+    'root' => array(
+        'pretty_version' => 'dev-main',
+        'version' => 'dev-main',
+        'type' => 'library',
+        'install_path' => __DIR__ . '/../../',
+        'aliases' => array(),
+        'reference' => 'e2fd8b6248ce6da2f987ab9440e7563009a7fdad',
+        'name' => '__root__',
+        'dev' => true,
+    ),
+    'versions' => array(
+        '__root__' => array(
+            'pretty_version' => 'dev-main',
+            'version' => 'dev-main',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../../',
+            'aliases' => array(),
+            'reference' => 'e2fd8b6248ce6da2f987ab9440e7563009a7fdad',
+            'dev_requirement' => false,
+        ),
+        'delight-im/i18n' => array(
+            'pretty_version' => 'v1.1.0',
+            'version' => '1.1.0.0',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../delight-im/i18n',
+            'aliases' => array(),
+            'reference' => 'e60498ac91189403f56eed0622b7f5bd44d73ba7',
+            'dev_requirement' => false,
+        ),
+        'phpseclib/phpseclib' => array(
+            'pretty_version' => '2.0.29',
+            'version' => '2.0.29.0',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../phpseclib/phpseclib',
+            'aliases' => array(),
+            'reference' => '497856a8d997f640b4a516062f84228a772a48a8',
+            'dev_requirement' => false,
+        ),
+    ),
+);

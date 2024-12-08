@@ -1,0 +1,7 @@
+{
+	"desciption": "Adds i18n and ssh commands to the ElimuPi interface",
+	"require":{
+		"delight-im/i18n": ">=1.0",
+		"phpseclib/phpseclib": ">=2.0"
+	}
+}

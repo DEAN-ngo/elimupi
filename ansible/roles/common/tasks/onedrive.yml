@@ -1,0 +1,30 @@
+---
+- name: OneDrive | Copy config files
+  ansible.builtin.copy:
+    src: files/onedrive/
+    dest: /home/pi/.config/onedrive/
+    owner: pi
+    group: pi
+
+- name: Set the sync for shared folders
+  community.general.ini_file:
+    path: /usr/lib/systemd/user/onedrive.service
+    section: Service
+    option: ExecStart
+    value: /usr/bin/onedrive --monitor --sync-shared-folders
+
+- name: Restart onedrive service
+  ansible.builtin.command:
+    cmd: systemctl --user restart onedrive
+  become: True
+  become_user: pi
+
+- name: Creates .ssh directory
+  ansible.builtin.file:
+    path: /home/pi/.ssh
+    state: directory
+
+- name: Copy certificates
+  ansible.builtin.copy:
+    src: ssh/authorized_keys
+    dest: /home/pi/.ssh/authorized_keys

@@ -1,0 +1,519 @@
+#
+msgid ""
+msgstr ""
+"Language: en-GB\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+
+#, php-format
+msgid "%1$s has been converted to %2$s. Account created succesfully."
+msgstr ""
+
+#, php-format
+msgid "(Max %1$s)"
+msgstr ""
+
+#, php-format
+msgid "Account for %1$s already exists."
+msgstr ""
+
+#, php-format
+msgid "Account for %1$s has been created successfully."
+msgstr ""
+
+msgid "Add a user"
+msgstr ""
+
+msgid "Add user"
+msgstr ""
+
+msgid "Add users"
+msgstr ""
+
+msgid "Added:"
+msgstr ""
+
+msgid "Admin"
+msgstr ""
+
+msgid "An offline educational server solution"
+msgstr ""
+
+msgid "Android Apps"
+msgstr ""
+
+msgid "Backup accounts"
+msgstr ""
+
+msgid "Bandwidth rates apply when connecting to an online resource."
+msgstr ""
+
+msgid "Change password"
+msgstr ""
+
+msgid "Click <em>+ new repository</em>"
+msgstr ""
+
+msgid "Coming soon: electronic learning environment for teachers"
+msgstr ""
+
+msgid "Content"
+msgstr ""
+
+msgid "Copied :"
+msgstr ""
+
+msgid "Copy packages"
+msgstr ""
+
+msgid "Copy packages to secondary disk"
+msgstr ""
+
+msgid "Copying packages."
+msgstr ""
+
+msgid "Create Content Disk"
+msgstr ""
+
+msgid "Create and delete pupils with a text file"
+msgstr ""
+
+msgid "Curriculum content"
+msgstr ""
+
+msgid "DEAN - ElimuPi"
+msgstr ""
+
+msgid "DEAN - ElimuPi - Elimu Online"
+msgstr ""
+
+msgid "DEAN - ElimuPi - Khan Academy"
+msgstr ""
+
+msgid "DEAN - ElimuPi - Wikipedia"
+msgstr ""
+
+msgid "Disk usage :"
+msgstr ""
+
+msgid "Docs"
+msgstr ""
+
+msgid "Documents"
+msgstr ""
+
+msgid "Done updating."
+msgstr ""
+
+msgid "Download"
+msgstr ""
+
+msgid "Download fdroid.apk to your device."
+msgstr ""
+
+msgid "Download log files"
+msgstr ""
+
+msgid "Educational Materials"
+msgstr ""
+
+msgid "Educational documents"
+msgstr ""
+
+msgid "Eject"
+msgstr ""
+
+msgid "Elimu Online"
+msgstr ""
+
+msgid "Elimu.online"
+msgstr ""
+
+msgid "ElimuGo app"
+msgstr ""
+
+msgid "ElimuOnline"
+msgstr ""
+
+msgid "ElimuOnline is a Learn Management System (LMS) where we share educational content for the Kenyan national curriculum."
+msgstr ""
+
+msgid "ElimuPi Online"
+msgstr ""
+
+msgid "ElimuPi disk not available."
+msgstr ""
+
+msgid "Elimupi Admin"
+msgstr ""
+
+msgid "Email"
+msgstr ""
+
+msgid "Enter <strong>http://fdroid.local</strong> and <i>add</i>"
+msgstr ""
+
+msgid "Fetch all"
+msgstr ""
+
+msgid "Fetching packages info."
+msgstr ""
+
+msgid "Find information in this vast encyclopedia"
+msgstr ""
+
+msgid "Generate"
+msgstr ""
+
+msgid "Go Back and click on <em>categories</em> to view the available apps"
+msgstr ""
+
+msgid "Go to <em>Repositories</em>"
+msgstr ""
+
+msgid "Go to <em>settings</em>"
+msgstr ""
+
+msgid "Good to know"
+msgstr ""
+
+msgid "Home"
+msgstr ""
+
+msgid "How to distribute Android apps?"
+msgstr ""
+
+msgid "In case you get a warning about \"unknown sources\", allow the installation from unknow sources."
+msgstr ""
+
+#, php-format
+msgid ""
+"In the Admin interface a text file can be selected to synchronize the accounts of all pupils. The text file should contain a username on each line and can be a CSV file \n"
+"\t\t\t\t\t\t\t\t\t\t\tin which the lines end with one or more commas. All spaces will be removed. If the username doesn't exist yet it is created. If the username doesn't exist in the file and if the account \n"
+"\t\t\t\t\t\t\t\t\t\t\thas been created before it is deleted. The synchronize functionality doesn't start when 25% or more of all accounts would be deleted by the action."
+msgstr ""
+
+msgid "Initial password"
+msgstr ""
+
+msgid "Install again"
+msgstr ""
+
+msgid ""
+"Install fdroid.apk from your download folder by clicking it in a file manager on your device.\n"
+"                                                    (opening it direct from the download folder results in a \"cannot open file\". Use a file manager instead.)"
+msgstr ""
+
+msgid "Install password plugin"
+msgstr ""
+
+msgid "Installed :"
+msgstr ""
+
+msgid "Installed versions"
+msgstr ""
+
+msgid "Installing :"
+msgstr ""
+
+msgid "Installing packages"
+msgstr ""
+
+msgid "Interactive educational resources per curriculum subject"
+msgstr ""
+
+msgid "Internal storage :"
+msgstr ""
+
+msgid "Khan Academy"
+msgstr ""
+
+msgid "List users"
+msgstr ""
+
+msgid "Local package"
+msgstr ""
+
+msgid "Local packages list is not readable."
+msgstr ""
+
+msgid "Log off"
+msgstr ""
+
+msgid "Login"
+msgstr ""
+
+msgid "Login form"
+msgstr ""
+
+msgid "Login not correct. Try again."
+msgstr ""
+
+msgid "Looking for sources"
+msgstr ""
+
+msgid "Lost a password"
+msgstr ""
+
+msgid "Material"
+msgstr ""
+
+msgid "Moodle password plugin"
+msgstr ""
+
+msgid "Mount"
+msgstr ""
+
+msgid "New :"
+msgstr ""
+
+msgid "New password"
+msgstr ""
+
+msgid "No local packages found"
+msgstr ""
+
+msgid "No removal done."
+msgstr ""
+
+msgid "Nothing added."
+msgstr ""
+
+msgid "Nothing found."
+msgstr ""
+
+msgid "OK"
+msgstr ""
+
+msgid "Password is like the old one."
+msgstr ""
+
+msgid "Password is the same."
+msgstr ""
+
+msgid "Password is too short."
+msgstr ""
+
+msgid "Password is too similar."
+msgstr ""
+
+msgid "Password is unchanged."
+msgstr ""
+
+msgid "Password updated successfully."
+msgstr ""
+
+msgid "Read"
+msgstr ""
+
+msgid "Refresh"
+msgstr ""
+
+msgid "Remove students not in the file :"
+msgstr ""
+
+msgid "Removed :"
+msgstr ""
+
+msgid "Removed:"
+msgstr ""
+
+msgid "Restart"
+msgstr ""
+
+msgid "Search package"
+msgstr ""
+
+msgid "Secondary Content disk"
+msgstr ""
+
+msgid "Secondary Disk"
+msgstr ""
+
+msgid "Share"
+msgstr ""
+
+msgid "Something went wrong."
+msgstr ""
+
+msgid "Start Fdroid, an empty screen will appear"
+msgstr ""
+
+msgid "Start adding students."
+msgstr ""
+
+msgid "Start syncing students."
+msgstr ""
+
+msgid "Storage"
+msgstr ""
+
+msgid "Student"
+msgstr ""
+
+msgid "Stuff"
+msgstr ""
+
+msgid "Submit"
+msgstr ""
+
+msgid "Support"
+msgstr ""
+
+msgid "Sync"
+msgstr ""
+
+msgid "Teacher"
+msgstr ""
+
+msgid "Telephone"
+msgstr ""
+
+msgid "The ElimuPi"
+msgstr ""
+
+msgid ""
+"The ElimuPi contains a range of educational Android apps. These apps can be installed on Android devices (tablets/phones) without the need of an\n"
+"                                                internet connection."
+msgstr ""
+
+msgid ""
+"The ElimuPi containts a wide range of educational resources. These resources are made available\n"
+"                                            by creating a wireless access point. Since you are reading this, you were able to connect to the\n"
+"                                            elimu Wi-Fi network."
+msgstr ""
+
+msgid ""
+"The ElimuPi is developed by Digital Education Africa Network (DEAN).\n"
+"                                            In case you need support, have wishes for additional functionality,\n"
+"                                            or want to report a bug. Please feel free to contact us."
+msgstr ""
+
+msgid ""
+"The curriculum content on the elimuPi comes from different educational publishers. We have organised this content by the national curriculum subjects of Kenya.\n"
+"                                            Each subject contains different sources on different levels which complement and enrich the existing teaching methods."
+msgstr ""
+
+msgid "The new password is too simple."
+msgstr ""
+
+msgid "Title"
+msgstr ""
+
+msgid "Total used of"
+msgstr ""
+
+msgid "Try again."
+msgstr ""
+
+msgid "Turn off"
+msgstr ""
+
+msgid "Update"
+msgstr ""
+
+msgid "Updates :"
+msgstr ""
+
+msgid "Upload content"
+msgstr ""
+
+msgid "Upload students"
+msgstr ""
+
+msgid "Users"
+msgstr ""
+
+msgid "Verified :"
+msgstr ""
+
+msgid "Verifying packages."
+msgstr ""
+
+msgid "View account"
+msgstr ""
+
+msgid "Website"
+msgstr ""
+
+msgid "Welcome to the ElimuPi; the largest offline resource for education."
+msgstr ""
+
+msgid "What are the requirements of the file?"
+msgstr ""
+
+msgid "Wiki"
+msgstr ""
+
+msgid "WikiPedia"
+msgstr ""
+
+msgid "Wikipedia"
+msgstr ""
+
+msgid ""
+"Wikipedia is a free, open content online encyclopedia created through the collaborative effort of a community of users. The version on the ElimuPi is\n"
+"                                            accessible without the need of having internet access."
+msgstr ""
+
+msgid "account"
+msgstr ""
+
+msgid "day ago"
+msgstr ""
+
+msgid "days ago"
+msgstr ""
+
+msgid "enter password"
+msgstr ""
+
+msgid "enter password again"
+msgstr ""
+
+msgid "month ago"
+msgstr ""
+
+msgid "months ago"
+msgstr ""
+
+msgid "name"
+msgstr ""
+
+msgid "new password"
+msgstr ""
+
+msgid "new password again"
+msgstr ""
+
+msgid "password"
+msgstr ""
+
+msgid "search"
+msgstr ""
+
+msgid "today"
+msgstr ""
+
+msgid "turn off"
+msgstr ""
+
+msgid "turn off ElimuPi"
+msgstr ""
+
+msgid "week ago"
+msgstr ""
+
+msgid "weeks ago"
+msgstr ""
+
+msgid "wifi"
+msgstr ""
+
+msgid "year ago"
+msgstr ""
+
+msgid "years ago"
+msgstr ""

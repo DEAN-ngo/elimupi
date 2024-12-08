@@ -1,0 +1,581 @@
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: nl_NL\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 2.4.2\n"
+
+#, php-format
+msgid "%1$s has been converted to %2$s. Account created succesfully."
+msgstr "%1$s is aangepast in %2$s. Het account is gemaakt."
+
+#, php-format
+msgid "(Max %1$s)"
+msgstr ""
+
+#, php-format
+msgid "Account for %1$s already exists."
+msgstr "Er bestaat al een account voor %1$s."
+
+#, php-format
+msgid "Account for %1$s has been created successfully."
+msgstr "Een account voor %1$s is gemaakt."
+
+msgid "Add a user"
+msgstr "Account maken"
+
+msgid "Add user"
+msgstr "Een account maken"
+
+msgid "Add users"
+msgstr "Accounts maken"
+
+msgid "Added:"
+msgstr "Toegevoegd:"
+
+msgid "Admin"
+msgstr "Admin"
+
+msgid "An offline educational server solution"
+msgstr ""
+
+msgid "Android Apps"
+msgstr ""
+
+#, fuzzy
+#| msgid "account"
+msgid "Backup accounts"
+msgstr "account"
+
+msgid "Bandwidth rates apply when connecting to an online resource."
+msgstr "Voor het verbinden met een online resource geldt een tarief"
+
+msgid "Change password"
+msgstr "Wachtwoord veranderen"
+
+msgid "Click <em>+ new repository</em>"
+msgstr ""
+
+msgid "Coming soon: electronic learning environment for teachers"
+msgstr ""
+
+msgid "Content"
+msgstr ""
+
+msgid "Copied :"
+msgstr "Gekopieerd :"
+
+msgid "Copy packages"
+msgstr "Pakketten kopiëren"
+
+msgid "Copy packages to secondary disk"
+msgstr ""
+
+msgid "Copying packages."
+msgstr "Pakketten kopiëren."
+
+msgid "Create Content Disk"
+msgstr "Content disk maken"
+
+msgid "Create and delete pupils with a text file"
+msgstr ""
+
+msgid "Curriculum content"
+msgstr ""
+
+msgid "DEAN - ElimuPi"
+msgstr ""
+
+#, fuzzy
+#| msgid "ElimuPi Online"
+msgid "DEAN - ElimuPi - Elimu Online"
+msgstr "ElimuPi Online"
+
+msgid "DEAN - ElimuPi - Khan Academy"
+msgstr ""
+
+msgid "DEAN - ElimuPi - Wikipedia"
+msgstr ""
+
+msgid "Disk usage :"
+msgstr "Opslag :"
+
+msgid "Docs"
+msgstr ""
+
+msgid "Documents"
+msgstr ""
+
+msgid "Done updating."
+msgstr "Update is gedaan."
+
+msgid "Download"
+msgstr "Download"
+
+msgid "Download fdroid.apk to your device."
+msgstr ""
+
+#, fuzzy
+#| msgid "Download"
+msgid "Download log files"
+msgstr "Download"
+
+msgid "Educational Materials"
+msgstr ""
+
+msgid "Educational documents"
+msgstr ""
+
+msgid "Eject"
+msgstr "Uitwerpen"
+
+#, fuzzy
+#| msgid "ElimuPi Online"
+msgid "Elimu Online"
+msgstr "ElimuPi Online"
+
+#, fuzzy
+#| msgid "ElimuPi Online"
+msgid "Elimu.online"
+msgstr "ElimuPi Online"
+
+msgid "ElimuGo app"
+msgstr ""
+
+#, fuzzy
+#| msgid "ElimuPi Online"
+msgid "ElimuOnline"
+msgstr "ElimuPi Online"
+
+msgid "ElimuOnline is a Learn Management System (LMS) where we share educational content for the Kenyan national curriculum."
+msgstr ""
+
+msgid "ElimuPi Online"
+msgstr "ElimuPi Online"
+
+msgid "ElimuPi disk not available."
+msgstr "ElimuPi schijf is niet aanwezig."
+
+msgid "Elimupi Admin"
+msgstr "ElimuPi Admin"
+
+msgid "Email"
+msgstr ""
+
+msgid "Enter <strong>http://fdroid.local</strong> and <i>add</i>"
+msgstr ""
+
+msgid "Fetch all"
+msgstr "Alles downloaden"
+
+msgid "Fetching packages info."
+msgstr "Ophalen van info."
+
+msgid "Find information in this vast encyclopedia"
+msgstr ""
+
+msgid "Generate"
+msgstr ""
+
+msgid "Go Back and click on <em>categories</em> to view the available apps"
+msgstr ""
+
+msgid "Go to <em>Repositories</em>"
+msgstr ""
+
+msgid "Go to <em>settings</em>"
+msgstr ""
+
+msgid "Good to know"
+msgstr ""
+
+msgid "Home"
+msgstr ""
+
+msgid "How to distribute Android apps?"
+msgstr ""
+
+msgid "In case you get a warning about \"unknown sources\", allow the installation from unknow sources."
+msgstr ""
+
+#, php-format
+msgid ""
+"In the Admin interface a text file can be selected to synchronize the accounts of all pupils. The text file should contain a username on each line and can be a CSV file \n"
+"\t\t\t\t\t\t\t\t\t\t\tin which the lines end with one or more commas. All spaces will be removed. If the username doesn't exist yet it is created. If the username doesn't exist in the file and if the account \n"
+"\t\t\t\t\t\t\t\t\t\t\thas been created before it is deleted. The synchronize functionality doesn't start when 25% or more of all accounts would be deleted by the action."
+msgstr ""
+
+msgid "Initial password"
+msgstr "Tijdelijk wachtwoord"
+
+msgid "Install again"
+msgstr "Opnieuw installeren:"
+
+msgid ""
+"Install fdroid.apk from your download folder by clicking it in a file manager on your device.\n"
+"                                                    (opening it direct from the download folder results in a \"cannot open file\". Use a file manager instead.)"
+msgstr ""
+
+#, fuzzy
+#| msgid "Moodle password plugin"
+msgid "Install password plugin"
+msgstr "Moodle wachtwoorden plugin"
+
+msgid "Installed :"
+msgstr "Geïnstalleerd :"
+
+msgid "Installed versions"
+msgstr "Geïnstalleerde versies :"
+
+#, fuzzy
+#| msgid "Installing ..."
+msgid "Installing :"
+msgstr "Installeren"
+
+#, fuzzy
+#| msgid "Copying packages."
+msgid "Installing packages"
+msgstr "Pakketten kopiëren."
+
+msgid "Interactive educational resources per curriculum subject"
+msgstr ""
+
+msgid "Internal storage :"
+msgstr "Interne opslag :"
+
+msgid "Khan Academy"
+msgstr ""
+
+msgid "List users"
+msgstr "Alle accounts"
+
+#, fuzzy
+#| msgid "Copy packages"
+msgid "Local package"
+msgstr "Pakketten kopiëren"
+
+msgid "Local packages list is not readable."
+msgstr "Lokale materiaal lijst is niet leesbaar."
+
+msgid "Log off"
+msgstr "Afmelden"
+
+msgid "Login"
+msgstr "Loginformulier"
+
+msgid "Login form"
+msgstr "Loginformulier"
+
+msgid "Login not correct. Try again."
+msgstr "De login is niet correct. Probeer het opnieuw."
+
+msgid "Looking for sources"
+msgstr ""
+
+msgid "Lost a password"
+msgstr "Wachtwoord vergeten"
+
+msgid "Material"
+msgstr ""
+
+msgid "Moodle password plugin"
+msgstr "Moodle wachtwoorden plugin"
+
+msgid "Mount"
+msgstr "Verbinden"
+
+msgid "New :"
+msgstr "Nieuw :"
+
+msgid "New password"
+msgstr "Nieuw wachtwoord"
+
+msgid "No local packages found"
+msgstr ""
+
+msgid "No removal done."
+msgstr "Geen accounts verwijderd."
+
+msgid "Nothing added."
+msgstr "Geen accounts toegevoegd."
+
+msgid "Nothing found."
+msgstr "Niets gevonden."
+
+msgid "OK"
+msgstr ""
+
+msgid "Password is like the old one."
+msgstr "Het nieuwe wachtwoord is bijna hetzelfde als de vorige."
+
+msgid "Password is the same."
+msgstr "Wachtwoord is hetzelfde."
+
+msgid "Password is too short."
+msgstr "Het wachtwoord is te kort."
+
+msgid "Password is too similar."
+msgstr "Het wachtwoord is teveel hetzelfde."
+
+msgid "Password is unchanged."
+msgstr "Het wachtwoord is niet veranderd."
+
+msgid "Password updated successfully."
+msgstr "Het wachtwoord is veranderd."
+
+msgid "Read"
+msgstr "Lees"
+
+msgid "Refresh"
+msgstr "Verversen"
+
+msgid "Remove students not in the file :"
+msgstr "Verwijder accounts die niet in de lijst staan :"
+
+msgid "Removed :"
+msgstr "Verwijderd :"
+
+#, fuzzy
+#| msgid "Removed :"
+msgid "Removed:"
+msgstr "Verwijderd :"
+
+msgid "Restart"
+msgstr ""
+
+#, fuzzy
+#| msgid "Verifying packages."
+msgid "Search package"
+msgstr "Pakketten verifiëren."
+
+msgid "Secondary Content disk"
+msgstr "Tweede schijf"
+
+msgid "Secondary Disk"
+msgstr "Tweede schijf"
+
+msgid "Share"
+msgstr ""
+
+msgid "Something went wrong."
+msgstr ""
+
+msgid "Start Fdroid, an empty screen will appear"
+msgstr ""
+
+msgid "Start adding students."
+msgstr "Begin van het toevoegen van studenten."
+
+msgid "Start syncing students."
+msgstr "Begin van het toevoegen van studenten."
+
+msgid "Storage"
+msgstr "Opslag"
+
+msgid "Student"
+msgstr "Student"
+
+msgid "Stuff"
+msgstr "Materiaal"
+
+msgid "Submit"
+msgstr "Verzenden"
+
+msgid "Support"
+msgstr ""
+
+msgid "Sync"
+msgstr "Sync"
+
+msgid "Teacher"
+msgstr "Leraar"
+
+msgid "Telephone"
+msgstr ""
+
+msgid "The ElimuPi"
+msgstr ""
+
+msgid ""
+"The ElimuPi contains a range of educational Android apps. These apps can be installed on Android devices (tablets/phones) without the need of an\n"
+"                                                internet connection."
+msgstr ""
+
+msgid ""
+"The ElimuPi containts a wide range of educational resources. These resources are made available\n"
+"                                            by creating a wireless access point. Since you are reading this, you were able to connect to the\n"
+"                                            elimu Wi-Fi network."
+msgstr ""
+
+msgid ""
+"The ElimuPi is developed by Digital Education Africa Network (DEAN).\n"
+"                                            In case you need support, have wishes for additional functionality,\n"
+"                                            or want to report a bug. Please feel free to contact us."
+msgstr ""
+
+msgid ""
+"The curriculum content on the elimuPi comes from different educational publishers. We have organised this content by the national curriculum subjects of Kenya.\n"
+"                                            Each subject contains different sources on different levels which complement and enrich the existing teaching methods."
+msgstr ""
+
+msgid "The new password is too simple."
+msgstr "Het wachtwoord is te eenvoudig."
+
+msgid "Title"
+msgstr ""
+
+msgid "Total used of"
+msgstr "Totaal gebruikt van"
+
+msgid "Try again."
+msgstr "Probeer het opnieuw."
+
+msgid "Turn off"
+msgstr "Uitzetten"
+
+#, fuzzy
+#| msgid "Updates :"
+msgid "Update"
+msgstr "Updates :"
+
+msgid "Updates :"
+msgstr "Updates :"
+
+msgid "Upload content"
+msgstr "Content uploaden"
+
+msgid "Upload students"
+msgstr "Studenten uploaden"
+
+msgid "Users"
+msgstr "Accounts"
+
+msgid "Verified :"
+msgstr "Geverifieerd :"
+
+msgid "Verifying packages."
+msgstr "Pakketten verifiëren."
+
+#, fuzzy
+#| msgid "account"
+msgid "View account"
+msgstr "account"
+
+msgid "Website"
+msgstr ""
+
+msgid "Welcome to the ElimuPi; the largest offline resource for education."
+msgstr ""
+
+msgid "What are the requirements of the file?"
+msgstr ""
+
+msgid "Wiki"
+msgstr ""
+
+msgid "WikiPedia"
+msgstr ""
+
+msgid "Wikipedia"
+msgstr ""
+
+msgid ""
+"Wikipedia is a free, open content online encyclopedia created through the collaborative effort of a community of users. The version on the ElimuPi is\n"
+"                                            accessible without the need of having internet access."
+msgstr ""
+
+msgid "account"
+msgstr "account"
+
+msgid "day ago"
+msgstr "dag geleden"
+
+msgid "days ago"
+msgstr "dagen geleden"
+
+msgid "enter password"
+msgstr "wachtwoord"
+
+msgid "enter password again"
+msgstr "wachtwoord opnieuw"
+
+msgid "month ago"
+msgstr "maand geleden"
+
+msgid "months ago"
+msgstr "maanden geleden"
+
+msgid "name"
+msgstr "naam"
+
+msgid "new password"
+msgstr "nieuw wachtwoord"
+
+msgid "new password again"
+msgstr "wachtwoord opnieuw"
+
+msgid "password"
+msgstr "wachtwoord"
+
+msgid "search"
+msgstr "zoeken"
+
+msgid "today"
+msgstr "vandaag"
+
+#, fuzzy
+#| msgid "Turn off"
+msgid "turn off"
+msgstr "Uitzetten"
+
+msgid "turn off ElimuPi"
+msgstr ""
+
+msgid "week ago"
+msgstr "week geleden"
+
+msgid "weeks ago"
+msgstr "weken geleden"
+
+msgid "wifi"
+msgstr ""
+
+msgid "year ago"
+msgstr "jaar geleden"
+
+msgid "years ago"
+msgstr "jaar geleden"
+
+#~ msgid "Actions"
+#~ msgstr "Acties"
+
+#~ msgid "Copy to disk"
+#~ msgstr "Naar disk kopiëren"
+
+#~ msgid "English"
+#~ msgstr "Engels"
+
+#~ msgid "Install"
+#~ msgstr "Installeren"
+
+#~ msgid "Packages"
+#~ msgstr "Materiaal"
+
+#~ msgid "Status"
+#~ msgstr "Status"
+
+#~ msgid "Swahili"
+#~ msgstr "Swahili"
+
+#~ msgid "View"
+#~ msgstr "Lees"
+
+#~ msgid "username"
+#~ msgstr "account"

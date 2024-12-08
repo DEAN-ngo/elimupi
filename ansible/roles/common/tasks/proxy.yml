@@ -1,0 +1,37 @@
+---
+- name: Create Squid Log directory
+  ansible.builtin.file:
+    path: "{{ squid_log_dir }}"
+    state: directory
+    owner: proxy
+    group: proxy
+
+- name: squid configuration
+  ansible.builtin.template:
+    src: "templates/squid.conf.j2"
+    dest: "/etc/squid/squid.conf"
+
+- name: Generate a Self Signed OpenSSL certificate
+  ansible.builtin.shell: |
+    openssl req -new -newkey rsa:4096 -days 365 -nodes -x509 -subj "/C=US/ST=Denial/L=Springfield/O=Dis/CN=www.example.com" -keyout {{squid_ssl_cert_path}}  -out {{squid_ssl_cert_path}}
+
+- name: Initialize SSL database
+  ansible.builtin.shell: |
+    /usr/lib/squid/security_file_certgen -c -s /var/spool/squid/ssl_db -M 4MB
+  args:
+    creates:  /var/spool/squid/ssl_db/index.txt
+
+- name: Check if SSL cache directory exists
+  ansible.builtin.stat:
+    path: /var/spool/squid/ssl_db
+  register: ssl_db_stat
+
+- name: Create a ssl Cache
+  ansible.builtin.shell: /usr/lib/squid/security_file_certgen -c -s /var/spool/squid/ssl_db -M 4MB
+  when: not ssl_db_stat.stat.exists
+
+- name: squid service enabled
+  ansible.builtin.service:
+    name: squid
+    enabled: true
+    state: started

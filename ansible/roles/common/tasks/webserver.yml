@@ -8,6 +8,7 @@
     - files.local
     - admin.local
     - elimupi.local
+    - registration.local
   notify:
     - Restart Nginx
 
@@ -20,6 +21,7 @@
     - files.local
     - admin.local
     - elimupi.local
+    - registration.local
   notify:
     - Restart Nginx
 
@@ -28,7 +30,7 @@
     path: /etc/nginx/sites-enabled/default
     state: absent
 
-- name: Webserver | Create  directory /var/www/log
+- name: Webserver | Create directory /var/www/log
   ansible.builtin.file:
     path: /var/www/log
     state: directory
@@ -41,19 +43,16 @@
   loop:
     - nginx
 
-- name: Set PHP upload_max_filesize
+- name: Webserver | Set PHP upload_max_filesize
   community.general.ini_file:
     path: "/etc/php/{{php_version}}/cli/php.ini"
     section: PHP
     option: upload_max_filesize
     value: 2G
+  loop:
+    - "/etc/php/{{php_version}}/cli/php.ini"
+    - "/etc/php/{{php_version}}/fpm/php.ini"
 
-- name: Set PHP FMP upload_max_filesize
-  community.general.ini_file:
-    path: "/etc/php/{{php_version}}/fpm/php.ini"
-    section: PHP
-    option: upload_max_filesize
-    value: 2G
 
 - name: Webserver | Clean /var/www/html
   ansible.builtin.file:
@@ -69,7 +68,17 @@
   notify:
     - Restart Nginx
 
-- name: Create directory /var/www/scripts
+# The ElimuP-Connect registration stuff should be placed in the git repo above
+- name: Webserver | Checkout ElimuPi-Connect Webinterface
+  ansible.builtin.copy:
+    src: files/html/apiconnect
+    dest: /var/www/html/
+    owner: www-data
+    group: www-data
+  notify:
+    - Restart Nginx
+
+- name: Webserver | Create directory /var/www/scripts
   ansible.builtin.file:
     path: /var/www/scripts
     state: directory

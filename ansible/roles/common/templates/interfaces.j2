@@ -3,6 +3,6 @@
 # Include files from /etc/network/interfaces.d:
 source /etc/network/interfaces.d/*
 
-allow-hotplug wlan0
-iface wlan0 inet manual
+allow-hotplug {{ sta_adapter }}
+iface {{ sta_adapter }} inet manual
     wpa-conf /etc/wpa_supplicant/wpa_supplicant.conf
