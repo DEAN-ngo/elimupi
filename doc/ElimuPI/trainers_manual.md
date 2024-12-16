@@ -62,7 +62,7 @@ The following is a description of the ElimuPi-Connect project as demonstrated ab
 
 The ElimuPi-Connect device primary function is to provide Internet connectivity for other devices. It does so by exposing an Wi-Fi based Access Point (AP) named  _elimu-connect_  that other devices can connect to. The ElimuPi-Connect device uses the 4G LTE USB Wi-Fi Dongle for connection to the Internet. The ElimuPi-Connect device will establish a VPN connection to DEAN's content and management hub platform when connected to the Internet.
 
-The ElimuPi device primary function is to provide offline educational content. It does so by exposing an Wi-Fi based Access Point (AP) named  _elimu_  that other devices can connect to and access the web based content served by URL  [http://start.elimupi.online](http://start.elimupi.online/)  by inserting it to a suitable power outlet The ElimuPi device will automatically try to connect to the ElimuPi-Connect device if within Wi-Fi range. The main goals of interconnecting the ElimuPi device with the ElimuPi-Connect device is to provide content updates and remote management to the ElimuPi-Connect device.
+The ElimuPi device primary function is to provide offline educational content. It does so by exposing an Wi-Fi based Access Point (AP) named  _elimu_  that other devices can connect to and access the web based content served by URL [http://start.elimupi.online](http://start.elimupi.online/) by inserting it to a suitable power outlet The ElimuPi device will automatically try to connect to the ElimuPi-Connect device if within Wi-Fi range. The main goals of interconnecting the ElimuPi device with the ElimuPi-Connect device is to provide content updates and remote management to the ElimuPi-Connect device.
 
  **Portal functionality**
 

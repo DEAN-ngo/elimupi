@@ -1,12 +1,4 @@
 ---
-
-# NetworkManager conflicts with dnsmasq,dhcpcd , hostapd.
-- name: Stop and disable NetworkManager service
-  ansible.builtin.service:
-    name: NetworkManager
-    state: stopped
-    enabled: no
-
 - name: Configure WPA
   ansible.builtin.template:
     src: templates/wpa_supplicant.conf.j2
@@ -38,7 +30,6 @@
   ansible.builtin.template:
     src: templates/dhcpcd.conf.j2
     dest: /etc/dhcpcd.conf
-
 
 #  https://forums.raspberrypi.com/viewtopic.php?t=360586
 - name: Enable dhcpcd support on Bookworm
@@ -93,3 +84,7 @@
     name: rc-local
     state: started
     enabled: yes
+
+- name: Unblock Wifi
+  shell:
+    cmd:  raspi-config nonint do_wifi_country '{{ host_country_code }}'

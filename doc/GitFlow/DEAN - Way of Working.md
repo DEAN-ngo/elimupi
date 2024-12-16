@@ -4,33 +4,33 @@
 
 ## Branching strategy
 
-Gitflow assumes two permanently present branches: “main” and “develop”. The main branch only contains “production-ready” code, while the develop branch contains the latest changes for the next release. You could also call this the “integration” branch.  
-![][image1]
+Gitflow assumes two permanently present branches: “main” and “develop”. The main branch only contains “production-ready” code, while the develop branch contains the latest changes for the next release. You could also call this the “integration” branch.
+![][image1.png]
 
-In addition, there are a number of types of branches within the Gitflow workflow:  
-\- feature branches;  
-\- release branches;  
+In addition, there are a number of types of branches within the Gitflow workflow:
+\- feature branches;
+\- release branches;
 \- hotfix branches.
 
-*Feature branches*  
+*Feature branches*
 Feature branches are used to develop new features for the next release. When starting the development of a feature, it may not yet be known in which release this feature will be included.
 
-The essence of a feature branch is that it exists as long as the feature is in development, but will eventually be merged back into the develop branch (to add the new feature to the upcoming release). After merging, the feature branch can be deleted. If the development of the feature comes to nothing (e.g. in the case of a failed experiment), the feature branch can also be deleted without any problems.  
-![][image2]
+The essence of a feature branch is that it exists as long as the feature is in development, but will eventually be merged back into the develop branch (to add the new feature to the upcoming release). After merging, the feature branch can be deleted. If the development of the feature comes to nothing (e.g. in the case of a failed experiment), the feature branch can also be deleted without any problems.
+![][image2.png]
 
-*Release branches*  
-Release branches support the preparation of a new production release. They make last-minute finishing touches possible. Additionally, they allow minor bug fixes and prepare metadata for a release (version number, build dates, etc.). By doing this work on a release branch, the development branch is freed up for further development of new features for a subsequent release. 
+*Release branches*
+Release branches support the preparation of a new production release. They make last-minute finishing touches possible. Additionally, they allow minor bug fixes and prepare metadata for a release (version number, build dates, etc.). By doing this work on a release branch, the development branch is freed up for further development of new features for a subsequent release.
 
 The moment to branch a new release branch from development is when the “develop” branch (almost) reflects the desired state of the next release. A release branch is also linked to the version number of the upcoming release.
 
-![][image3]
+![][image3.png]
 
 If the release branch contains the correct code (e.g. regression tests performed) then the release branch is merged with the main branch and the main branch is tagged with the version number. Before the release branch can be deleted, the content must also be merged back into the develop branch.
 
-*Hotfix branches*  
+*Hotfix branches*
 Hotfix branches are used, for example, to fix critical bugs in a production version. A branch is created from the main branch. The modified code is then merged into both the main branch and the develop branch. The hotfix branch is removed after merging with the main and develop branches.
 
-![][image4]
+![][image4.png]
 
 The drawing also indicates that the hotfix will eventually also be included in the next release.
 
@@ -38,14 +38,14 @@ The drawing also indicates that the hotfix will eventually also be included in t
 
 ## Creating a branch
 
-How to apply this gitflow when working for the Dean project?   
-After checking out the elimupi repository to your local machine you need to create a branch. 
+How to apply this gitflow when working for the Dean project?
+After checking out the elimupi repository to your local machine you need to create a branch.
 
 A git branch should start with a category. Pick one of these: feature, bugfix, hotfix, or test.
 
-* **feature** is for adding, refactoring or removing a feature  
-* **bugfix** is for fixing a bug  
-* **hotfix** is for changing code with a temporary solution and/or without following the usual process (usually because of an emergency)  
+* **feature** is for adding, refactoring or removing a feature
+* **bugfix** is for fixing a bug
+* **hotfix** is for changing code with a temporary solution and/or without following the usual process (usually because of an emergency)
 * **test** is for experimenting outside of an issue/ticket
 
 After the category will come a ‘/’  and then the Github issue number and then a short description. For example ‘bugfix/110-dns-error’.
@@ -62,9 +62,9 @@ A pull request will be processed by the development team within a maximum of 7 d
 
 The pull request general process is as follows:
 
-* The developer creates a pull request in Github and informs the team.  
-* At least 1 development team member, reviews the code, discusses it, and alters it if needed.  
-* A pull request needs at least 1 approval of another development team member.  
+* The developer creates a pull request in Github and informs the team.
+* At least 1 development team member, reviews the code, discusses it, and alters it if needed.
+* A pull request needs at least 1 approval of another development team member.
 * Pull request comments and discussion are resolved by the reviewer(s).
 
 When the  pull request is approved, the developer merges the feature into the main branch of the git repository and closes the pull request.
@@ -75,12 +75,12 @@ After one or more merges to the develop branch a new release needs to be created
 
 The release branch general process is as follows:
 
-* The product owner decides which features and fixes from the development branch are required for the release  
-* A new branch is created containing the agreed commits  
-* A new ‘release image’ is created for test purposes  
+* The product owner decides which features and fixes from the development branch are required for the release
+* A new branch is created containing the agreed commits
+* A new ‘release image’ is created for test purposes
 * The release image is used on a UlimuPi for testing
 
-When the release is approved a pull request is created for merging into the main branch.  
+When the release is approved a pull request is created for merging into the main branch.
 
 
 [image1]: <data:image/png;base64,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>

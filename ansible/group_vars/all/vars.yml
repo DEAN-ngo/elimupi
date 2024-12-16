@@ -146,6 +146,16 @@ wifi_settings:
    - ssid: dean-4g
      psk: "{{ ssid1_passphrase }}"
 
+# Webserver
+docroot: "/var/www/html"
+httpd_owner: "www-data"
+httpd_group: "www-data"
+web_logdir: "/var/www/log/"
+web_scriptdir: "/var/www/scripts"
+
+# DEAN repo WebInterface
+webinterface_repo: "git@github-elimupi-web-interface:DEAN-ngo/ElimuPi-Web-Interface.git"
+
 # OpenLDAP
 openldap_server_domain: elimupi.local
 
@@ -184,8 +194,6 @@ openldap_olcAccess:
     by * read
 # internal basedn variable
 _basedn: "dc={{ openldap_server_domain.split('.')[0] }},dc={{ openldap_server_domain.split('.')[1] }}"
-
-
 
 # Kiwix
 #
@@ -241,13 +249,13 @@ moodle_database_username: elimu
 moodle_database_prefix: ""
 
 moodle_httpd_data_directory: /var
-moodle_httpd_owner: www-data
-moodle_httpd_group: www-data
+moodle_httpd_owner: "{{ httpd_owner }}"
+moodle_httpd_group: "{{ httpd_group }}"
 
 moodle_root_path: /var/moodle
 moodle_dataroot_path: /var/moodledata
 
-#moodle_version: '4.00'
+#moodle_version: '4.0.x'
 moodle_repo_url: "https://github.com/moodle/moodle.git"
 moodle_version: "MOODLE_403_STABLE"
 moodle_shell_url_src: "https://moodle.org/plugins/download.php/28292/moosh_moodle41_2023010400.zip"
@@ -256,8 +264,8 @@ moodle_root_user: root
 moodle_root_group: root
 moodle_root_permissions: '0755'
 
-moodle_dataroot_user: www-data
-moodle_dataroot_group: www-data
+moodle_dataroot_user: "{{ httpd_owner }}"
+moodle_dataroot_group: "{{ httpd_group }}"
 moodle_dataroot_permissions: '0777'
 
 moodle_fullname: DEAN Moodle
@@ -315,7 +323,6 @@ kolibri_language: 'en'
 # Kolibri admin account
 kolibri_admin_user: 'admin'
 kolibri_admin_password: ''
-
 # OpenVPN config
 openvpn_cert_dir: /etc/openvpn/certs
 openvpn_key_dir: /etc/openvpn/keys

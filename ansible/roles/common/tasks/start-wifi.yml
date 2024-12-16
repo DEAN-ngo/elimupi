@@ -1,4 +1,0 @@
----
-- name: Unblock Wifi
-  shell:
-    cmd:  raspi-config nonint do_wifi_country KE

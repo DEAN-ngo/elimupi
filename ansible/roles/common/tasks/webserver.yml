@@ -1,5 +1,4 @@
 ---
-# Install nginx site file
 - name: Webserver | Copy configuration files
   ansible.builtin.copy:
     src: nginx/{{ item }}
@@ -30,39 +29,42 @@
     path: /etc/nginx/sites-enabled/default
     state: absent
 
-- name: Webserver | Create directory /var/www/log
+- name: Webserver | Create log directory
   ansible.builtin.file:
-    path: /var/www/log
+    path: '{{ web_logdir }}'
     state: directory
     mode: '0755'
 
 - name: Webserver | Enable services
   ansible.builtin.service:
-    name: "{{ item }}"
+    name: '{{ item }}'
     state: started
   loop:
     - nginx
 
 - name: Webserver | Set PHP upload_max_filesize
   community.general.ini_file:
-    path: "/etc/php/{{php_version}}/cli/php.ini"
+    path: '/etc/php/{{ php_version }}/cli/php.ini'
     section: PHP
     option: upload_max_filesize
     value: 2G
-  loop:
-    - "/etc/php/{{php_version}}/cli/php.ini"
-    - "/etc/php/{{php_version}}/fpm/php.ini"
 
+- name: Webserver | Set PHP FMP upload_max_filesize
+  community.general.ini_file:
+    path: '/etc/php/{{ php_version }}/fpm/php.ini'
+    section: PHP
+    option: upload_max_filesize
+    value: 2G
 
-- name: Webserver | Clean /var/www/html
+- name: Webserver | Clean docroot
   ansible.builtin.file:
     state: absent
-    path: /var/www/html
+    path: '{{ docroot }}'
 
 - name: Webserver | Checkout ElimuPi-Web-Interface
   ansible.builtin.git:
-    repo: 'git@github-elimupi-web-interface:DEAN-ngo/ElimuPi-Web-Interface.git'
-    dest:  /var/www/html
+    repo: '{{ webinterface_repo }}'
+    dest:  '{{ docroot }}'
     version: main
     accept_hostkey: yes
   notify:
@@ -72,22 +74,29 @@
 - name: Webserver | Checkout ElimuPi-Connect Webinterface
   ansible.builtin.copy:
     src: files/html/apiconnect
-    dest: /var/www/html/
-    owner: www-data
-    group: www-data
+    dest: '{{ docroot }}'
+    owner: '{{ httpd_owner }}'
+    group: '{{ httpd_group }}'
   notify:
     - Restart Nginx
-
-- name: Webserver | Create directory /var/www/scripts
+- name: Webserver | Set ownership docroot
   ansible.builtin.file:
-    path: /var/www/scripts
+    path: '{{ docroot }}'
+    state: directory
+    recurse: yes
+    owner: '{{ httpd_owner }}'
+    group: '{{ httpd_group }}'
+
+- name:  Webserver | Create web scripts directory
+  ansible.builtin.file:
+    path: '{{ web_scriptdir }}'
     state: directory
     mode: '0755'
 
 - name: Webserver | Copy ElimuPi-Web-Interface admin scripts
   ansible.builtin.copy:
-    src: /var/www/html/admin/scripts/{{ item }}
-    dest: /var/www/scripts/{{ item }}
+    src: '{{ docroot }}/admin/scripts/{{ item }}'
+    dest: '{{ web_scriptdir }}/{{ item }}'
     remote_src: yes
     owner: root
     group: root
@@ -99,13 +108,12 @@
     - deleteuser.sh
     - restoreAccounts.sh
 
-- name: Webserver | set server_names_hash_bucket_size
+- name: Webserver | Set server_names_hash_bucket_size
   ansible.builtin.lineinfile:
     path: /etc/nginx/nginx.conf
     regex: '^\s*#? *server_names_hash_bucket_size 64;'
     line: server_names_hash_bucket_size 64;
 
-# Add Webinterface sudo settings
 - name: Webserver | Set sudo file 020_elimupi
   ansible.builtin.copy:
     src: sudoers.d/020_elimupi
