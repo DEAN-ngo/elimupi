@@ -5,7 +5,7 @@
 ## Branching strategy
 
 Gitflow assumes two permanently present branches: “main” and “develop”. The main branch only contains “production-ready” code, while the develop branch contains the latest changes for the next release. You could also call this the “integration” branch.
-![][image1.png]
+![Gitflow](image1.png)
 
 In addition, there are a number of types of branches within the Gitflow workflow:
 \- feature branches;
@@ -16,21 +16,21 @@ In addition, there are a number of types of branches within the Gitflow workflow
 Feature branches are used to develop new features for the next release. When starting the development of a feature, it may not yet be known in which release this feature will be included.
 
 The essence of a feature branch is that it exists as long as the feature is in development, but will eventually be merged back into the develop branch (to add the new feature to the upcoming release). After merging, the feature branch can be deleted. If the development of the feature comes to nothing (e.g. in the case of a failed experiment), the feature branch can also be deleted without any problems.
-![][image2.png]
+![Feature branches](image2.png)
 
 *Release branches*
 Release branches support the preparation of a new production release. They make last-minute finishing touches possible. Additionally, they allow minor bug fixes and prepare metadata for a release (version number, build dates, etc.). By doing this work on a release branch, the development branch is freed up for further development of new features for a subsequent release.
 
 The moment to branch a new release branch from development is when the “develop” branch (almost) reflects the desired state of the next release. A release branch is also linked to the version number of the upcoming release.
 
-![][image3.png]
+![Release branches](image3.png)
 
 If the release branch contains the correct code (e.g. regression tests performed) then the release branch is merged with the main branch and the main branch is tagged with the version number. Before the release branch can be deleted, the content must also be merged back into the develop branch.
 
 *Hotfix branches*
 Hotfix branches are used, for example, to fix critical bugs in a production version. A branch is created from the main branch. The modified code is then merged into both the main branch and the develop branch. The hotfix branch is removed after merging with the main and develop branches.
 
-![][image4.png]
+![Hotfix branches](image4.png)
 
 The drawing also indicates that the hotfix will eventually also be included in the next release.
 
