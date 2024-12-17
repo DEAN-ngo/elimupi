@@ -1,0 +1,446 @@
+@font-face {
+    font-family: 'Open Sans Regular';
+    font-style: normal;
+    font-weight: normal;
+    src: local('Open Sans Regular'), url('../../assets/fonts/OpenSans-Regular.woff') format('woff');
+}
+*{
+    font-family: Open Sans Regular;
+}
+[v-cloak] > * { display:none }
+:root *{
+    --dean_white: #ffffff;
+    --dean_orange: #3aae4e;
+    --dean_black: #000000;
+    --dean_darkgrey: #9d9893;
+    --dean_warmgrey: #dad0b5;
+    --dean_grey: #e8e2da;
+    --dean_lightgrey: #f3efea;
+    --dean_blue: #82c348;
+}
+a{
+    color: var(--dean_blue);
+}
+p{
+    color:var(--dean_blue);
+}
+h1{
+    font-weight: bold;
+    margin: 0 0 1.5rem 0;
+    color: var(--dean_orange);
+}
+h2, h4{
+    color:var(--dean_blue);
+    font-weight: bold;
+}
+select{
+    height: 2.5rem;
+}
+progress{
+    margin-top: 5rem;
+    width: 100%;
+}
+img.installable{
+    width: 3rem;
+}
+form.columns{
+    max-width: 300px;
+}
+form.columns div{
+    padding: 1rem 0;
+}
+form.columns div div{
+    display: inline-block;
+    max-width: 12rem;
+    min-width: 12rem;
+}
+#loader{
+    text-align: center;
+    position:fixed;
+    width: calc(100% - 6rem);
+}
+#interface{
+    max-width: 100%;
+    height: 100vh;
+    margin: 0 auto;
+    box-sizing: border-box;
+    /*    margin: 0 3rem;*/    
+}
+div.main{
+    width: 100%;
+}
+div.main div.left{
+    float:left;
+    width: 15%;
+    max-width: 15%;
+}
+div.left .menu-item{
+    width: 100%;
+}
+div.left .menu-item > div{
+    margin: 0 auto;
+    width: 50px;
+    padding: 2rem 0;
+}
+div.main div.right{
+    float: left;
+    width: 85%;
+    max-width: 85%;
+}
+.loginBar{
+    height: 5rem;
+    margin-bottom: 1.5rem;
+}
+#enter-credentials td{
+    width: 50%;
+    padding:0.25rem;
+}
+#enter-credentials input[type=submit]{
+    float:right;
+}
+#interface > img{
+    margin: 0 1rem;
+}
+#actions{
+    height: 5rem;
+}
+#actions img{
+    width: 50px;
+    height: 50px;
+    cursor: pointer;
+}
+#actions > div{
+    float: left;
+    position: relative;
+}
+#packagesList{
+    padding: 1rem 0;
+    background-color: white;
+}
+#packagesList ul, 
+#packagesList li{
+    display: block;
+}
+#packagesList ul{
+    margin: 0;
+}
+#packagesList item{
+    display:block;
+}
+#packagesList ul{
+    padding: 1.5rem 1rem 2rem 80px;
+}
+#packagesList items item:nth-child(odd){
+    background-color: var(--dean_lightgrey);
+}
+#packagesList items ul li:nth-child(1){
+    color: var(--dean_black);
+    font-size: 125%;
+}
+item{
+    background-position: 1.5rem center;
+    background-image: url(../img/folder.png);
+    background-repeat: no-repeat;
+}
+.selectedPackages{
+    margin-top:3rem;
+}
+.selected-for-install{
+    border: 1px solid #3aae4e;
+}
+.admin-blocks{
+    margin-bottom: 1.5rem;
+    clear: both;
+}
+.admin-block.has-icon{
+    margin: 3rem;
+}
+.admin-block img{
+    width: 5rem;
+}
+.admin-block h3:before{
+    color: var(--dean_orange);
+    width: 3rem;
+    display: inline-block;
+ }
+.admin-block h3:before{
+    content:'\25B6';
+}
+.admin-block.expanded h3:before{
+    content:'\25BC';
+}
+.admin-block input[type=file]{
+    display: inline;
+}
+.installed-versions > div{
+    display: flex;
+    margin-left: 3rem;
+}
+.installed-versions > div > div{
+    width: 12rem;
+    min-width: fit-content;
+}
+.installed-versions > div > div:first-child:first-letter{
+    color:var(--dean_orange);
+}
+.pointer{
+    cursor: pointer;
+}
+.menu-item-active > div{
+    border: 1px solid var(--dean_orange);
+}
+.dropdown{
+    position: absolute;
+    left: -3rem;
+    margin-top:2rem;
+    background-color: var(--dean_lightgrey);
+    width: calc(200px + 8rem);
+}
+.topRight .dropdown-right{
+    right:0;
+    background-color: var(--dean_lightgrey);
+}
+ul.dropdown,
+ul.dropdown-right{
+    padding: 0 4rem;
+    list-style: none;
+    margin-left:-40px;
+    line-height: 3rem;
+}
+ul.dropdown-right  li a,
+ul.dropdown li a{
+    color: var(--dean_black);
+    cursor: pointer;
+}
+.loginBar{
+    width: 100%;
+    background-color: var(--dean_orange);
+    color:var(--dean_white);
+    display: flex;
+}
+.loginBar > div{
+    float: none;
+    width: 50%;
+}
+.loginBar .right{
+    text-align: right;
+}
+.loginBar .left{
+    text-align: left;
+}
+.loginBar span, .loginBar a{
+    cursor: pointer;
+}
+.loginBar img:not(.realSize){
+    height:100%;
+    padding: 5px 1rem;
+}
+span.spinner{
+    padding-left: 2rem;
+    min-width: 2rem;
+    color: var(--dean_black);
+}
+.newPackages .spinner.hide,
+.copyPackages .spinner.hide,
+.verifyPackages .spinner.hide{
+    visibility: hidden;
+    display: inline !important;
+}
+.scrollable .scroll1{
+    max-height: calc(100vh - 20rem);
+    overflow-y: auto;
+}
+.scrollable .scroll2{
+    max-height: calc(100vh - 12rem);
+    overflow-y: auto;
+}
+.icon.right{
+    position: absolute;
+    right: 0;
+    top: 1.5rem;
+}
+.errorMsg{
+    text-align: center;
+    color: tomato;
+    padding: 1rem;
+    max-height: 12rem;
+    overflow-y: auto;
+}
+.syncStudents .errorMsg{
+    text-align: left;
+}
+.syncPackagesProgress .status{
+    margin-top: 2rem;
+    min-height: calc(8 * 1.5rem);
+}
+.enter-credentials{
+    max-width: 300px;
+    margin: 0 auto;
+    position: relative;
+}
+.enter-credentials.login{
+    margin-top:2rem;
+}
+.sidebar{
+    height: 100vh;
+    max-height: 100vh;
+    overflow: hidden;
+    width: 10px;
+    overflow: hidden;
+    position: absolute;
+    background-color: #202020;
+    z-index: 9999;
+}
+.sidebar.left{
+    left:0;
+}
+.sidebar.right{
+    right:0;
+}
+.sidebar.expanded{
+    width: 20%;
+    min-width: 250px;
+    overflow: auto;
+    color: #f7f7f7;
+}
+.sidebar.left .leftbar{
+    float: left;
+    height: 100vh;
+    padding: 3rem;
+}
+.sidebar.right .rightbar{
+    height: 100vh;
+    padding: 3rem;
+}
+.sidebar.left .rightbar{
+    position: absolute;
+    right:0;
+    height: 100vh;
+    max-height: 100vh;
+    width: 10px;
+    background-color: var(--dean_black);
+    background-image: url(../img/ribbons.png);
+}
+.sidebar.right .leftbar{
+    height: 100vh;
+    width: 10px;
+    float: left;
+    background-color: var(--dean_black);
+    background-image: url(../img/ribbons.png);
+}
+.sidebar ul{
+    padding: 0;
+}
+.right span{
+    line-height: 3.5em;
+    padding-right: 1.5rem;
+    margin-top: 1.25rem;
+}
+.topRight{
+    position: absolute;
+    right: 3rem;
+    width: fit-content;
+}
+.search{
+    margin-bottom: 1.5rem;
+}
+.search input{
+    padding-left: 1rem;
+}
+.userListItem{
+    padding: 0.5rem;
+}
+.userListItem:nth-child(odd){
+    background-color: var(--dean_lightgrey);
+    border: 1px solid var(--dean_lightgrey)
+}
+.userListItem:nth-child(even){
+    background-color: var(--dean_white);
+    border: 1px solid var(--dean_white);
+}
+.userListItem{
+    min-height: calc(50px + 3rem);
+}
+.userListItem span{
+    float: left;
+}
+.userListItem .user-text{
+    margin: 1.5rem 0 1.5rem 0.5rem;
+}
+.student,
+.teacher,
+.admin{
+    display: block;
+    width: 50px;
+    height: 50px;
+    background-repeat: no-repeat;
+}
+.student{
+    background-image: url(../img/student.png);
+}
+.teacher{
+    background-image: url(../img/teacher.png);
+}
+.admin{
+    background-image: url(../img/admin.png);
+}
+.disks{
+    clear: left;
+}
+.disk-control{
+    height: 8rem;
+}
+.total{
+    width:100%;
+    text-align: center;
+}
+.popup .inner{
+    color: tomato;   
+}
+.eject{
+    width: 10%;
+    line-height: 2rem;
+    text-align:center;
+    float: left;
+}
+.eject button{
+    height:calc( 2rem + 4px);
+}
+.disk-usage{
+    float:left;
+    width: 80%;
+    border: 2px solid #3aae4e;
+    box-sizing: border-box;
+}
+.disk-usage.grayed{
+    border: 1px solid gray;
+}
+.hide{
+    display: none;
+}
+.icon{
+    width:10%;
+    float:left;
+    clear:right;
+    text-align:center;
+}
+.icon.after{
+    float: none;
+}
+.icon img{
+    max-height: 50px;
+    max-width: 50px;
+}
+.used{
+    height: 2rem;
+    width: 0;
+    background: #3aae4e;
+}
+.used p{
+    float: right;
+    position:relative;
+    top:1rem;
+    color: white;
+    font-weight: bold;
+    line-height: 0;
+}

@@ -1,0 +1,579 @@
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: am_ET\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 3.0\n"
+"Plural-Forms: nplurals=2; plural=(n==0 || n==1);\n"
+
+#, php-format
+msgid "%1$s has been converted to %2$s. Account created succesfully."
+msgstr "%1$s ተቀይሯል  %2$s። የልዩ መለያ መታወቂያ ስሙ በተሳካ ሁኔታ ተፈጥሯል"
+
+#, php-format
+msgid "(Max %1$s)"
+msgstr ""
+
+#, php-format
+msgid "Account for %1$s already exists."
+msgstr "አሁንም ቢሆን %1$s ተጠያቂ ዎች አሉ ።"
+
+#, php-format
+msgid "Account for %1$s has been created successfully."
+msgstr "%1$s ሒሳብ በተሳካ ሁኔታ ተፈጥሯል ።"
+
+msgid "Add a user"
+msgstr "ተጠቃሚ ጨምር"
+
+msgid "Add user"
+msgstr "ተጠቃሚ ጨምር"
+
+msgid "Add users"
+msgstr "ተጠቃሚዎችን ጨምር"
+
+msgid "Added:"
+msgstr "ጨምረህ ፦"
+
+msgid "Admin"
+msgstr "አድሚን"
+
+msgid "An offline educational server solution"
+msgstr ""
+
+msgid "Android Apps"
+msgstr ""
+
+#, fuzzy
+#| msgid "account"
+msgid "Backup accounts"
+msgstr "አድራሻ"
+
+msgid "Bandwidth rates apply when connecting to an online resource."
+msgstr "የባንድ ስፋት መጠን ከአንድ የኢንተርኔት ምንጭ ጋር በሚገናኝበት ጊዜ ይሠራል።"
+
+msgid "Change password"
+msgstr "የይለፍ ቃል ቀይር"
+
+msgid "Click <em>+ new repository</em>"
+msgstr ""
+
+msgid "Coming soon: electronic learning environment for teachers"
+msgstr ""
+
+msgid "Content"
+msgstr ""
+
+msgid "Copied :"
+msgstr "የተገለበጠ"
+
+msgid "Copy packages"
+msgstr "ጥቅሎችን መገልበጥ"
+
+msgid "Copy packages to secondary disk"
+msgstr ""
+
+msgid "Copying packages."
+msgstr "ጥቅሎችን መገልበጥ።"
+
+msgid "Create Content Disk"
+msgstr "ይዘት ዲስክ ይፍጠሩ"
+
+msgid "Create and delete pupils with a text file"
+msgstr ""
+
+msgid "Curriculum content"
+msgstr ""
+
+msgid "DEAN - ElimuPi"
+msgstr ""
+
+#, fuzzy
+#| msgid "ElimuPi Online"
+msgid "DEAN - ElimuPi - Elimu Online"
+msgstr "ElimuPi ኦንላይን"
+
+msgid "DEAN - ElimuPi - Khan Academy"
+msgstr ""
+
+msgid "DEAN - ElimuPi - Wikipedia"
+msgstr ""
+
+msgid "Disk usage :"
+msgstr "ዲስክ አጠቃቀም"
+
+msgid "Docs"
+msgstr ""
+
+msgid "Documents"
+msgstr ""
+
+msgid "Done updating."
+msgstr "የማሻሻል ሥራ አከናውን።"
+
+msgid "Download"
+msgstr "አውርድ"
+
+msgid "Download fdroid.apk to your device."
+msgstr ""
+
+#, fuzzy
+#| msgid "Download"
+msgid "Download log files"
+msgstr "አውርድ"
+
+msgid "Educational Materials"
+msgstr ""
+
+msgid "Educational documents"
+msgstr ""
+
+msgid "Eject"
+msgstr "አውጣው"
+
+#, fuzzy
+#| msgid "ElimuPi Online"
+msgid "Elimu Online"
+msgstr "ElimuPi ኦንላይን"
+
+#, fuzzy
+#| msgid "ElimuPi Online"
+msgid "Elimu.online"
+msgstr "ElimuPi ኦንላይን"
+
+msgid "ElimuGo app"
+msgstr ""
+
+#, fuzzy
+#| msgid "ElimuPi Online"
+msgid "ElimuOnline"
+msgstr "ElimuPi ኦንላይን"
+
+msgid "ElimuOnline is a Learn Management System (LMS) where we share educational content for the Kenyan national curriculum."
+msgstr ""
+
+msgid "ElimuPi Online"
+msgstr "ElimuPi ኦንላይን"
+
+msgid "ElimuPi disk not available."
+msgstr "አልሙኒ ፓይዲስክ አልተገኘም"
+
+#, fuzzy
+#| msgid "ElimuPi Online"
+msgid "Elimupi Admin"
+msgstr "ElimuPi ኦንላይን"
+
+msgid "Email"
+msgstr ""
+
+msgid "Enter <strong>http://fdroid.local</strong> and <i>add</i>"
+msgstr ""
+
+msgid "Fetch all"
+msgstr "ሁሉንም እጥፋ"
+
+msgid "Fetching packages info."
+msgstr "የጥቅሎች ንጣፍ መረጃ"
+
+msgid "Find information in this vast encyclopedia"
+msgstr ""
+
+msgid "Generate"
+msgstr ""
+
+msgid "Go Back and click on <em>categories</em> to view the available apps"
+msgstr ""
+
+msgid "Go to <em>Repositories</em>"
+msgstr ""
+
+msgid "Go to <em>settings</em>"
+msgstr ""
+
+msgid "Good to know"
+msgstr ""
+
+msgid "Home"
+msgstr ""
+
+msgid "How to distribute Android apps?"
+msgstr ""
+
+msgid "In case you get a warning about \"unknown sources\", allow the installation from unknow sources."
+msgstr ""
+
+#, php-format
+msgid ""
+"In the Admin interface a text file can be selected to synchronize the accounts of all pupils. The text file should contain a username on each line and can be a CSV file \n"
+"\t\t\t\t\t\t\t\t\t\t\tin which the lines end with one or more commas. All spaces will be removed. If the username doesn't exist yet it is created. If the username doesn't exist in the file and if the account \n"
+"\t\t\t\t\t\t\t\t\t\t\thas been created before it is deleted. The synchronize functionality doesn't start when 25% or more of all accounts would be deleted by the action."
+msgstr ""
+
+msgid "Initial password"
+msgstr "የመጀመሪያ የይለፍ ቃል"
+
+#, fuzzy
+#| msgid "Installed :"
+msgid "Install again"
+msgstr "የተገጠመ"
+
+msgid ""
+"Install fdroid.apk from your download folder by clicking it in a file manager on your device.\n"
+"                                                    (opening it direct from the download folder results in a \"cannot open file\". Use a file manager instead.)"
+msgstr ""
+
+#, fuzzy
+#| msgid "new password again"
+msgid "Install password plugin"
+msgstr "አዲስ የይለፍ ቃል እንደገና"
+
+msgid "Installed :"
+msgstr "የተገጠመ"
+
+#, fuzzy
+#| msgid "Installed :"
+msgid "Installed versions"
+msgstr "የተገጠመ"
+
+#, fuzzy
+#| msgid "Installed :"
+msgid "Installing :"
+msgstr "የተገጠመ"
+
+#, fuzzy
+#| msgid "Copying packages."
+msgid "Installing packages"
+msgstr "ጥቅሎችን መገልበጥ።"
+
+msgid "Interactive educational resources per curriculum subject"
+msgstr ""
+
+msgid "Internal storage :"
+msgstr "የውስጥ ማከማቻ"
+
+msgid "Khan Academy"
+msgstr ""
+
+msgid "List users"
+msgstr "ተጠቃሚዎችን ዝርዝር"
+
+#, fuzzy
+#| msgid "Copy packages"
+msgid "Local package"
+msgstr "ጥቅሎችን መገልበጥ"
+
+msgid "Local packages list is not readable."
+msgstr "የአካባቢ ጥቅሎች ዝርዝር ማንበብ አይቻልም."
+
+msgid "Log off"
+msgstr "ውጣ"
+
+#, fuzzy
+#| msgid "Login form"
+msgid "Login"
+msgstr "የመግቢያ ቅጽ"
+
+msgid "Login form"
+msgstr "የመግቢያ ቅጽ"
+
+msgid "Login not correct. Try again."
+msgstr "መግቢያው ትክክል አይደለም። ድጋሚ ሞክር."
+
+msgid "Looking for sources"
+msgstr ""
+
+msgid "Lost a password"
+msgstr "የይለፍ ቃል ጠፍቷል"
+
+msgid "Material"
+msgstr ""
+
+#, fuzzy
+#| msgid "new password again"
+msgid "Moodle password plugin"
+msgstr "አዲስ የይለፍ ቃል እንደገና"
+
+#, fuzzy
+#| msgid "account"
+msgid "Mount"
+msgstr "አድራሻ"
+
+msgid "New :"
+msgstr "አዲስ"
+
+msgid "New password"
+msgstr "አዲስ የይለፍ ቃል"
+
+msgid "No local packages found"
+msgstr ""
+
+msgid "No removal done."
+msgstr "ምንም ማስወገድ አልተሳናቸውም."
+
+msgid "Nothing added."
+msgstr "ምንም የሚጨመር ነገር የለም ።"
+
+msgid "Nothing found."
+msgstr "ምንም አልተገኘም ።"
+
+msgid "OK"
+msgstr ""
+
+msgid "Password is like the old one."
+msgstr "የይለፍ ቃል እንደ ድሮው ነው።"
+
+msgid "Password is the same."
+msgstr "የይለፍ ቃል አንድ ነው።"
+
+msgid "Password is too short."
+msgstr "የይለፍ ቃል በጣም አጭር ነው።"
+
+msgid "Password is too similar."
+msgstr "የይለፍ ቃል በጣም ተመሳሳይ ነው።"
+
+msgid "Password is unchanged."
+msgstr "የይለፍ ቃል አይለወጥም።"
+
+msgid "Password updated successfully."
+msgstr "የይለፍ ቃል በተሳካ ሁኔታ ተሻሽሏል።"
+
+msgid "Read"
+msgstr "ያንብቡ"
+
+msgid "Refresh"
+msgstr "እረፍት"
+
+msgid "Remove students not in the file :"
+msgstr "በፋይሉ ውስጥ ያልተሳተፉ ተማሪዎችን ያስወግዱ"
+
+msgid "Removed :"
+msgstr "የተወገዱ"
+
+#, fuzzy
+#| msgid "Removed :"
+msgid "Removed:"
+msgstr "የተወገዱ"
+
+msgid "Restart"
+msgstr ""
+
+#, fuzzy
+#| msgid "Verifying packages."
+msgid "Search package"
+msgstr "ጥቅሎችን ማረጋገጥ."
+
+#, fuzzy
+#| msgid "Secondary Disk"
+msgid "Secondary Content disk"
+msgstr "ሁለተኛ ደረጃ ዲስክ"
+
+msgid "Secondary Disk"
+msgstr "ሁለተኛ ደረጃ ዲስክ"
+
+msgid "Share"
+msgstr ""
+
+msgid "Something went wrong."
+msgstr ""
+
+msgid "Start Fdroid, an empty screen will appear"
+msgstr ""
+
+msgid "Start adding students."
+msgstr "ተማሪዎችን መጨመር ጀምር።"
+
+msgid "Start syncing students."
+msgstr "ተማሪዎችን ማቀናጀት ጀምር።"
+
+msgid "Storage"
+msgstr "ማስቀመጫ"
+
+msgid "Student"
+msgstr "ተማሪ"
+
+msgid "Stuff"
+msgstr "ዕቃዎች"
+
+msgid "Submit"
+msgstr "አስረክብ"
+
+msgid "Support"
+msgstr ""
+
+msgid "Sync"
+msgstr "ቅይጥ"
+
+msgid "Teacher"
+msgstr "መምህር"
+
+msgid "Telephone"
+msgstr ""
+
+msgid "The ElimuPi"
+msgstr ""
+
+msgid ""
+"The ElimuPi contains a range of educational Android apps. These apps can be installed on Android devices (tablets/phones) without the need of an\n"
+"                                                internet connection."
+msgstr ""
+
+msgid ""
+"The ElimuPi containts a wide range of educational resources. These resources are made available\n"
+"                                            by creating a wireless access point. Since you are reading this, you were able to connect to the\n"
+"                                            elimu Wi-Fi network."
+msgstr ""
+
+msgid ""
+"The ElimuPi is developed by Digital Education Africa Network (DEAN).\n"
+"                                            In case you need support, have wishes for additional functionality,\n"
+"                                            or want to report a bug. Please feel free to contact us."
+msgstr ""
+
+msgid ""
+"The curriculum content on the elimuPi comes from different educational publishers. We have organised this content by the national curriculum subjects of Kenya.\n"
+"                                            Each subject contains different sources on different levels which complement and enrich the existing teaching methods."
+msgstr ""
+
+msgid "The new password is too simple."
+msgstr "አዲሱ የይለፍ ቃል በጣም ቀላል ነው።"
+
+msgid "Title"
+msgstr ""
+
+msgid "Total used of"
+msgstr "ጠቅላላ ጥቅም ላይ የዋለ"
+
+msgid "Try again."
+msgstr "ድጋሚ ሞክር."
+
+msgid "Turn off"
+msgstr "ኣጥፋ"
+
+#, fuzzy
+#| msgid "Updates :"
+msgid "Update"
+msgstr "ዝማኔዎች:"
+
+msgid "Updates :"
+msgstr "ዝማኔዎች:"
+
+#, fuzzy
+#| msgid "Upload students"
+msgid "Upload content"
+msgstr "ተማሪዎችን  ጫን"
+
+msgid "Upload students"
+msgstr "ተማሪዎችን  ጫን"
+
+msgid "Users"
+msgstr "ተጠቃሚዎች"
+
+msgid "Verified :"
+msgstr "የተረጋገጠ"
+
+msgid "Verifying packages."
+msgstr "ጥቅሎችን ማረጋገጥ."
+
+#, fuzzy
+#| msgid "account"
+msgid "View account"
+msgstr "አድራሻ"
+
+msgid "Website"
+msgstr ""
+
+msgid "Welcome to the ElimuPi; the largest offline resource for education."
+msgstr ""
+
+msgid "What are the requirements of the file?"
+msgstr ""
+
+msgid "Wiki"
+msgstr ""
+
+msgid "WikiPedia"
+msgstr ""
+
+msgid "Wikipedia"
+msgstr ""
+
+msgid ""
+"Wikipedia is a free, open content online encyclopedia created through the collaborative effort of a community of users. The version on the ElimuPi is\n"
+"                                            accessible without the need of having internet access."
+msgstr ""
+
+msgid "account"
+msgstr "አድራሻ"
+
+msgid "day ago"
+msgstr "ቀን በፊት"
+
+msgid "days ago"
+msgstr "ከቀናት በፊት"
+
+msgid "enter password"
+msgstr "የይለፍ ቃል ያስገቡ"
+
+msgid "enter password again"
+msgstr "የይለፍ ቃል እንደገና ያስገቡ"
+
+msgid "month ago"
+msgstr "ከወር በፊት"
+
+msgid "months ago"
+msgstr "ከወራት በፊት"
+
+msgid "name"
+msgstr "ስም"
+
+msgid "new password"
+msgstr "አዲስ የይለፍ ቃል"
+
+msgid "new password again"
+msgstr "አዲስ የይለፍ ቃል እንደገና"
+
+msgid "password"
+msgstr "ፕስወርድ"
+
+msgid "search"
+msgstr "ፍለጋ"
+
+msgid "today"
+msgstr "ዛሬ"
+
+#, fuzzy
+#| msgid "Turn off"
+msgid "turn off"
+msgstr "ኣጥፋ"
+
+msgid "turn off ElimuPi"
+msgstr ""
+
+msgid "week ago"
+msgstr "ከሳምንት በፊት"
+
+msgid "weeks ago"
+msgstr "ከሳምንታት በፊት"
+
+msgid "wifi"
+msgstr ""
+
+msgid "year ago"
+msgstr "ከአመት በፊት"
+
+msgid "years ago"
+msgstr "ከዓመታት በፊት"
+
+#~ msgid "Actions"
+#~ msgstr "ድርጊቶች"
+
+#, fuzzy
+#~| msgid "Installed :"
+#~ msgid "Install"
+#~ msgstr "የተገጠመ"

@@ -3,3 +3,13 @@
   ansible.builtin.service:
     name: nginx
     state: restarted
+
+- name: Restart OpenVPN
+  ansible.builtin.service:
+    name: openvpn@client
+    state: restarted
+
+- name: Restart netfilter-persistent
+  ansible.builtin.service:
+    name: netfilter-persistent
+    state: restarted

@@ -1,5 +1,4 @@
 ---
-# Put empty ssh file on the boot partition (mounted under /boot on a Raspberry Pi)
 - name: Setup | Enable ssh
   ansible.builtin.systemd:
     state: started
@@ -53,7 +52,7 @@
     enabled: yes
 
 - name:  Setup | Force systemd to reread configs
-  ansible.builtin.systemd: 
+  ansible.builtin.systemd:
     daemon_reload: yes
 
 - name: Setup | Check if file /root/.resized exists
@@ -75,7 +74,7 @@
     tags:
       - reboot
   when: not resized.stat.exists
-  
+
 # https://github.com/RPi-Distro/firmware-nonfree/blob/bullseye/debian/config/brcm80211/cypress/README.txt#L11-L13
 - name: Setup | Install alternative firmware to maximise the number of clients in AP mode
   community.general.alternatives:

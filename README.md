@@ -1,8 +1,15 @@
 ## ElimuPi
 
-The purpose of this project is to provide a DEAN digital classroom environment for educational project in Tanzania and Kenya. This includes providing full Android tablet support without any direct internet connectivity.
+The purpose of this project is to provide a DEAN digital classroom environment for educational project in Tanzania and Kenya. This includes providing full Android tablet support without the need of any direct internet connectivity.
 
 Please visit https://www.dean.ngo/solutions/elimupi/  for more information.
+
+## ElimuPi-Connect
+The ElimuPi now supports all the ElimuPi-Connect addon features without the need of an separate computing device.
+
+- Internet service by using a 4G LTE USB Wifi AP dongle.
+- Remote Support.
+- Educational content updates.
 
 ## Introduction
 
@@ -13,12 +20,15 @@ This version of the ElimuPi build supports:
 - WiKiPedia alike functions based on [Kiwix](https://www.kiwix.org/en/about/).
 - [Kolibri](https://learningequality.org/kolibri/) learning system.
 - Dynamic content addition through USB storage.
-- Secured WiFi Access Point.
-- Wifi client support that defaults connects to AP's: elimupi-connect or dean-4g.
+- Secured WiFi Access Point with SSID : elumi
+- Wifi client that defaults connect to Wifi AP (dongle) SSID: dean-4g.
 - Local DHCP, DNS.
 - [Scratch](https://scratch.mit.edu/about), a high-level block-based visual programming language.
-- [Moodle](https://moodle.org/), 
-- Beamer support via onboard micro HDMI
+- [Moodle](https://moodle.org/).
+- Beamer support via onboard micro HDMI.
+- OpenVPN connection for content updates.
+- Transparent Proxy for logging.
+- Connect Registration dashboard.
 
 #  Installation
 
@@ -66,9 +76,9 @@ Provision the ElimuPi software by running the ansible-play book against local Ra
 
  - Run playbook
 
-`ansible-playbook -i ./inventory.yml playbook-raspberrypi.yml --ask-vault-pass`
+`ansible-playbook -i ./inventory.yml playbook-elimupi.yml --ask-vault-pass`
 
-The installation will take approximately 20 minutes to finish and there shouldn't be any errors.
+The installation will take approximately 30-40 minutes to finish and there shouldn't be any errors.
 
 ## Create ElimuPi image copy
 
@@ -80,16 +90,23 @@ This should produce a xz compressed Elimupi image file.
 
 The image file can than be directly written to other SD-cards using Raspberry Pi Imager selecting the image with Use Custom Operation System option.
 
-# Connecting to Elimupi
+# Content Disk
 
--  Disconnect the Raspberry PI's TCP wired connection.
+The ElimuPi uses USB drive as a content disk for Kolibri and Kiwix Wiki etc.
+
+To prepare a minimal content disk:
+
+-  USB 2.0 > Drive/Stick of at least 3GB.
+-  NTFS formatted having disklabel: **Content**.
+-  Download [this](https://deannl.sharepoint.com/:u:/r/sites/ElimuPi/Gedeelde%20documenten/ElimuPi_minimal_contentdisk/Contentdisk_minimal.zip?csf=1&web=1&e=9CfOx0) zipfile, unzip it and copy the content onto USB drive.
+
+# Connecting to ElimuPi
+
 -  Connect your device via WiFi to SSID:  **elimu** using passcode: **1234567890**
 -  Point your browser to http://start.elimupi.online
 
 ## Default users
-All default username and passwords will be **pi/elimupi** unless noted differently.
-
-The default password for the Wifi AP with SSID: 'elimu' is : 1234567890
+The default username and passwords will be **pi/elimupi** unless noted differently.
 
 ## User access
 The end users can access the available resources after they are connected to the Wifi network.
@@ -104,8 +121,9 @@ The following links are provided to access the resources:
 - **Moodle** - [moodle.elimupi.online](http://moodle.elimupi.online)
 - **Admin** - [admin.elimupi.online](http://admin.elimupi.online)
 - **Scratch** - [scratch.elimupi.online](http://scratch.elimupi.online)
+- **Connect Registration dashboard** - [registration.elimupi.online](http://registration.elimupi.online)
 
-After you finished the installation you need to visit [admin.elimupi.online](http://admin.elimupi.online) login with the Admin account and go to Manage --> "Please follow the directions to register your device, so that it can synchronize with the central server."
+After you finished the installation you need to visit [registration.elimupi.online](http://registration.elimupi.online) login with an admin account to register your device, so that it can synchronize with the central server."
 
 ## Notes
 **NOTE1**: This install is tested to work with [Raspberry Pi OS Lite 64 bits image , Release date: November 19th 2024.](https://downloads.raspberrypi.com/raspios_lite_arm64/images/raspios_lite_arm64-2024-11-19/2024-11-19-raspios-bookworm-arm64-lite.img.xz) on a Raspberry Pi model 4 and 5.

@@ -1,0 +1,46 @@
+# HTTP Port for Forward Proxying
+http_port 8080
+http_port 3127 intercept
+
+sslcrtd_program /usr/lib/squid/security_file_certgen -s /var/spool/squid/ssl_db -M 4MB
+sslcrtd_children 5 startup=1 idle=1
+
+https_port 3128 intercept ssl-bump cert=/etc/squid/squid.pem
+
+#ACL STEPS
+acl step1 at_step SslBump1
+acl step2 at_step SslBump2
+acl step3 at_step SslBump3
+
+ssl_bump peek step1 all
+ssl_bump splice step2 all
+ssl_bump bump all
+# Visible hostname
+visible_hostname localhost
+
+# Cache size
+cache_dir ufs /var/spool/squid 10000 16 256
+
+# Access control lists
+acl all src all
+acl ssl_ports port 443
+acl Safe_ports port 80 8080 21 22 443 70 210 1025-65535
+acl CONNECT method CONNECT
+
+# Access controls
+http_access deny !Safe_ports
+http_access allow localhost
+http_access allow Safe_ports
+http_access allow all
+http_access deny all
+
+# Logging
+cache_log /var/log/squid/cache.log
+access_log daemon:/var/log/squid/access.log squid
+debug_options ALL,1
+log_icp_queries on
+
+# DNS settings
+dns_nameservers 8.8.8.8 8.8.4.4
+
+

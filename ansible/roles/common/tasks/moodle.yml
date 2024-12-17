@@ -21,13 +21,13 @@
     dest: "{{ moodle_root_path }}"
     version: "{{ moodle_version }}"
     force: yes
-    depth: 1
+    depth: '1'
     accept_hostkey: true
   become: true
 
 - name: Gitconfig save /var/moodle
   shell: git config --global --add safe.directory "{{ moodle_root_path }}"
-  become: true 
+  become: true
 
 - name: Download moosh | Moodle Shell
   ansible.builtin.unarchive:
@@ -45,9 +45,9 @@
 
 - name: Change owner and persmissions of directory /var/moodle
   ansible.builtin.file:
-    path: "{{ moodle_root_path }}" 
+    path: "{{ moodle_root_path }}"
     state: directory
-    owner: "{{ moodle_httpd_owner }}" 
+    owner: "{{ moodle_httpd_owner }}"
     mode: '0755'
     recurse: yes
 
@@ -65,12 +65,12 @@
     dest: /var/www/html/admin/files/auth_ldap_config.xml
     mode: "0755"
 
-- name: Set PHP max_input_vars to 5000 as per Moodle requirements 
+- name: Set PHP max_input_vars to 5000 as per Moodle requirements
   community.general.ini_file:
     path: "/etc/php/{{php_version}}/cli/php.ini"
     section: PHP
     option: max_input_vars
-    value: 5000
+    value: '5000'
 
 - name: Execute installation script
   become: yes
@@ -97,18 +97,18 @@
     creates: /var/moodle/config.php
     chdir: "{{ moodle_root_path }}"
 
-- name: Enable moodle ldap plugin 
+- name: Enable moodle ldap plugin
   become: yes
-  become_user: "{{ moodle_httpd_owner }}" 
+  become_user: "{{ moodle_httpd_owner }}"
   command: |
-     moosh -p {{ moodle_root_path }} -n auth-manage enable ldap 
+     moosh -p {{ moodle_root_path }} -n auth-manage enable ldap
   args:
 
-- name: Configure Moodle ldap 
+- name: Configure Moodle ldap
   become: yes
-  become_user: "{{ moodle_httpd_owner }}" 
+  become_user: "{{ moodle_httpd_owner }}"
   command: |
-    moosh -p {{ moodle_root_path }} config-plugin-import /var/www/html/admin/files/auth_ldap_config.xml  
+    moosh -p {{ moodle_root_path }} config-plugin-import /var/www/html/admin/files/auth_ldap_config.xml
 
 - name: Clear Moodle cache
   become: yes

@@ -1,0 +1,22 @@
+server {
+    listen 80;
+    index index.php index.html index.htm;
+    server_name registration.elimupi.online www.registration.elimupi.online;
+    root /var/www/html/apiconnect;
+
+
+    location / {
+        autoindex on;
+        try_files $uri $uri/ =404;
+
+    }
+
+    # pass the PHP scripts to FastCGI server
+    location ~ \.php$ {
+        # fastcgi_pass backend;
+        include snippets/fastcgi-php.conf;
+        fastcgi_pass unix:/run/php/php8.2-fpm.sock;
+        # fastcgi_param  SCRIPT_FILENAME  $document_root$fastcgi_script_name;
+        #fastcgi_param  PHP_VALUE  "include_path=$document_root/php/includes";
+   }
+}

@@ -1,6 +1,6 @@
 ---
 # Elimupi release version
-elimupi_release: 4.0.0
+elimupi_release: 4.1.0
 elimupi_release_file: "/root/elimupi_release-{{ elimupi_release }}-{{ lookup('pipe', 'date +%Y%m%d-%H%M') }}"
 
 host_ipv4_ipaddress: '10.11.2.50'
@@ -19,9 +19,7 @@ hosts_default_ipv4_hosts:
   hostnames:
     - "{{ inventory_hostname }}"
     - "{{ inventory_hostname_short }}"
-
     - start.elimupi.online
-    - local.elimupi.online
     - kolibri.elimupi.online
     - fdroid.elimupi.online
     - moodle.elimupi.online
@@ -29,7 +27,11 @@ hosts_default_ipv4_hosts:
     - wiki.elimupi.online
     - admin.elimupi.online
     - scratch.elimupi.online
+    - registration.elimupi.online
 
+dean_api_host: "DEANVPN001.elimupi.dean"
+dean_api_basepath: "/api/connect"
+dean_api_url: 'http://{{ dean_api_host }}{{ dean_api_basepath }}'
 
 lan_adapter: eth0
 ap_adapter: uap0
@@ -44,9 +46,10 @@ system_locales:
   - am_ET
 
 software_packages:
-  - ufw
   - git
   - nginx
+  - onedrive
+  - openvpn
   - php
   - php-fpm
   - php-curl
@@ -64,6 +67,18 @@ software_packages:
   - python3-pip
   - python3-pkg-resources
   - dirmngr
+  - iptables-persistent
+  - libffi-dev
+  - build-essential
+  - libssl-dev
+  - python3-full
+  - python-dev-is-python3
+  - python3-setuptools
+  - python3-pip
+  - python3-pkg-resources
+  - dirmngr
+  - squid-openssl
+  - ddclient
   - fdroidserver
   - ntfs-3g
   - hostapd
@@ -128,10 +143,18 @@ host_wireless_n: False
 wifi_settings:
   wifi_country: KE
   wifi_networks:
-   - ssid: elimu-connect
-     psk: "{{ ssid1_passphrase }}"
    - ssid: dean-4g
-     psk: "{{ ssid2_passphrase }}"
+     psk: "{{ ssid1_passphrase }}"
+
+# Webserver
+docroot: "/var/www/html"
+httpd_owner: "www-data"
+httpd_group: "www-data"
+web_logdir: "/var/www/log/"
+web_scriptdir: "/var/www/scripts"
+
+# DEAN repo WebInterface
+webinterface_repo: "git@github-elimupi-web-interface:DEAN-ngo/ElimuPi-Web-Interface.git"
 
 # OpenLDAP
 openldap_server_domain: elimupi.local
@@ -171,8 +194,6 @@ openldap_olcAccess:
     by * read
 # internal basedn variable
 _basedn: "dc={{ openldap_server_domain.split('.')[0] }},dc={{ openldap_server_domain.split('.')[1] }}"
-
-
 
 # Kiwix
 #
@@ -228,13 +249,13 @@ moodle_database_username: elimu
 moodle_database_prefix: ""
 
 moodle_httpd_data_directory: /var
-moodle_httpd_owner: www-data
-moodle_httpd_group: www-data
+moodle_httpd_owner: "{{ httpd_owner }}"
+moodle_httpd_group: "{{ httpd_group }}"
 
 moodle_root_path: /var/moodle
 moodle_dataroot_path: /var/moodledata
 
-#moodle_version: '4.00'
+#moodle_version: '4.0.x'
 moodle_repo_url: "https://github.com/moodle/moodle.git"
 moodle_version: "MOODLE_403_STABLE"
 moodle_shell_url_src: "https://moodle.org/plugins/download.php/28292/moosh_moodle41_2023010400.zip"
@@ -243,8 +264,8 @@ moodle_root_user: root
 moodle_root_group: root
 moodle_root_permissions: '0755'
 
-moodle_dataroot_user: www-data
-moodle_dataroot_group: www-data
+moodle_dataroot_user: "{{ httpd_owner }}"
+moodle_dataroot_group: "{{ httpd_group }}"
 moodle_dataroot_permissions: '0777'
 
 moodle_fullname: DEAN Moodle
@@ -302,3 +323,10 @@ kolibri_language: 'en'
 # Kolibri admin account
 kolibri_admin_user: 'admin'
 kolibri_admin_password: ''
+# OpenVPN config
+openvpn_cert_dir: /etc/openvpn/certs
+openvpn_key_dir: /etc/openvpn/keys
+
+# Squid log dir
+squid_log_dir: /var/log/squid
+squid_ssl_cert_path: "/etc/squid/squid.pem"

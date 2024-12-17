@@ -1,0 +1,9 @@
+---
+- name: Copy Custom script file
+  ansible.builtin.template:
+    src: templates/custom_script.sh.j2
+    dest: /usr/local/bin/dean_script
+    group: root
+    mode: '0744'
+
+

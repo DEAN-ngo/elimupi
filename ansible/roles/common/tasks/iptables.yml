@@ -1,0 +1,231 @@
+---
+- name: Start netfilter-persistent service
+  service:
+    name: netfilter-persistent
+    state: started
+    enabled: true
+  notify: Restart netfilter-persistent
+
+
+- name: Allow loopback interface traffic
+  ansible.builtin.iptables:
+    chain: INPUT
+    in_interface: lo
+    jump: ACCEPT
+    state: present
+
+- name: Allow loopback interface traffic
+  ansible.builtin.iptables:
+    chain: INPUT
+    in_interface: uap
+    jump: ACCEPT
+    state: present
+
+- name: Allow ssh
+  ansible.builtin.iptables:
+    chain: INPUT
+    protocol: tcp
+    destination_port: '22'
+    source: '{{ item }}'
+    jump: ACCEPT
+  loop:
+    - 10.0.0.0/8
+    - 172.16.0.0/12
+    - 192.168.0.0/16
+
+- name: Default deny firewall policy
+  ansible.builtin.iptables:
+    chain: INPUT
+    policy: DROP
+
+- name: Allow related and established connections
+  ansible.builtin.iptables:
+    chain: INPUT
+    ctstate: ESTABLISHED,RELATED
+    jump: ACCEPT
+  become: true
+
+- name: Allow forwarded traffic
+  ansible.builtin.iptables:
+    chain: FORWARD
+    jump: ACCEPT
+
+- name: Allow http
+  ansible.builtin.iptables:
+    chain: INPUT
+    protocol: tcp
+    destination_port: '80'
+    source: '{{ item }}'
+    jump: ACCEPT
+  loop:
+    - 10.0.0.0/8
+    - 172.16.0.0/12
+    - 192.168.0.0/16
+
+- name: Allow Kolibri
+  ansible.builtin.iptables:
+    chain: INPUT
+    protocol: tcp
+    destination_port: '8080'
+    source: '{{ item }}'
+    jump: ACCEPT
+  loop:
+    - 10.0.0.0/8
+    - 172.16.0.0/12
+    - 192.168.0.0/16
+
+- name: Allow Kolibri zip content
+  ansible.builtin.iptables:
+    chain: INPUT
+    protocol: tcp
+    destination_port: '8081'
+    source: '{{ item }}'
+    jump: ACCEPT
+  loop:
+    - 10.0.0.0/8
+    - 172.16.0.0/12
+    - 192.168.0.0/16
+
+- name: Allow Scratch
+  ansible.builtin.iptables:
+    chain: INPUT
+    protocol: tcp
+    destination_port: '8601'
+    source: '{{ item }}'
+    jump: ACCEPT
+  loop:
+    - 10.0.0.0/8
+    - 172.16.0.0/12
+    - 192.168.0.0/16
+
+- name: Allow dns
+  ansible.builtin.iptables:
+    chain: INPUT
+    protocol: udp
+    destination_port: '53'
+    jump: ACCEPT
+
+- name: Allow dhcp
+  ansible.builtin.iptables:
+    chain: INPUT
+    protocol: udp
+    destination_port: '67'
+    jump: ACCEPT
+
+- name: Allow squid
+  ansible.builtin.iptables:
+    chain: INPUT
+    protocol: tcp
+    destination_port: '3127'
+    jump: ACCEPT
+
+- name: Allow squid
+  ansible.builtin.iptables:
+    chain: INPUT
+    protocol: tcp
+    destination_port: '3128'
+    jump: ACCEPT
+
+- name: Forward port 80 to 3127
+  ansible.builtin.iptables:
+    table: nat
+    chain: PREROUTING
+    protocol: tcp
+    match: tcp
+    destination_port: 80
+    jump: REDIRECT
+    to_ports: 3127
+    comment: Redirect web traffic to port 3127
+  become: true
+
+- name: Forward port 443 to 3128
+  ansible.builtin.iptables:
+    table: nat
+    chain: PREROUTING
+    protocol: tcp
+    match: tcp
+    destination_port: 443
+    jump: REDIRECT
+    to_ports: 3128
+    comment: Redirect https web traffic to port 3128
+  become: true
+
+- name: Forward port 3127 to 3127
+  ansible.builtin.iptables:
+    table: nat
+    chain: OUTPUT
+    protocol: tcp
+    match: tcp
+    destination_port: 3127
+    jump: REDIRECT
+    to_ports: 3127
+    comment: Redirect port 3127 OUTPUT to port 3127
+  become: true
+
+- name: Forward port 3128 to 3128
+  ansible.builtin.iptables:
+    table: nat
+    chain: OUTPUT
+    protocol: tcp
+    match: tcp
+    destination_port: 3128
+    jump: REDIRECT
+    to_ports: 3128
+    comment: Redirect port 3128 OUTPUT to port 3128
+  become: true
+
+- name: ACCEPT http WEB OUTPUT
+  ansible.builtin.iptables:
+    table: nat
+    chain: OUTPUT
+    protocol: tcp
+    destination_port: 80
+    uid_owner: proxy
+    jump: ACCEPT
+    comment: Accept output from ports 80
+  become: true
+
+- name: ACCEPT https WEB OUTPUT
+  ansible.builtin.iptables:
+    table: nat
+    chain: OUTPUT
+    protocol: tcp
+    destination_port: 443
+    uid_owner: proxy
+    jump: ACCEPT
+    comment: Accept output from ports 443
+  become: true
+
+- name: ACCEPT proxy OUTPUT
+  ansible.builtin.iptables:
+    table: nat
+    chain: OUTPUT
+    protocol: tcp
+    destination_port: 3127
+    uid_owner: proxy
+    jump: ACCEPT
+    comment: Accept output from ports 3127
+  become: true
+
+- name: ACCEPT proxy OUTPUT
+  ansible.builtin.iptables:
+    table: nat
+    chain: OUTPUT
+    protocol: tcp
+    destination_port: 3128
+    uid_owner: proxy
+    jump: ACCEPT
+    comment: Accept output from ports 3128
+  become: true
+
+- name: Save iptables rules
+  ansible.builtin.shell:
+    cmd: iptables-save > /etc/iptables/rules.v4
+  become: true
+
+- name: Enable netfilter-persistent
+  ansible.builtin.systemd:
+    name: netfilter-persistent
+    enabled: yes
+    state: started
+  become: true

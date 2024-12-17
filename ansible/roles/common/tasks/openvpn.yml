@@ -1,0 +1,29 @@
+---
+- name: Create OpenVPN certs directory
+  ansible.builtin.file:
+    path: "{{ openvpn_cert_dir }}"
+    state: directory
+    owner: root
+    group: root
+
+- name: Create OpenVPN keys directory
+  ansible.builtin.file:
+    path: "{{ openvpn_key_dir}}"
+    state: directory
+    owner: root
+    group: root
+
+- name: Copy OpenVPN client configuration
+  ansible.builtin.template:
+    src: openvpn_client.conf.j2
+    dest: /etc/openvpn/client.conf
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: Start OpenVPN service
+  service:
+    name: openvpn@client
+    state: started
+    enabled: true
+  notify: Restart OpenVPN

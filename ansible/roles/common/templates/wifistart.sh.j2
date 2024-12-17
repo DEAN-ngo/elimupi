@@ -19,7 +19,7 @@ echo "Editing IP tables..."
 iptables -t nat -A POSTROUTING -s {{ ap_subnet }} ! -d {{ ap_subnet }} -j MASQUERADE
 
 # Bring up {{ ap_adapter }} interface.
-iw {{ ap_adapter }} info && sudo ifup {{ ap_adapter }}
+iw {{ ap_adapter }} info && sudo ifconfig {{ ap_adapter }} up
 
 # Start hostapd. 10-second sleep avoids some race condition, apparently. It may not need to be that long. (?)
 echo "Starting hostapd service..."

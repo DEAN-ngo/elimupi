@@ -8,11 +8,8 @@
 # ospackages - install OS packages
 - include_tasks: packages.yml
 
-# setup wifi AP
-- include_tasks: setup-wifi.yml
-
-#  start wifi
-- include_tasks: start-wifi.yml
+# setup wifi
+- include_tasks: wifi.yml
 
 # webserver - install webserver
 - include_tasks: webserver.yml
@@ -38,14 +35,26 @@
 # ldap - install openldap
 - include_tasks: ldap.yml
 
-# firewall - setup firewall
-- include_tasks: firewall.yml
-
 # offline_redirection - setup offline redirections
 - include_tasks: offline_redirection.yml
 
+# install OpenVPN
+- include_tasks: openvpn.yml
+
+# configure OneDrive
+- include_tasks: onedrive.yml
+
+# install Squid proxy
+- include_tasks: proxy.yml
+
+#SETUP DEAN SCRIPT
+- include_tasks: ddnsclient.yml
+
 # release file
 - include_tasks: release.yml
+
+# firewall - setup firewall
+- include_tasks: iptables.yml
 
 # reboot
 - include_tasks: reboot.yml
