@@ -5,10 +5,9 @@ The purpose of this project is to provide a DEAN digital classroom environment f
 Please visit https://www.dean.ngo/solutions/elimupi/  for more information.
 
 ## ElimuPi-Connect
-The ElimuPi now supports all the ElimuPi-Connect features as an addon without the need of an extra device.
+The ElimuPi now supports all the ElimuPi-Connect addon features without the need of an separate computing device.
 
-- Support for Internet connection over the mobile (4G)
-- Provides teachers and students Internet
+- Internet service by using a 4G LTE USB Wifi AP dongle.
 - Remote Support.
 - Educational content updates.
 
@@ -26,7 +25,7 @@ This version of the ElimuPi build supports:
 - Local DHCP, DNS.
 - [Scratch](https://scratch.mit.edu/about), a high-level block-based visual programming language.
 - [Moodle](https://moodle.org/).
-- Beamer support via onboard micro HDMI
+- Beamer support via onboard micro HDMI.
 - OpenVPN connection for content updates.
 - Transparent Proxy for logging.
 - Connect Registration dashboard.
@@ -122,7 +121,7 @@ The following links are provided to access the resources:
 - **Moodle** - [moodle.elimupi.online](http://moodle.elimupi.online)
 - **Admin** - [admin.elimupi.online](http://admin.elimupi.online)
 - **Scratch** - [scratch.elimupi.online](http://scratch.elimupi.online)
-- **Connect Registration dashboard**[registration.elimupi.online](http://registration.elimupi.online)
+- **Connect Registration dashboard** - [registration.elimupi.online](http://registration.elimupi.online)
 
 After you finished the installation you need to visit [registration.elimupi.online](http://registration.elimupi.online) login with an admin account to register your device, so that it can synchronize with the central server."
 
