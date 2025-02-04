@@ -84,6 +84,7 @@ software_packages:
   - hostapd
   - dhcpcd5
   - udevil
+  - resolvconf
 
 unnecesary_dependencies:
   # We use NGINX instead of Apache, but the package PHP has marked Apache2 as
