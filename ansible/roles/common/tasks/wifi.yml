@@ -10,7 +10,12 @@
     src: templates/interfaces.j2
     dest: /etc/network/interfaces
     mode: "0644"
-
+    
+- name: Configure resolvconf
+  ansible.builtin.template:
+    src: templates/resolv.head.j2
+    dest: /etc/resolvconf/resolv.conf.d/head
+    
 - name: Configure hostapd
   ansible.builtin.template:
     src: templates/hostapd.conf.j2
