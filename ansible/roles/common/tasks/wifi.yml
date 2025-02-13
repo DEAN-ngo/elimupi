@@ -88,4 +88,3 @@
 - name: Unblock Wifi
   shell:
     cmd:  raspi-config nonint do_wifi_country '{{ host_country_code }}'
-
