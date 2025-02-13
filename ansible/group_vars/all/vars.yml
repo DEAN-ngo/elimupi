@@ -84,7 +84,6 @@ software_packages:
   - dhcpcd5
   - udevil
 
-
 unnecesary_dependencies:
   # We use NGINX instead of Apache, but the package PHP has marked Apache2 as
   # dependency, so we remove it
