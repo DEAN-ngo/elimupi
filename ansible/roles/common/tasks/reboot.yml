@@ -1,4 +1,18 @@
 ---
+# Fix for https://github.com/DEAN-ngo/elimupi/issues/137
+# use DNS resolved and disable NetworkManager.
+
+- name: Install systemd-resolved
+  apt:
+    name: systemd-resolved
+    update_cache: yes
+    state: present
+
+- name: Disable NetworkManager service
+  systemd:
+    name: NetworkManager
+    enabled: no
+
 - name: Reboot and running rc.local
   ansible.builtin.reboot:
     reboot_timeout: 1200

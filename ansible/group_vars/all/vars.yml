@@ -1,6 +1,6 @@
 ---
 # Elimupi release version
-elimupi_release: 4.1.0
+elimupi_release: 4.1.1
 elimupi_release_file: "/root/elimupi_release-{{ elimupi_release }}-{{ lookup('pipe', 'date +%Y%m%d-%H%M') }}"
 
 host_ipv4_ipaddress: '10.11.2.50'
@@ -10,9 +10,8 @@ ap_subnet: '10.11.2.0/24'
 hosts_ipv4_loopback_hosts:
   address: '127.0.0.1'
   hostnames:
-    - elimupi.online
     - localhost
-    - elimupi
+
 
 hosts_default_ipv4_hosts:
   address: "{{ host_ipv4_ipaddress }}"
