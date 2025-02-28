@@ -1,5 +1,9 @@
 - src: singleplatform-eng.users
+  version: v1.2.6
 - src: ajsalminen.hosts
-- src: Oefenweb.dnsmasq 
+- src: Oefenweb.dnsmasq
+  version: v2.2.31
 - src: geerlingguy.mysql
+  version: 4.3.5
 - src: veselahouba.openldap
+  version: 2.0.1
