@@ -1,0 +1,11 @@
+[Unit]
+Description=Leaphy Backend
+After=network.target
+
+[Service]
+User=root
+ExecStart=/var/www/leaphy/backend/start.sh
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target

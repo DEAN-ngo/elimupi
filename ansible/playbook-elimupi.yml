@@ -5,10 +5,5 @@
   vars:
   roles:
     - singleplatform-eng.users
-    - role: ajsalminen.hosts
-      hosts_additional_hosts:
-          - address: '10.254.252.1'
-            hostnames:
-                - DEANVPN001.elimupi.dean
     - Oefenweb.dnsmasq
     - common

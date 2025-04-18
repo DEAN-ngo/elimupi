@@ -1,0 +1,36 @@
+server {
+    listen 80;
+
+	server_name     leaphy.elimupi.online leaphy.local;
+	error_log 		/var/www/log/leaphy-log;
+
+    location ~ "^/compile|^/minify|^/ai" {
+        proxy_read_timeout 300s;
+        proxy_pass http://127.0.0.1:8001;
+    }
+
+	location / {
+		autoindex on;
+		root /var/www/leaphy/html;
+	}
+}
+
+server {
+    listen 8443 ssl;
+
+    ssl_certificate /etc/squid/squid.pem;
+    ssl_certificate_key /etc/squid/squid.pem;
+
+	server_name     leaphy.elimupi.online leaphy.local;
+	error_log 		/var/www/log/leaphy-log;
+
+    location ~ "^/compile|^/minify|^/ai" {
+        proxy_read_timeout 300s;
+        proxy_pass http://127.0.0.1:8001;
+    }
+
+	location / {
+		autoindex on;
+		root /var/www/leaphy/html;
+	}
+}

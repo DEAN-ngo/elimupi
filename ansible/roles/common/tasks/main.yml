@@ -56,5 +56,8 @@
 # firewall - setup firewall
 - include_tasks: iptables.yml
 
+# leaphy - install leaphy easybloqs
+- include_tasks: leaphy.yml
+
 # reboot
 - include_tasks: reboot.yml
