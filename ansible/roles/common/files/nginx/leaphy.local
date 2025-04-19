@@ -10,8 +10,8 @@ server {
 server {
     listen 8443 ssl;
 
-    ssl_certificate /etc/squid/squid.pem;
-    ssl_certificate_key /etc/squid/squid.pem;
+    ssl_certificate /etc/ssl/certs/leaphy.pem;
+    ssl_certificate_key /etc/ssl/private/leaphy.key;
 
     server_name     leaphy.elimupi.online leaphy.local;
     error_log 		/var/www/log/leaphy-log;

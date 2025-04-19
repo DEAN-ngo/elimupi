@@ -335,3 +335,4 @@ squid_ssl_cert_path: "/etc/squid/squid.pem"
 leaphy_frontend_version: 3.4.0
 leaphy_arduino_cli_version: 1.2.0
 leaphy_avr_platform_version: 1.8.6
+leaphy_backend_version: v1.7.5

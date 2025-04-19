@@ -6,7 +6,10 @@
     dest: /etc/nginx/sites-available/leaphy.local
   notify:
     - Restart Nginx
-  tags: leaphy
+
+- name: Leaphy | Generate a Self Signed OpenSSL certificate
+  ansible.builtin.shell: |
+    openssl req -new -newkey rsa:4096 -days 9999 -nodes -x509 -subj "/C=NL/ST=Utrecht/L=Amersfoort/O=Leaphy/CN=leaphy.elimupi.online" -keyout /etc/ssl/private/leaphy.key -out /etc/ssl/certs/leaphy.pem
 
 - name: Leaphy | Enable nginx configuration
   ansible.builtin.file:
@@ -17,7 +20,6 @@
     state: link
   notify:
     - Restart Nginx
-  tags: leaphy
 
 - name: Leaphy | Create app directories
   ansible.builtin.file:
@@ -27,7 +29,6 @@
   loop:
     - /var/www/leaphy/html
     - /var/www/leaphy/backend
-  tags: leaphy
 
 - name: Leaphy | Download frontend files
   ansible.builtin.unarchive:
@@ -39,13 +40,13 @@
   git:
     repo: "https://github.com/leaphy-robotics/leaphy-webbased-backend.git"
     dest: "/var/www/leaphy/backend"
+    version: "{{ leaphy_backend_version }}"
     force: true
 
 - name: Leaphy | Create backend settings
   ansible.builtin.copy:
     src: leaphy/backend-env
     dest: /var/www/leaphy/backend/.env
-  tags: leaphy
 
 - name: Leaphy | Download arduino CLI
   ansible.builtin.unarchive:
@@ -58,7 +59,6 @@
     python3 -m venv /var/www/leaphy/backend/venv
     . /var/www/leaphy/backend/venv/bin/activate
     pip3 install -r /var/www/leaphy/backend/requirements.txt
-  tags: leaphy
 
 - name: Leaphy | Create arduino directories
   ansible.builtin.file:
@@ -71,7 +71,6 @@
     - /mnt/content/leaphy/data
     - /mnt/content/leaphy/user
     - /mnt/content/leaphy/tmp
-  tags: leaphy
 
 - name: Leaphy | Install AVR platform and libraries
   command: "/var/www/leaphy/arduino-cli {{ item }}"
@@ -95,21 +94,18 @@
     - lib install "Adafruit SGP30 Sensor"
     - lib install "Adafruit LSM9DS1 Library"
     - lib install "Adafruit SSD1306"
-  tags: leaphy
 
 - name: Leaphy | Install backend start script
   ansible.builtin.copy:
     src: leaphy/start-backend.sh
     dest: /var/www/leaphy/backend/start.sh
     mode: "0775"
-  tags: leaphy
 
 - name: Leaphy | Create systemd service
   ansible.builtin.copy:
     src: leaphy/leaphy-backend.service
     dest: /etc/systemd/system/leaphy-backend.service
     mode: "0664"
-  tags: leaphy
 
 - name: Leaphy | Enable and start the backend
   ansible.builtin.systemd_service:
@@ -117,4 +113,3 @@
     daemon_reload: true
     state: started
     enabled: true
-  tags: leaphy
