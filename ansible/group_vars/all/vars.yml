@@ -27,6 +27,7 @@ hosts_default_ipv4_hosts:
     - admin.elimupi.online
     - scratch.elimupi.online
     - registration.elimupi.online
+    - leaphy.elimupi.online
 
 dean_api_host: "DEANVPN001.elimupi.dean"
 dean_api_basepath: "/api/connect"
@@ -207,7 +208,7 @@ kiwix_version: kiwix-tools_linux-armhf-3.4.0
 #vikidia_version: "vikidia_en_all_nopic_{{ lookup('pipe','date -d \"$(date +%Y-%m-4) -4 month\" +%Y-%m || date -v -4m +%Y-%m') }}"
 #wiktionary_version: "wiktionary_en_simple_all_nopic_{{ lookup('pipe','date -d \"$(date +%Y-%m-2) -2 month\" +%Y-%m || date -v -4m +%Y-%m') }}"
 vikidia_version: "vikidia_en_all_nopic_2023-08"
-wiktionary_version: "wiktionary_en_simple_all_nopic_2024-06"
+wiktionary_version: "wiktionary_en_simple_all_nopic_2025-04"
 
 ansible_host_key_checking: false
 
@@ -329,3 +330,9 @@ openvpn_key_dir: /etc/openvpn/keys
 # Squid log dir
 squid_log_dir: /var/log/squid
 squid_ssl_cert_path: "/etc/squid/squid.pem"
+
+# Leaphy
+leaphy_frontend_version: 3.4.0
+leaphy_arduino_cli_version: 1.2.0
+leaphy_avr_platform_version: 1.8.6
+leaphy_backend_version: v1.7.5
