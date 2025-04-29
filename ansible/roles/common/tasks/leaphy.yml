@@ -108,7 +108,7 @@
     mode: "0664"
 
 - name: Leaphy | Enable and start the backend
-  ansible.builtin.systemd_service:
+  ansible.builtin.systemd:
     name: leaphy-backend.service
     daemon_reload: true
     state: started
