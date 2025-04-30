@@ -13,3 +13,14 @@
   ansible.builtin.service:
     name: netfilter-persistent
     state: restarted
+
+- name: Reload systemd and restart dnsmasq
+  block:
+    - name: Reload systemd
+      command: systemctl daemon-reload
+
+    - name: Restart dnsmasq
+      service:
+        name: dnsmasq
+        state: restarted
+
