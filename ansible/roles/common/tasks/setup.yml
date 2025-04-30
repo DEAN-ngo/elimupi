@@ -78,6 +78,10 @@
     path: /root/.resized
   register: resized
 
+- name: Setup | Set hostname to elimupi
+  ansible.builtin.shell:
+    cmd: raspi-config nonint do_hostname "{{ elimupi_hostname }}"
+
 - name: Setup | Resize root partition to maximum size
   block:
   - name: Setup | Change partition table

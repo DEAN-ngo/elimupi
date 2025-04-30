@@ -6,18 +6,17 @@ elimupi_release_file: "/root/elimupi_release-{{ elimupi_release }}-{{ lookup('pi
 host_ipv4_ipaddress: '10.11.2.50'
 ap_subnet: '10.11.2.0/24'
 
+elimupi_hostname: "elimupi"
+
 # defaults file for hosts
 hosts_ipv4_loopback_hosts:
   address: '127.0.0.1'
   hostnames:
     - localhost
 
-
 hosts_default_ipv4_hosts:
   address: "{{ host_ipv4_ipaddress }}"
   hostnames:
-    - "{{ inventory_hostname }}"
-    - "{{ inventory_hostname_short }}"
     - start.elimupi.online
     - kolibri.elimupi.online
     - fdroid.elimupi.online
