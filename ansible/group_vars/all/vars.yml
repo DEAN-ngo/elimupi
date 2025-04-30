@@ -113,16 +113,11 @@ groups_to_create:
     gid: 1003
 
 # Dnsmasq
-dnsmasq_dnsmasq_conf:
-  - |
-    except-interface={{ lan_adapter }}
-    no-dhcp-interface=lo,{{ sta_adapter }}
-    interface=lo,{{ ap_adapter }}
-    bind-interfaces
-    bogus-priv
-    server={{ dns_server }}
-    #domain-needed
-    dhcp-range=10.11.2.51,10.11.2.250,255.255.255.0,12h
+dnsmasq_delay: 60
+
+    
+
+
 
 # we don't want to start as startwifi.sh will do this and create virtual uap01
 dnsmasq_service_state: stopped
@@ -207,7 +202,7 @@ kiwix_version: kiwix-tools_linux-armhf-3.4.0
 #vikidia_version: "vikidia_en_all_nopic_{{ lookup('pipe','date -d \"$(date +%Y-%m-4) -4 month\" +%Y-%m || date -v -4m +%Y-%m') }}"
 #wiktionary_version: "wiktionary_en_simple_all_nopic_{{ lookup('pipe','date -d \"$(date +%Y-%m-2) -2 month\" +%Y-%m || date -v -4m +%Y-%m') }}"
 vikidia_version: "vikidia_en_all_nopic_2023-08"
-wiktionary_version: "wiktionary_en_simple_all_nopic_2024-06"
+wiktionary_version: "wiktionary_en_simple_all_nopic_2025-04"
 
 ansible_host_key_checking: false
 

@@ -1,0 +1,8 @@
+except-interface={{ lan_adapter }}
+no-dhcp-interface=lo,{{ sta_adapter }}
+interface=lo,{{ ap_adapter }}
+bind-interfaces
+bogus-priv
+server={{ dns_server }}
+#domain-needed
+dhcp-range=10.11.2.51,10.11.2.250,255.255.255.0,12h

@@ -31,6 +31,27 @@
     src: templates/dhcpcd.conf.j2
     dest: /etc/dhcpcd.conf
 
+- name: Template dnsmasq config
+  ansible.builtin.template:
+    src: dnsmasq.conf.j2
+    dest: /etc/dnsmasq.conf
+
+- name: Create systemd override directory for dnsmasq
+  file:
+    path: /etc/systemd/system/dnsmasq.service.d
+    state: directory
+    mode: '0755'
+
+- name: Write dnsmasq systemd override
+  copy:
+    dest: /etc/systemd/system/dnsmasq.service.d/override.conf
+    content: |
+      [Service]
+      ExecStartPre=/bin/sleep {{ dnsmasq_delay }}
+    mode: '0644'
+  notify: Reload systemd and restart dnsmasq
+
+
 #  https://forums.raspberrypi.com/viewtopic.php?t=360586
 - name: Enable dhcpcd support on Bookworm
   ansible.builtin.file:
