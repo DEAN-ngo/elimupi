@@ -1,0 +1,13 @@
+[Unit]
+Description=phet
+After=network.target
+
+[Service]
+ExecStart=/bin/sh -c '/var/kiwix/bin/kiwix-serve --port 82 /mnt/content/wiki/phet*.zim'
+StandardOutput=inherit
+StandardError=inherit
+Restart=always
+User=root
+
+[Install]
+WantedBy=multi-user.target

@@ -79,8 +79,15 @@
     dest: /etc/systemd/system/kiwix.service
     owner: root
     group: root
-    mode: '0644'    
-
+    mode: '0644'
+    
+- name: Copy file phet-service
+  ansible.builtin.copy:
+    src: kiwix/phet.service
+    dest: /etc/systemd/system/phet.service
+    owner: root
+    owner: root
+    mode: '0644'
 
 # Get latest version of zim package:  -> for now solved with variable in site.yml
    # def latest_zim_package(url, package):
@@ -116,7 +123,14 @@
     state: started
     enabled: yes
     daemon_reload: yes
-    name: kiwix    
+    name: kiwix
+
+- name: create service phet
+  ansible.builtin.systemd:
+    state: started
+    enabled: yes
+    daemon_reload: yes
+    name: phet
 
 # setup NGINX site
 - name: Set wiki.local
@@ -125,12 +139,30 @@
     dest: /etc/nginx/sites-available/wiki.local
   notify:
     - Restart Nginx
-    
+
+- name: Set phet.local
+  ansible.builtin.copy:
+    src: "nginx/phet.local"
+    dest: /etc/nginx/sites-available/phet.local
+  notify:
+    - Restart Nginx
+
 # Enable site
 - name: Create a symbolic link wiki.local
   ansible.builtin.file:
     src: /etc/nginx/sites-available/wiki.local
     dest: /etc/nginx/sites-enabled/wiki.local
+    owner: pi
+    group: pi
+    state: link
+  notify:
+    - Restart Nginx
+
+# Enable site
+- name: Create a symbolic link phet.local
+  ansible.builtin.file:
+    src: /etc/nginx/sites-available/phet.local
+    dest: /etc/nginx/sites-enabled/phet.local
     owner: pi
     group: pi
     state: link
