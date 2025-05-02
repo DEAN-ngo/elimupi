@@ -1,0 +1,115 @@
+---
+# Install Leaphy Easybloqs web interface
+- name: Leaphy | Install nginx configuration
+  ansible.builtin.copy:
+    src: "nginx/leaphy.local"
+    dest: /etc/nginx/sites-available/leaphy.local
+  notify:
+    - Restart Nginx
+
+- name: Leaphy | Generate a Self Signed OpenSSL certificate
+  ansible.builtin.shell: |
+    openssl req -new -newkey rsa:4096 -days 9999 -nodes -x509 -subj "/C=NL/ST=Utrecht/L=Amersfoort/O=Leaphy/CN=leaphy.elimupi.online" -keyout /etc/ssl/private/leaphy.key -out /etc/ssl/certs/leaphy.pem
+
+- name: Leaphy | Enable nginx configuration
+  ansible.builtin.file:
+    src: /etc/nginx/sites-available/leaphy.local
+    dest: /etc/nginx/sites-enabled/leaphy.local
+    owner: root
+    group: root
+    state: link
+  notify:
+    - Restart Nginx
+
+- name: Leaphy | Create app directories
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+    mode: '0755'
+  loop:
+    - /var/www/leaphy/html
+    - /var/www/leaphy/backend
+
+- name: Leaphy | Download frontend files
+  ansible.builtin.unarchive:
+    src: https://leaphyeasybloqs.com/downloads/leaphyeasybloqs-v{{ leaphy_frontend_version }}.zip
+    dest: /var/www/leaphy/html
+    remote_src: yes
+
+- name: Leaphy | Clone backend files
+  git:
+    repo: "https://github.com/leaphy-robotics/leaphy-webbased-backend.git"
+    dest: "/var/www/leaphy/backend"
+    version: "{{ leaphy_backend_version }}"
+    force: true
+
+- name: Leaphy | Create backend settings
+  ansible.builtin.copy:
+    src: leaphy/backend-env
+    dest: /var/www/leaphy/backend/.env
+
+- name: Leaphy | Download arduino CLI
+  ansible.builtin.unarchive:
+    src: https://downloads.arduino.cc/arduino-cli/arduino-cli_{{ leaphy_arduino_cli_version }}_Linux_ARM64.tar.gz
+    dest: "/var/www/leaphy/"
+    remote_src: yes
+
+- name: Leaphy | Create backend venv
+  shell: |
+    python3 -m venv /var/www/leaphy/backend/venv
+    . /var/www/leaphy/backend/venv/bin/activate
+    pip3 install -r /var/www/leaphy/backend/requirements.txt
+
+- name: Leaphy | Create arduino directories
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+    mode: '0755'
+    owner: "{{ httpd_owner }}"
+  loop:
+    - /mnt/content/leaphy
+    - /mnt/content/leaphy/data
+    - /mnt/content/leaphy/user
+    - /mnt/content/leaphy/tmp
+
+- name: Leaphy | Install AVR platform and libraries
+  command: "/var/www/leaphy/arduino-cli {{ item }}"
+  environment:
+    ARDUINO_DIRECTORIES_USER: "/mnt/content/leaphy/user"
+    ARDUINO_DIRECTORIES_DATA: "/mnt/content/leaphy/data"
+    ARDUINO_DIRECTORIES_DOWNLOADS: "/mnt/content/leaphy/tmp"
+  loop:
+    - core install arduino:avr@{{ leaphy_avr_platform_version }}
+    - lib update-index
+    - lib install "Leaphy Extensions"
+    - lib install "Servo"
+    - lib install "List"
+    - lib install "Adafruit NeoPixel"
+    - lib install "Arduino_APDS9960"
+    - lib install "QMC5883LCompass"
+    - lib install "DS3231"
+    - lib install "TM1637"
+    - lib install "Adafruit BMP280 Library"
+    - lib install "Adafruit_VL53L0X"
+    - lib install "Adafruit SGP30 Sensor"
+    - lib install "Adafruit LSM9DS1 Library"
+    - lib install "Adafruit SSD1306"
+
+- name: Leaphy | Install backend start script
+  ansible.builtin.copy:
+    src: leaphy/start-backend.sh
+    dest: /var/www/leaphy/backend/start.sh
+    mode: "0775"
+
+- name: Leaphy | Create systemd service
+  ansible.builtin.copy:
+    src: leaphy/leaphy-backend.service
+    dest: /etc/systemd/system/leaphy-backend.service
+    mode: "0664"
+
+- name: Leaphy | Enable and start the backend
+  ansible.builtin.systemd:
+    name: leaphy-backend.service
+    daemon_reload: true
+    state: started
+    enabled: true

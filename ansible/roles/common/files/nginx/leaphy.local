@@ -1,0 +1,28 @@
+server {
+    listen 80;
+
+    server_name     leaphy.elimupi.online leaphy.local;
+    error_log 		/var/www/log/leaphy-log;
+
+    return      301 https://leaphy.elimupi.online:8443$request_uri;
+}
+
+server {
+    listen 8443 ssl;
+
+    ssl_certificate /etc/ssl/certs/leaphy.pem;
+    ssl_certificate_key /etc/ssl/private/leaphy.key;
+
+    server_name     leaphy.elimupi.online leaphy.local;
+    error_log 		/var/www/log/leaphy-log;
+
+    location ~ "^/compile|^/minify|^/ai" {
+        proxy_read_timeout 300s;
+        proxy_pass http://127.0.0.1:8001;
+    }
+
+    location / {
+        autoindex on;
+        root /var/www/leaphy/html;
+    }
+}

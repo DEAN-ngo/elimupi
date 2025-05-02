@@ -22,6 +22,24 @@
     src: "ssh_config"
     dest: "/root/.ssh/config"
 
+- name: Setup | Add localhost hosts entry
+  ansible.builtin.lineinfile:
+    path: /etc/hosts
+    regexp: '^127.0.0.1 .*'
+    line: '127.0.0.1 localhost'
+
+- name: Setup | Add VPN hosts entry
+  ansible.builtin.lineinfile:
+    path: /etc/hosts
+    regexp: '^10.254.252.1.*DEANVPN001.elimupi.dean'
+    line: '10.254.252.1 DEANVPN001.elimupi.dean'
+
+- name: Setup | Add web hosts entry
+  ansible.builtin.lineinfile:
+    path: /etc/hosts
+    line: "{{ host_ipv4_ipaddress }} {{ hosts_default_ipv4_hosts.hostnames | join(' ') }}"
+    regexp: "^{{ host_ipv4_ipaddress }} .*"
+
 - name: Install locales
   community.general.locale_gen:
     name: "{{ item }}"
@@ -59,6 +77,10 @@
   ansible.builtin.stat:
     path: /root/.resized
   register: resized
+
+- name: Setup | Set hostname to elimupi
+  ansible.builtin.shell:
+    cmd: raspi-config nonint do_hostname "{{ elimupi_hostname }}"
 
 - name: Setup | Resize root partition to maximum size
   block:

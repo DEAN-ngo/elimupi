@@ -1,10 +1,12 @@
 ---
 # Elimupi release version
-elimupi_release: 4.1.1
+elimupi_release: 4.2.0
 elimupi_release_file: "/root/elimupi_release-{{ elimupi_release }}-{{ lookup('pipe', 'date +%Y%m%d-%H%M') }}"
 
 host_ipv4_ipaddress: '10.11.2.50'
 ap_subnet: '10.11.2.0/24'
+
+elimupi_hostname: "elimupi"
 
 # defaults file for hosts
 hosts_ipv4_loopback_hosts:
@@ -12,12 +14,9 @@ hosts_ipv4_loopback_hosts:
   hostnames:
     - localhost
 
-
 hosts_default_ipv4_hosts:
   address: "{{ host_ipv4_ipaddress }}"
   hostnames:
-    - "{{ inventory_hostname }}"
-    - "{{ inventory_hostname_short }}"
     - start.elimupi.online
     - kolibri.elimupi.online
     - fdroid.elimupi.online
@@ -27,6 +26,7 @@ hosts_default_ipv4_hosts:
     - admin.elimupi.online
     - scratch.elimupi.online
     - registration.elimupi.online
+    - leaphy.elimupi.online
 
 dean_api_host: "DEANVPN001.elimupi.dean"
 dean_api_basepath: "/api/connect"
@@ -324,3 +324,9 @@ openvpn_key_dir: /etc/openvpn/keys
 # Squid log dir
 squid_log_dir: /var/log/squid
 squid_ssl_cert_path: "/etc/squid/squid.pem"
+
+# Leaphy
+leaphy_frontend_version: 3.4.0
+leaphy_arduino_cli_version: 1.2.0
+leaphy_avr_platform_version: 1.8.6
+leaphy_backend_version: v1.7.5

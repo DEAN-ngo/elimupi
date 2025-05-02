@@ -29,6 +29,7 @@ This version of the ElimuPi build supports:
 - OpenVPN connection for content updates.
 - Transparent Proxy for logging.
 - Connect Registration dashboard.
+- [Leaphy Robotics](https://github.com/leaphy-robotics/leaphy-blocks)
 
 #  Installation
 
@@ -122,6 +123,7 @@ The following links are provided to access the resources:
 - **Admin** - [admin.elimupi.online](http://admin.elimupi.online)
 - **Scratch** - [scratch.elimupi.online](http://scratch.elimupi.online)
 - **Connect Registration dashboard** - [registration.elimupi.online](http://registration.elimupi.online)
+- **Leaphy** - [leaphy.elimupi.online](https://leaphy.elimupi.online)
 
 After you finished the installation you need to visit [registration.elimupi.online](http://registration.elimupi.online) login with an admin account to register your device, so that it can synchronize with the central server."
 

@@ -62,6 +62,18 @@
     - 172.16.0.0/12
     - 192.168.0.0/16
 
+- name: Allow https on 8443
+  ansible.builtin.iptables:
+    chain: INPUT
+    protocol: tcp
+    destination_port: '8443'
+    source: '{{ item }}'
+    jump: ACCEPT
+  loop:
+    - 10.0.0.0/8
+    - 172.16.0.0/12
+    - 192.168.0.0/16
+
 - name: Allow Kolibri
   ansible.builtin.iptables:
     chain: INPUT

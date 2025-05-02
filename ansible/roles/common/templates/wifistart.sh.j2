@@ -26,10 +26,10 @@ echo "Starting hostapd service..."
 systemctl start hostapd.service
 sleep 10
 
-#Start dhcpcd. Again, a 5-second sleep
+#Start dhcpcd. Again, a 10-second sleep
 echo "Starting dhcpcd service..."
 systemctl start dhcpcd.service
-sleep 5
+sleep 10
 
 echo "Starting dnsmasq service..."
 systemctl start dnsmasq.service

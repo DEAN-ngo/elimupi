@@ -1,0 +1,3 @@
+ARDUINO_CLI_PATH=/var/www/leaphy/arduino-cli
+groq_api_key=notset
+library_index_refresh_interval=0
