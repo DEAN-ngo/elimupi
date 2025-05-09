@@ -3,15 +3,18 @@
 # use DNS resolved and disable NetworkManager.
 
 - name: Install systemd-resolved
-  apt:
+  ansible.builtin.apt:
     name: systemd-resolved
     update_cache: yes
     state: present
 
 - name: Disable NetworkManager service
-  systemd:
+  ansible.builtin.systemd:
     name: NetworkManager
     enabled: no
+
+- name: Run apt clean
+  ansible.builtin.command: apt-get clean
 
 - name: Reboot and running rc.local
   ansible.builtin.reboot:

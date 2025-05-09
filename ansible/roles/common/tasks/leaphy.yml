@@ -21,6 +21,11 @@
   notify:
     - Restart Nginx
 
+- name: Leaphy | Delete frontend files
+  ansible.builtin.file:
+    state: absent
+    path: /var/www/leaphy/html
+
 - name: Leaphy | Create app directories
   ansible.builtin.file:
     path: "{{ item }}"
@@ -72,7 +77,7 @@
     - /mnt/content/leaphy/user
     - /mnt/content/leaphy/tmp
 
-- name: Leaphy | Install AVR platform and libraries
+- name: Leaphy | Install AVR platform
   command: "/var/www/leaphy/arduino-cli {{ item }}"
   environment:
     ARDUINO_DIRECTORIES_USER: "/mnt/content/leaphy/user"
@@ -81,19 +86,14 @@
   loop:
     - core install arduino:avr@{{ leaphy_avr_platform_version }}
     - lib update-index
-    - lib install "Leaphy Extensions"
-    - lib install "Servo"
-    - lib install "List"
-    - lib install "Adafruit NeoPixel"
-    - lib install "Arduino_APDS9960"
-    - lib install "QMC5883LCompass"
-    - lib install "DS3231"
-    - lib install "TM1637"
-    - lib install "Adafruit BMP280 Library"
-    - lib install "Adafruit_VL53L0X"
-    - lib install "Adafruit SGP30 Sensor"
-    - lib install "Adafruit LSM9DS1 Library"
-    - lib install "Adafruit SSD1306"
+
+- name: Leaphy | Install C++ libraries
+  command: "/var/www/leaphy/arduino-cli lib install '{{ item }}'"
+  environment:
+    ARDUINO_DIRECTORIES_USER: "/mnt/content/leaphy/user"
+    ARDUINO_DIRECTORIES_DATA: "/mnt/content/leaphy/data"
+    ARDUINO_DIRECTORIES_DOWNLOADS: "/mnt/content/leaphy/tmp"
+  loop: "{{ leaphy_cpp_libraries }}"
 
 - name: Leaphy | Install backend start script
   ansible.builtin.copy:
