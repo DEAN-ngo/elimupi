@@ -1,6 +1,6 @@
 ---
 # Elimupi release version
-elimupi_release: 4.2.0
+elimupi_release: 4.2.1
 elimupi_release_file: "/root/elimupi_release-{{ elimupi_release }}-{{ lookup('pipe', 'date +%Y%m%d-%H%M') }}"
 
 host_ipv4_ipaddress: '10.11.2.50'
@@ -111,12 +111,6 @@ groups_to_create:
     gid: 1002
   - name: students
     gid: 1003
-
-# Dnsmasq
-dnsmasq_delay: 60
-
-    
-
 
 
 # we don't want to start as startwifi.sh will do this and create virtual uap01
