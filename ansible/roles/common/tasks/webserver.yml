@@ -56,6 +56,20 @@
     option: upload_max_filesize
     value: 2G
 
+- name: Webserver | Set PHP post_max_size
+  community.general.ini_file:
+    path: '/etc/php/{{ php_version }}/cli/php.ini'
+    section: PHP
+    option: post_max_size
+    value: 2G
+
+- name: Webserver | Set PHP FMP post_max_size
+  community.general.ini_file:
+    path: '/etc/php/{{ php_version }}/fpm/php.ini'
+    section: PHP
+    option: post_max_size
+    value: 2G
+
 - name: Webserver | Clean docroot
   ansible.builtin.file:
     state: absent

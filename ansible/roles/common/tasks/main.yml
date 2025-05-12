@@ -42,7 +42,7 @@
 - include_tasks: openvpn.yml
 
 # configure OneDrive
-- include_tasks: onedrive.yml
+# - include_tasks: onedrive.yml
 
 # install Squid proxy
 - include_tasks: proxy.yml
