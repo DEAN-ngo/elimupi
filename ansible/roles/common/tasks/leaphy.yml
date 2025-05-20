@@ -101,6 +101,12 @@
     dest: /var/www/leaphy/backend/start.sh
     mode: "0775"
 
+- name: Leaphy | Install arduino platform install script
+  ansible.builtin.template:
+    src: install_arduino.sh.j2
+    dest: /var/www/leaphy/backend/install_arduino.sh
+    mode: "0775"
+
 - name: Leaphy | Create systemd service
   ansible.builtin.copy:
     src: leaphy/leaphy-backend.service

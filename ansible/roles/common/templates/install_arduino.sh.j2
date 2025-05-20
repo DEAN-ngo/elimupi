@@ -1,0 +1,14 @@
+#!/usr/bin/env sh
+
+export ARDUINO_DIRECTORIES_USER="/mnt/content/leaphy/user"
+export ARDUINO_DIRECTORIES_DATA="/mnt/content/leaphy/data"
+export ARDUINO_DIRECTORIES_DOWNLOADS="/mnt/content/leaphy/tmp"
+
+# Install the AVR platform
+/var/www/leaphy/arduino-cli core install arduino:avr@{{ leaphy_avr_platform_version }}
+/var/www/leaphy/arduino-cli lib update-index
+
+# Install required c++ libraries
+{% for library in leaphy_cpp_libraries -%}
+/var/www/leaphy/arduino-cli lib install '{{ library }}'
+{% endfor %}
