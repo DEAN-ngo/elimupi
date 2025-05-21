@@ -111,5 +111,5 @@
   ansible.builtin.systemd:
     name: leaphy-backend.service
     daemon_reload: true
-    state: started
+    state: restarted
     enabled: true
