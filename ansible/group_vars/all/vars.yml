@@ -338,3 +338,4 @@ leaphy_cpp_libraries:
   - "Adafruit BMP280 Library@2.6.8"
   - "DS3231@1.1.2"
   - "Adafruit LSM6DS@4.7.4"
+leaphy_arduino_dir: /var/www/leaphy/arduino

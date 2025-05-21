@@ -1,0 +1,9 @@
+#!/usr/bin/env sh
+cd /var/www/leaphy/backend || exit
+. /var/www/leaphy/backend/venv/bin/activate
+
+export ARDUINO_DIRECTORIES_USER="{{ leaphy_arduino_dir }}/user"
+export ARDUINO_DIRECTORIES_DATA="{{ leaphy_arduino_dir }}/data"
+export ARDUINO_DIRECTORIES_DOWNLOADS="{{ leaphy_arduino_dir }}/tmp"
+
+exec python3 -m uvicorn --host 127.0.0.1 --port 8001 main:app
