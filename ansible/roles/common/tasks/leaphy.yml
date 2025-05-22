@@ -72,17 +72,17 @@
     mode: '0755'
     owner: "{{ httpd_owner }}"
   loop:
-    - /mnt/content/leaphy
-    - /mnt/content/leaphy/data
-    - /mnt/content/leaphy/user
-    - /mnt/content/leaphy/tmp
+    - "{{ leaphy_arduino_dir }}"
+    - "{{ leaphy_arduino_dir }}/data"
+    - "{{ leaphy_arduino_dir }}/user"
+    - "{{ leaphy_arduino_dir }}/tmp"
 
 - name: Leaphy | Install AVR platform
   command: "/var/www/leaphy/arduino-cli {{ item }}"
   environment:
-    ARDUINO_DIRECTORIES_USER: "/mnt/content/leaphy/user"
-    ARDUINO_DIRECTORIES_DATA: "/mnt/content/leaphy/data"
-    ARDUINO_DIRECTORIES_DOWNLOADS: "/mnt/content/leaphy/tmp"
+    ARDUINO_DIRECTORIES_USER: "{{ leaphy_arduino_dir }}/user"
+    ARDUINO_DIRECTORIES_DATA: "{{ leaphy_arduino_dir }}/data"
+    ARDUINO_DIRECTORIES_DOWNLOADS: "{{ leaphy_arduino_dir }}/tmp"
   loop:
     - core install arduino:avr@{{ leaphy_avr_platform_version }}
     - lib update-index
@@ -90,14 +90,14 @@
 - name: Leaphy | Install C++ libraries
   command: "/var/www/leaphy/arduino-cli lib install '{{ item }}'"
   environment:
-    ARDUINO_DIRECTORIES_USER: "/mnt/content/leaphy/user"
-    ARDUINO_DIRECTORIES_DATA: "/mnt/content/leaphy/data"
-    ARDUINO_DIRECTORIES_DOWNLOADS: "/mnt/content/leaphy/tmp"
+    ARDUINO_DIRECTORIES_USER: "{{ leaphy_arduino_dir }}/user"
+    ARDUINO_DIRECTORIES_DATA: "{{ leaphy_arduino_dir }}/data"
+    ARDUINO_DIRECTORIES_DOWNLOADS: "{{ leaphy_arduino_dir }}/tmp"
   loop: "{{ leaphy_cpp_libraries }}"
 
 - name: Leaphy | Install backend start script
-  ansible.builtin.copy:
-    src: leaphy/start-backend.sh
+  ansible.builtin.template:
+    src: start-leaphy-backend.sh.j2
     dest: /var/www/leaphy/backend/start.sh
     mode: "0775"
 
@@ -111,5 +111,5 @@
   ansible.builtin.systemd:
     name: leaphy-backend.service
     daemon_reload: true
-    state: started
+    state: restarted
     enabled: true
