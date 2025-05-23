@@ -81,3 +81,8 @@
   ansible.builtin.copy:
     src: "roles/common/files/scratch_gui/cards.jsx"
     dest: /opt/scratch-gui/src/components/cards/cards.jsx
+
+- name: Add support for scratch-storage chunk files in webpack configuration
+  ansible.builtin.copy:
+    src: "roles/common/files/scratch_gui/webpack.config.js"
+    dest: /opt/scratch-gui/webpack.config.js
