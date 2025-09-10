@@ -110,6 +110,11 @@
     dest: "{{ kiwix_data_directory }}"
     #mode: '0440'
 
+- name: Download Phet
+  ansible.builtin.get_url:
+    url: https://ftp.nluug.nl/pub/kiwix/zim/phet/{{ phet_version }}.zim
+    dest: "{{ kiwix_data_directory }}"                                                                                                                                          #mode: '0440'
+
 # Create service
 - name: create service kiwix
   ansible.builtin.systemd:
