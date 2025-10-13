@@ -49,7 +49,6 @@
   git:
     repo: "https://github.com/aircrack-ng/rtl8188eus.git"
     dest: "/usr/src/rtl8188eus"
-    version: master
   become: yes
 
 - name: Build the rtl8188eus driver
