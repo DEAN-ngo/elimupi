@@ -1,9 +1,16 @@
 server {
     listen 80;
-
-    server_name kolibri.local www.kolibri.local kolibri.elimupi.online;
+    server_name kolibri.elimupi.online;
 
     location / {
         proxy_pass http://127.0.0.1:8080;
+    }
+}
+server {
+    listen 80;
+    server_name kolibricontent.elimupi.online;
+   
+    location / {
+        proxy_pass http://127.0.0.1:8081;
     }
 }
