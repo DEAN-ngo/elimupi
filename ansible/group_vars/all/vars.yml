@@ -27,6 +27,7 @@ hosts_default_ipv4_hosts:
     - scratch.elimupi.online
     - registration.elimupi.online
     - leaphy.elimupi.online
+    - kolibricontent.elimupi.online
 
 dean_api_host: "DEANVPN001.elimupi.dean"
 dean_api_basepath: "/api/connect"

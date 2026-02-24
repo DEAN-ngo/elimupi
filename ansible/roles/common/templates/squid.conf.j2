@@ -34,6 +34,10 @@ http_access allow Safe_ports
 http_access allow all
 http_access deny all
 
+# No cache for internal domain
+acl elimupi dstdomain .elimupi.online
+cache deny elimupi
+
 # Logging
 cache_log /var/log/squid/cache.log
 access_log daemon:/var/log/squid/access.log squid
