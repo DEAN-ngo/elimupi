@@ -45,6 +45,24 @@
     group: root
     state: link
 
+- name: Clone rtl8188eus driver repository
+  git:
+    repo: "https://github.com/aircrack-ng/rtl8188eus.git"
+    dest: "/usr/src/rtl8188eus"
+  become: yes
+
+- name: Build the rtl8188eus driver
+  make:
+    chdir: "/usr/src/rtl8188eus"
+    target: all
+  become: yes
+
+- name: Install the rtl8188eus driver
+  make:
+    chdir: "/usr/src/rtl8188eus"
+    target: install
+  become: yes
+
 - name: Enable IP forwarding
   ansible.posix.sysctl:
     name: net.ipv4.ip_forward
@@ -93,3 +111,5 @@
 - name: Unblock Wifi
   shell:
     cmd:  raspi-config nonint do_wifi_country '{{ host_country_code }}'
+
+

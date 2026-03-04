@@ -230,6 +230,34 @@
     comment: Accept output from ports 3128
   become: true
 
+
+- name: Masquerade outbound traffic on wlan1
+  ansible.builtin.iptables:
+    table: nat
+    chain: POSTROUTING
+    out_interface: wlan1
+    jump: MASQUERADE
+    state: present
+
+- name: Allow forwarding from wlan0 to wlan1
+  ansible.builtin.iptables:
+    chain: FORWARD
+    in_interface: wlan0
+    out_interface: wlan1
+    jump: ACCEPT
+    state: present
+
+
+- name: Allow established and related traffic back to wlan0
+  ansible.builtin.iptables:
+    chain: FORWARD
+    in_interface: wlan1
+    out_interface: wlan0
+    match: state
+    ctstate: RELATED,ESTABLISHED
+    jump: ACCEPT
+    state: present
+
 - name: Save iptables rules
   ansible.builtin.shell:
     cmd: iptables-save > /etc/iptables/rules.v4
