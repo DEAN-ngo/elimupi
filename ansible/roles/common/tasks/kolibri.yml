@@ -1,48 +1,82 @@
 ---
-# install Kolibri install support python libraries -> moved to ospackages.yml
-#apt install libffi-dev python3-pip python3-pkg-resources dirmngr -y
 
-- name: Set kolibri.local
-  ansible.builtin.copy:
-    src: "nginx/kolibri.local"
-    dest: /etc/nginx/sites-available/kolibri.local
-  notify:
-    - Restart Nginx
- 
-- name: Enable kolibri nginx configuration
-  ansible.builtin.file:
-    src: /etc/nginx/sites-available/kolibri.local
-    dest: /etc/nginx/sites-enabled/kolibri.local
-    owner: root
-    group: root
-    state: link
-  notify:
-    - Restart Nginx
-
-#Install Kolibri components
-- name: Install applications
+- name: Ensure OS dependencies are installed
   apt:
     name:
-    - python3-pip
-    - python3-setuptools
-    - python3-cffi
-    - kolibri
-    - kolibri-server
+      - gpg
+      - dirmngr
+      - ca-certificates
+      - python3-pip
+      - python3-setuptools
+      - python3-cffi
+      - libffi-dev
+    state: present
+    update_cache: yes
 
-- name: Create kolibri default facility name, admin account and language.
-  shell: >
-    export KOLIBRI_HOME="{{ kolibri_home }}" &&
-    "{{ kolibri_exec_path }}" manage provisiondevice --facility "{{ kolibri_facility }}"
-    --superusername "{{ kolibri_admin_user }}" --superuserpassword "{{ kolibri_admin_password }}"
-    --preset "{{ kolibri_preset }}" --language_id "{{ kolibri_language }}" --verbosity 0 --noinput
-  ignore_errors: yes
-  when: kolibri_provision
+- name: Download Kolibri GPG key
+  ansible.builtin.get_url:
+    url: "https://keyserver.ubuntu.com/pks/lookup?op=get&search=0x{{ kolibri_ppa_key_id }}"
+    dest: /tmp/kolibri.key
+    mode: '0644'
 
-# Configure kolibri to use content disk
-- name: Copy kolibri daemon.conf
+- name: De-armor GPG key and move to keyrings
+  shell: "gpg --batch --yes --dearmor < /tmp/kolibri.key > /usr/share/keyrings/learningequality-kolibri.gpg"
+  args:
+    creates: /usr/share/keyrings/learningequality-kolibri.gpg
+
+- name: Add Kolibri PPA repository
+  apt_repository:
+    repo: "{{ kolibri_repo }}"
+    filename: learningequality-kolibri
+    state: present
+
+- name: Install Kolibri and Kolibri Server
+  apt:
+    name: 
+      - kolibri
+      - kolibri-server
+    state: latest
+    update_cache: yes
+
+- name: Copy Kolibri daemon configuration (Content Disk)
   ansible.builtin.copy:
     src: kolibri/daemon.conf
     dest: /etc/kolibri/daemon.conf
     owner: root
     group: root
     mode: '0755'
+  notify: Restart Kolibri
+
+- name: Provision Kolibri device
+  shell: >
+    export KOLIBRI_HOME="{{ kolibri_home }}" &&
+    {{ kolibri_exec_path }} manage provisiondevice 
+    --facility "{{ kolibri_facility }}"
+    --superusername "{{ kolibri_admin_user }}" 
+    --superuserpassword "{{ kolibri_admin_password }}"
+    --preset "{{ kolibri_preset }}" 
+    --language_id "{{ kolibri_language }}" 
+    --verbosity 0 --noinput
+  register: provision_result
+  changed_when: "'Device provisioned' in provision_result.stdout"
+  ignore_errors: yes
+  when: kolibri_provision
+
+- name: Set up Nginx configuration for Kolibri
+  ansible.builtin.copy:
+    src: "nginx/kolibri.local"
+    dest: /etc/nginx/sites-available/kolibri.local
+  notify: Restart Nginx
+
+- name: Enable Kolibri Nginx configuration
+  ansible.builtin.file:
+    src: /etc/nginx/sites-available/kolibri.local
+    dest: /etc/nginx/sites-enabled/kolibri.local
+    state: link
+  notify: Restart Nginx
+
+- name: Ensure Kolibri service is started and enabled
+  systemd:
+    name: kolibri
+    state: started
+    enabled: yes

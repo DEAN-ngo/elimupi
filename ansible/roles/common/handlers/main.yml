@@ -14,3 +14,7 @@
     name: netfilter-persistent
     state: restarted
 
+- name: Restart Kolibri
+  ansible.builtin.service:
+    name: kolibri
+    state: restarted

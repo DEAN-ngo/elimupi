@@ -81,6 +81,8 @@
     dest:  '{{ docroot }}'
     version: main
     accept_hostkey: yes
+    depth: 1
+    single_branch: yes
   notify:
     - Restart Nginx
 
