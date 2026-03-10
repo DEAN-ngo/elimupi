@@ -3,15 +3,6 @@
   apt:
     upgrade: dist
 
-- name: Packages | Add repo key learningequality
-  apt_key:
-    keyserver: hkp://keyserver.ubuntu.com:80
-    id: DC5BAA93F9E4AE4F0411F97C74F88ADB3194DD81
-
-- name: Packages | Add repository learningequality
-  apt_repository:
-    repo: deb http://ppa.launchpad.net/learningequality/kolibri/ubuntu bionic main
-
 - name: Packages | Install applications
   apt:
     name: "{{ software_packages }}" 

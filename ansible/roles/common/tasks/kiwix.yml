@@ -1,31 +1,8 @@
----
-# Installation KIWIX
-
-# Get the version number of the latest release -> for now solved with variable in site.yml
-
-    # Get release rss data from mirror
-    #display_log("Install KIWIX components...")
-    #display_log("Get KIWIX versions...", col_log_ok)
-    #file = urllib.request.urlopen('https://ftp.nluug.nl/pub/kiwix/release/kiwix-tools/feed.xml')
-    #data = file.read()
-    #file.close()
-    ## Parse XML
-    #root = ET.fromstring(data)
-    ## get latest version for linux-armhf of kiwix-tools (first in XML)
-    #latest_release = 'none'
-    #for links in root.findall('channel/item/link'):
-    #        if( links.text.find('kiwix-tools_linux-armhf') > -1):
-    #                latest_release = links.text
-    #                break
-    #latest_release_name = latest_release[47:-7]
-    #display_log("Latest KIWIX release : " + latest_release_name, col_log_ok) "
-
-    #kiwix-tools_linux-armhf-3.2.0-1.tar.gz 
-    
+---  
 # get release for Linux-armhf from mirror
 - name: Download kiwix
   ansible.builtin.get_url:
-    url: https://ftp.nluug.nl/pub/kiwix/release/kiwix-tools/{{ kiwix_version }}.tar.gz
+    url: https://download.kiwix.org/release/kiwix-tools/{{ kiwix_version }}.tar.gz
     dest: /home/pi
     mode: '0440'
 
@@ -82,38 +59,85 @@
     mode: '0644'    
 
 
-# Get latest version of zim package:  -> for now solved with variable in site.yml
-   # def latest_zim_package(url, package):
-   #     with urllib.request.urlopen(url) as response:
-   #         html = response.read().decode('utf-8')
-   #         versions = re.findall(package + "\d{4}-\d{2}.zim", html)
-   #         versions.sort()
-   #         #the last entry is the newest version
-   #         return versions[-1]
-  
 - name: Create kiwix data directory
   ansible.builtin.file:
     path: "{{ kiwix_data_directory }}"
     state: directory
     mode: "{{ kiwix_directory_mode }}"
 
-#download two sample wikis
-- name: Download vikidia
-  ansible.builtin.get_url:
-    url: https://ftp.nluug.nl/pub/kiwix/zim/vikidia/{{ vikidia_version }}.zim
-    dest: "{{ kiwix_data_directory }}"
-    #mode: '0440'
+# -----------------------------
+# Vikidia - Get latest version
+# -----------------------------
 
-- name: Download wiktionary
-  ansible.builtin.get_url:
-    url: https://ftp.nluug.nl/pub/kiwix/zim/wiktionary/{{ wiktionary_version }}.zim
-    dest: "{{ kiwix_data_directory }}"
-    #mode: '0440'
+- name: Get Vikidia directory listing
+  ansible.builtin.uri:
+    url: https://ftp.nluug.nl/pub/kiwix/zim/vikidia/
+    return_content: yes
+  register: vikidia_index
 
-- name: Download Phet
+- name: Extract latest Vikidia ZIM filename
+  ansible.builtin.set_fact:
+    vikidia_latest: >-
+      {{ vikidia_index.content
+         | regex_findall('href="(vikidia_[^"]+?\.zim)"')
+         | sort
+         | last }}
+
+- name: Download latest Vikidia
   ansible.builtin.get_url:
-    url: https://ftp.nluug.nl/pub/kiwix/zim/phet/{{ phet_version }}.zim
-    dest: "{{ kiwix_data_directory }}"                                                                                                                                          #mode: '0440'
+    url: "https://ftp.nluug.nl/pub/kiwix/zim/vikidia/{{ vikidia_latest }}"
+    dest: "{{ kiwix_data_directory }}/{{ vikidia_latest }}"
+    mode: '0440'
+
+
+# -----------------------------
+# Wiktionary - Get latest version
+# -----------------------------
+
+- name: Get Wiktionary directory listing
+  ansible.builtin.uri:
+    url: https://ftp.nluug.nl/pub/kiwix/zim/wiktionary/
+    return_content: yes
+  register: wiktionary_index
+
+- name: Extract latest Wiktionary ZIM filename
+  ansible.builtin.set_fact:
+    wiktionary_latest: >-
+      {{ wiktionary_index.content
+         | regex_findall('href="(wiktionary_[^"]+?\.zim)"')
+         | sort
+         | last }}
+
+- name: Download latest Wiktionary
+  ansible.builtin.get_url:
+    url: "https://ftp.nluug.nl/pub/kiwix/zim/wiktionary/{{ wiktionary_latest }}"
+    dest: "{{ kiwix_data_directory }}/{{ wiktionary_latest }}"
+    mode: '0440'
+
+- name: Get PhET directory listing
+  ansible.builtin.uri:
+    url: https://ftp.nluug.nl/pub/kiwix/zim/phet/
+    return_content: yes
+  register: phet_index
+
+
+- name: Extract latest PhET ZIM filename
+  ansible.builtin.set_fact:
+    phet_latest: >-
+      {{ phet_index.content
+         | regex_findall('href="(phet_[^"]+?\.zim)"')
+         | sort
+         | last }}
+
+# -----------------------------
+# Wiktionary - Get latest PhET
+# -----------------------------         
+
+- name: Download latest PhET
+  ansible.builtin.get_url:
+    url: "https://ftp.nluug.nl/pub/kiwix/zim/phet/{{ phet_latest }}"
+    dest: "{{ kiwix_data_directory }}/{{ phet_latest }}"
+    mode: '0440'
 
 # Create service
 - name: create service kiwix

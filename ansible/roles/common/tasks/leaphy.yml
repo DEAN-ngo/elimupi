@@ -46,6 +46,7 @@
     repo: "https://github.com/leaphy-robotics/leaphy-webbased-backend.git"
     dest: "/var/www/leaphy/backend"
     version: "{{ leaphy_backend_version }}"
+    depth: '1'
     force: true
 
 - name: Leaphy | Create backend settings
