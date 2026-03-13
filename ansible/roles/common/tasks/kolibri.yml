@@ -79,7 +79,11 @@
         device.landing_page = 'learn'
         device.save()
     EOF
+
+    # 2. Run your built-in Kolibri CLI command to allow unassigned resource access
+    {{ kolibri_exec_path }} manage devicesettings --allow-learner-unassigned-resource-access set
   tags: test_kolibri
+  
 
 - name: Set up Nginx configuration for Kolibri
   ansible.builtin.copy:
