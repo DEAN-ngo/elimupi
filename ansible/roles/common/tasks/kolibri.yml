@@ -100,6 +100,6 @@
 
 - name: Ensure Kolibri service is started and enabled
   systemd:
-    name: kolibri
+    name: kolibri-server
     state: started
     enabled: yes
