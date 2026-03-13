@@ -55,7 +55,7 @@
   ansible.builtin.lineinfile:
     path: /etc/fstab
     regexp: '^LABEL=Content'
-    line: 'LABEL=Content /mnt/content ntfs defaults,noatime,nofail 0 0'
+    line: 'LABEL=Content /mnt/content ext4 defaults,noatime,nofail 0 0'
 
 - name: Setup | Install devmon.service systemd unit file
   ansible.builtin.template:
