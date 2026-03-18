@@ -40,7 +40,7 @@ This version of the ElimuPi build supports:
  - Git installed.
  - Ansible 2.10 > installed.
  - [ssh_askpass](https://packages.ubuntu.com/search?keywords=ssh-askpass) installed.
- - [Raspberry Pi Imager](https://www.raspberrypi.com/software/)  installed.
+ - [Raspberry Pi Imager](https://www.raspberrypi.com/software/) installed.
  - [Raspberry Pi OS Lite 64 bits image , Release date: May 6th 2025.](https://downloads.raspberrypi.com/raspios_lite_arm64/images/raspios_lite_arm64-2025-05-07/2025-05-06-raspios-bookworm-arm64-lite.img.xz)
 
  - Ansible vault password ( contact DEAN development)
@@ -51,7 +51,7 @@ This version of the ElimuPi build supports:
  - Insert the SD-card.
  - Start Raspberry PI Imager.
  - Under **Raspberry Pi Device** select **No filtering**.
- - Under **Operating system** select **Choose OS --> Raspberry PI OS other** and select the downloaded image - [Raspberry Pi OS Lite (64-bit), A port of Debian Bookworm wiyh n Desktop Environment ( Compatible with PI 3/4/400/5 ), Release date: May 6th 2025.](https://downloads.raspberrypi.com/raspios_lite_arm64/images/raspios_lite_arm64-2024-11-19/2024-11-19-raspios-bookworm-arm64-lite.img.xz)
+ - Under **Operating system** select **Choose OS --> Raspberry PI OS other** and select the downloaded image - [Raspberry Pi OS Lite (64-bit), A port of Debian Bookworm with no Desktop Environment ( Compatible with PI 3/4/400/5 ),  Release date: 2025-11-24.](hhttps://downloads.raspberrypi.com/raspios_oldstable_lite_arm64/images/raspios_oldstable_lite_arm64-2025-11-24/2025-11-24-raspios-bookworm-arm64-lite.img.xz)
  - Under **Storage** and select the SD-card device.
  - Select **Advanced options** -->  **Enable SSH** --> **Use password authentication**.
  - Set **Username** to: **pi** and **Password** to : **elimupi** and select **SAVE**.
@@ -103,7 +103,7 @@ To prepare a minimal content disk:
 
 # Connecting to ElimuPi
 
--  Connect your device via WiFi to SSID:  **elimu** using passcode: **1234567890**
+-  Connect your device via WiFi to SSID:  **elimu< Raspberry Pi serialnumber >** using passcode: **1234567890**
 -  Point your browser to http://start.elimupi.online
 
 ## Default users
@@ -128,4 +128,4 @@ The following links are provided to access the resources:
 After you finished the installation you need to visit [registration.elimupi.online](http://registration.elimupi.online) login with an admin account to register your device, so that it can synchronize with the central server."
 
 ## Notes
-**NOTE1**: This install is tested to work with [Raspberry Pi OS Lite 64 bits image , Release date: May 6th 2025.](https://downloads.raspberrypi.com/raspios_lite_arm64/images/raspios_lite_arm64-2024-11-19/2024-11-19-raspios-bookworm-arm64-lite.img.xz) on a Raspberry Pi model 4 and 5.
+**NOTE1**: This install is tested to work with [Raspberry Pi OS Lite 64 bits image , Release date: 2025-11-24.](https://downloads.raspberrypi.com/raspios_oldstable_lite_arm64/images/raspios_oldstable_lite_arm64-2025-11-24/2025-11-24-raspios-bookworm-arm64-lite.img.xz) on a Raspberry Pi model 4 and 5.

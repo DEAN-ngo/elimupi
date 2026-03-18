@@ -11,6 +11,15 @@
     dest: /etc/network/interfaces
     mode: "0644"
 
+- name: Get Raspberry Pi Serial Number
+  shell: "grep Serial /proc/cpuinfo | awk '{print $3}'"
+  register: pi_serial_raw
+  changed_when: false
+
+- name: Set SSID fact
+  set_fact:
+    final_ssid: "{{ host_ssid }}{{ pi_serial_raw.stdout }}"
+
 - name: Configure hostapd
   ansible.builtin.template:
     src: templates/hostapd.conf.j2
