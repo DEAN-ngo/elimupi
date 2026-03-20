@@ -6,6 +6,28 @@ systemctl stop hostapd.service
 systemctl stop dnsmasq.service
 systemctl stop dhcpcd.service
 
+# Set SSID to elimu<rapberrypi serial number>
+CONF_FILE="/etc/hostapd/hostapd.conf"
+SERIAL=$(grep "Serial" /proc/cpuinfo | awk '{print $3}' | tail -c 9)
+if [ -z "$SERIAL" ]; then
+    echo "Error: Could not retrieve Serial Number."
+    exit 1
+fi
+DESIRED_SSID="elimu$SERIAL"
+CURRENT_SSID=$(grep "^ssid=" "$CONF_FILE" | cut -d'=' -f2)
+
+if [ "$CURRENT_SSID" != "$DESIRED_SSID" ]; then
+    echo "SSID mismatch detected. Updating $CONF_FILE..."
+    
+    # Use sed to replace the line starting with ssid=
+    # The -i flag edits the file in place
+    sudo sed -i "s/^ssid=.*/ssid=$DESIRED_SSID/" "$CONF_FILE"
+    
+    echo "SSID updated successfully."
+else
+    echo "SSID is already correct. No changes needed."
+fi
+
 # Start hostapd. 10-second sleep avoids some race condition, apparently. It may not need to be that long. (?)
 echo "Starting hostapd service..."
 systemctl start hostapd.service
