@@ -18,3 +18,4 @@
   ansible.builtin.service:
     name: kolibri
     state: restarted
+    daemon_reload: yes

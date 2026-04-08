@@ -62,6 +62,24 @@
   ignore_errors: yes
   when: kolibri_provision
 
+# set default landing page to 'learn' for the provisioned device
+- name: Ensure systemd override directory exists
+  file:
+    path: /etc/systemd/system/kolibri.service.d
+    state: directory
+    mode: '0755'
+
+- name: Create Kolibri systemd drop-in configuration
+  copy:
+    dest: /etc/systemd/system/kolibri.service.d/custom-startup.conf
+    content: |
+      [Service]
+      Environment="KOLIBRI_HOME={{ kolibri_home }}"
+      # The '-' prefix allows the service to start even if this specific command fails
+      ExecStartPre=-{{ kolibri_exec_path }} manage shell -c "from kolibri.core.device.models import DeviceSettings; ds=DeviceSettings.objects.get(); ds.landing_page='learn'; ds.save()"
+    mode: '0644'
+  notify: Restart Kolibri
+
 - name: Set up Nginx configuration for Kolibri
   ansible.builtin.copy:
     src: "nginx/kolibri.local"
