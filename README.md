@@ -65,6 +65,7 @@ Provision the ElimuPi software by running the ansible-play book against local Ra
 
  - Find the Pi's assigned IP address on your local LAN. ( via Wifi router or a nmap).
  - Git clone this repo and cd elimupi/ansible directory of this repo.
+  '''git clone https://github.com/DEAN-ngo/elimupi.git'''
  - Adjust the current IP adresss of key : ansible_host  in file  inventory.yml to your Pi's local assigned IP address.
  - Increment version release number variable, **elimupi_release**: in file ansible/group_vars/all/vars.yml if needed.
  - Install Ansible collections:
