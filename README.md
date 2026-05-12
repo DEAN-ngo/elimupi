@@ -29,7 +29,7 @@ This version of the ElimuPi build supports:
 - OpenVPN connection for content updates.
 - Transparent Proxy for logging.
 - Connect Registration dashboard.
-- [Leaphy Robotics](https://github.com/leaphy-robotics/leaphy-blocks)
+- [Leaphy Robotics](https://github.com/leaphy-robotics/leaphy-webbased-svelte)
 
 #  Installation
 

@@ -324,24 +324,33 @@ squid_log_dir: /var/log/squid
 squid_ssl_cert_path: "/etc/squid/squid.pem"
 
 # Leaphy
-leaphy_frontend_version: 3.5.0
-leaphy_arduino_cli_version: 1.2.0
+leaphy_frontend_version: 4.4.0
+leaphy_arduino_cli_version: 1.2.2
 leaphy_avr_platform_version: 1.8.6
 leaphy_backend_version: v1.7.5
 leaphy_cpp_libraries:
-  - "Leaphy Extensions@1.2.0"
+  - "Leaphy Extensions@1.2.1"
   - "Servo@1.2.2"
-  - "ESP32Servo@3"
-  - "Adafruit GFX Library@1.12"
-  - "Adafruit SSD1306@2.5"
-  - "Adafruit LSM9DS1 Library@2.2.1"
-  - "Adafruit Unified Sensor@1.1.15"
+  - "ArduinoBLE@1.4.0"
   - "List@3.0.1"
-  - "Adafruit SGP30 Sensor@2.0.3"
+  - "ESP32Servo@3"
+  - "Adafruit SSD1306@2.5"
+  - "Adafruit SH110X@2.1.12"
   - "Adafruit_VL53L0X@1.2.4"
-  - "Adafruit BMP280 Library@2.6.8"
-  - "DS3231@1.1.2"
   - "Adafruit LSM6DS@4.7.4"
+  - "Adafruit BMP280 Library@2.6.8"
+  - "Adafruit SGP30 Sensor@2.0.3"
+  - "SparkFun TMP102 Breakout@1.1.2"
+  - "FastLED@3.10.3"
+  - "SparkFun VL53L5CX Arduino Library@1.0.3"
+  - "Arduino_APDS9960@1.0.4"
+  - "DS3231@1.1.2"
+  - "Painless Mesh@1.5.4"
+  - "AsyncTCP@1.1.4"
+  - "TCA9534@0.1.1"
+  - "Adafruit ADS1X15@2.6.2"
+  - "SD@1.3.0"
+
 leaphy_arduino_dir: /var/www/leaphy/arduino
 
 
